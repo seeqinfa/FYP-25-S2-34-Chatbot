@@ -101,7 +101,27 @@ $availableProfiles = $ViewUserProfileController->listProfiles();
 	</div>
 </div>
 
+<?php if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']): ?>
+<link rel="stylesheet" href="<?php echo CSS_PATH;?>/chatbot.css">
+<div id="chatbot-popup">
+  <div id="chatbot-header" onclick="toggleChatbot()">Chat with us</div>
+  <div id="chatbot-body" style="display: none;">
+  <div id="chat-messages"></div>
+  <form id="chat-form" onsubmit="sendChatMessage(event)">
+    <input type="text" id="chat-input" placeholder="Type your message..." required autocomplete="off">
+    <button type="submit">Send</button>
+  </form>
+</div>
+
+</div>
+<?php endif; ?>
+
+
 <script src="<?php echo JAVASCRIPT_PATH;?>/script.js"></script>
+<script>
+	const CONTROLLERS_URL = "<?php echo CONTROLLERS_URL; ?>";
+</script>
+<script src="<?php echo JAVASCRIPT_PATH;?>/chatbot.js"></script> 
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script>

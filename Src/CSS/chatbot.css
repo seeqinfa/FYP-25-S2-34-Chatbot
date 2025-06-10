@@ -1,0 +1,114 @@
+#chatbot-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 400px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+
+}
+
+#chatbot-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#chatbot-body {
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    background-color: #f5f5f5;
+    box-sizing: border-box;
+}
+
+
+#chat-messages {
+    flex: 1; /* Takes all remaining space */
+    overflow-y: auto; /* Scroll when needed */
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+    min-height: 0; /* 🔑 Prevent flexbox from blocking scroll */
+    max-height: 90%; /* 🔑 Prevent overflow block */
+}
+
+
+
+#chat-form {
+    display: flex;
+    gap: 5px;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    flex-shrink: 0; /* Prevent from shrinking or stretching */
+}
+
+#chat-form input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #000;
+}
+
+#chat-form button {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+#chat-form button:hover {
+    background-color: #45a049;
+}
+
+/* Shared base message style */
+.chat-message {
+    max-width: 75%;
+    padding: 10px 15px;
+    font-size: 14px;
+    line-height: 1.4;
+    border-radius: 20px;
+    word-wrap: break-word;
+    word-break: break-word;
+    display: inline-block;
+}
+
+/* User message aligned right */
+.user-message {
+    background-color: #4CAF50;
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+
+/* Bot message aligned left */
+.bot-message {
+    background-color: #e0e0e0;
+    color: black;
+    align-self: flex-start;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+}

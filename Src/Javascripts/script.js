@@ -64,3 +64,9 @@ iconClose.addEventListener('click',()=>{
         // If all validations pass, return true
         return true;
     }
+	
+	
+
+
+
+
