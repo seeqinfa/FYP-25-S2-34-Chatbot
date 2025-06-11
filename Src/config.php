@@ -9,7 +9,7 @@ define('BOUNDARY_PATH', PROJECT_ROOT . '\Boundary');
 
 
 
-define('BASE_URL', '/luxfurn/Src');
+define('BASE_URL', '/FYP-25-S2-34-Chatbot/Src');
 
 // Define other URL paths relative to BASE_URL
 define('BOUNDARY_URL', BASE_URL . '/Boundary');
