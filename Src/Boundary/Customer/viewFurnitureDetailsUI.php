@@ -19,75 +19,67 @@ if (!$item) {
     exit;
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Furniture Details</title>
-    <link rel="stylesheet" href="../../CSS/style.css">
-    <style>
-        .details-container {
-            max-width: 900px;
-            margin: 120px auto 40px;
-            padding: 20px;
-            background-color: #fdfdfd;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border-radius: 10px;
-            display: flex;
-            gap: 30px;
-        }
 
-        .details-container img {
-            max-width: 400px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
+<style>
+.details-container {
+    max-width: 900px;
+    margin: 140px auto 40px;
+    padding: 20px;
+    background-color: #fdfdfd;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    display: flex;
+    gap: 30px;
+}
 
-        .details-info {
-            flex: 1;
-        }
+.details-container img {
+    max-width: 400px;
+    border-radius: 8px;
+    object-fit: cover;
+}
 
-        .details-info h2 {
-            margin-top: 0;
-            color: #e67e22;
-        }
+.details-info {
+    flex: 1;
+}
 
-        .details-info p {
-            margin: 10px 0;
-        }
+.details-info h2 {
+    margin-top: 0;
+    color: #e67e22;
+}
 
-        .price {
-            font-size: 24px;
-            color: #e67e22;
-            margin: 10px 0;
-        }
+.details-info p {
+    margin: 10px 0;
+}
 
-        .btn-back {
-            margin-top: 20px;
-            display: inline-block;
-            background-color: #e67e22;
-            color: white;
-            padding: 16px 16px;
-            border-radius: 5px;
-            text-decoration: none;
-        }
+.price {
+    font-size: 24px;
+    color: #e67e22;
+    margin: 10px 0;
+}
 
-        .btn-back:hover {
-            background-color: #c15500;
-        }
-    </style>
-</head>
-<body>
-    <div class="details-container">
-        <img src="<?php echo htmlspecialchars($item->image_url); ?>" alt="<?php echo htmlspecialchars($item->name); ?>">
-        <div class="details-info">
-            <h2><?php echo htmlspecialchars($item->name); ?></h2>
-            <p><strong>Category:</strong> <?php echo htmlspecialchars($item->category); ?></p>
-            <p><strong>Description:</strong> <?php echo htmlspecialchars($item->description); ?></p>
-            <p><strong>Stock:</strong> <?php echo (int)$item->stock_quantity; ?> available</p>
-            <div class="price">$<?php echo htmlspecialchars($item->price); ?></div>
-            <a href="viewFurnitureUI.php" class="btn-back">← Back to List</a>
-        </div>
+.btn-back {
+    margin-top: 20px;
+    display: inline-block;
+    background-color: #e67e22;
+    color: white;
+    padding: 16px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-back:hover {
+    background-color: #c15500;
+}
+</style>
+
+<div class="details-container">
+    <img src="<?php echo htmlspecialchars($item->image_url); ?>" alt="<?php echo htmlspecialchars($item->name); ?>">
+    <div class="details-info">
+        <h2><?php echo htmlspecialchars($item->name); ?></h2>
+        <p><strong>Category:</strong> <?php echo htmlspecialchars($item->category); ?></p>
+        <p><strong>Description:</strong> <?php echo htmlspecialchars($item->description); ?></p>
+        <p><strong>Stock:</strong> <?php echo (int)$item->stock_quantity; ?> available</p>
+        <div class="price">$<?php echo htmlspecialchars($item->price); ?></div>
+        <a href="viewFurnitureUI.php" class="btn-back">← Back to List</a>
     </div>
-</body>
-</html>
+</div>

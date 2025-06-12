@@ -102,10 +102,6 @@ header {
     transform:scale(1);
 }
 
-.wrapper.active{
-    height:520px;
-}
-
 .wrapper .form-box{
     width:100%;
     padding:40px;
@@ -118,7 +114,7 @@ header {
 
 .wrapper.active .form-box.login{
     transition:none;
-    transform:translateX(-400px);
+    transform:translateX(0);
 }
 
 .wrapper .form-box.register{
@@ -299,4 +295,62 @@ header {
 
 #pop-up-message button:hover {
     background: #ff3b3b;
+}
+
+
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    background: white;
+    color: #e67e22;
+    font-weight: bold;
+    border: 1px solid #e67e22;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination a:hover {
+    background-color: #e67e22;
+    color: white;
+}
+
+.pagination a.active {
+    background-color: #e67e22;
+    color: white;
+    pointer-events: none;
+    border-color: #c15500;
+}
+
+.card .btn {
+    padding: 10px 16px  ;
+    border-radius: 6px;
+    background-color: #e67e22;
+    color: white;
+    font-size: 0.95em;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    min-width: 100px;
+}
+
+.card .btn:hover {
+    background-color: #c15500;
+    transform: scale(1.03);
+}
+
+.card .actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
 }
