@@ -67,7 +67,7 @@ if (!$item) {
             display: inline-block;
             background-color: #e67e22;
             color: white;
-            padding: 8px 16px;
+            padding: 16px 16px;
             border-radius: 5px;
             text-decoration: none;
         }

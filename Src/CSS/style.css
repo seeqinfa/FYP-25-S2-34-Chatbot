@@ -5,14 +5,16 @@ html,
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-body{
-    display:flex;
+body {
+    display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     min-height: 100vh;
-    background: url('../img/H.jpg') no-repeat;
+    background: url(../img/H.jpg) no-repeat center center;
     background-size: cover;
-    background-position: center;
+    background-attachment: fixed; 
+    margin: 0;
+    padding: 0;
 }
 header {
     position: fixed;

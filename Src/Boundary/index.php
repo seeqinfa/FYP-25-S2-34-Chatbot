@@ -24,8 +24,7 @@ $availableProfiles = $ViewUserProfileController->listProfiles();
 	<nav class="navigation">
 		<a href="#">Home</a>
 		<a href="#">About</a>
-		<a href="#">View Furniture</a>
-
+		<a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewFurnitureUI.php">View Furniture</a>
 		<?php if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']): ?>
 			<?php if ($_SESSION['role'] === 'admin'): ?>
 				<a href="adminDashboard.php">Admin Dashboard</a>

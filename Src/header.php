@@ -18,7 +18,7 @@
     <nav class="navigation">
         <a href="#">Home</a>
         <a href="#">About</a>
-        <a href="#">View Furniture</a>
+        <a href="viewFurnitureUI.php">View Furniture</a>
         <button class="btnLogin">Login</button>
     </nav>
 </header>
