@@ -1,4 +1,12 @@
-<?php include '../../header.php'; ?>
+<?php 
+include '../../header.php';
+require_once dirname(__DIR__, 2) . '/Entities/furniture.php';
+require_once dirname(__DIR__, 2) . '/Controllers/Customer/viewFurnitureCtrl.php';
+require_once dirname(__DIR__, 2) . '/config.php';
+
+$controller = new FurnitureController();
+$furnitureList = $controller->getAllFurniture();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,29 +75,23 @@
 <body>
 <div class="container">
     <div class="grid">
-        <?php
-        $furniture = [
-            ["category" => "Living Room", "name" => "Modern Sofa", "price" => "$1099.99", "old_price" => "$1299.99", "image" => "../../img/sofa.jpg", "rating" => "4.8 (120)", "sale" => false],
-            ["category" => "Dining Room", "name" => "Scandinavian Dining Table", "price" => "$849.99", "old_price" => null, "image" => "../../img/table.jpg", "rating" => "4.6 (89)", "sale" => false],
-            ["category" => "Bedroom", "name" => "Queen Size Platform Bed", "price" => "$599.99", "old_price" => "$899.99", "image" => "../../img/bed.jpg", "rating" => "4.7 (78)", "sale" => false
-        ],
-        ];
+        <?php foreach ($furnitureList as $item): ?>
+            <div class="card-wrapper">
+                <div class="card">
+                    <img src="<?php echo htmlspecialchars($item->image_url); ?>" alt="<?php echo htmlspecialchars($item->name); ?>">
+                    <div class="card-body">
+                        <div class="category"><?php echo htmlspecialchars($item->category); ?></div>
+                        <div class="name"><?php echo htmlspecialchars($item->name); ?></div>
+                        <div class="price">$<?php echo htmlspecialchars($item->price); ?></div>
 
-        foreach ($furniture as $item) {
-            echo '<div class="card-wrapper">';
-            if ($item["sale"]) echo '<div class="sale-badge">Sale</div>';
-            echo '<div class="card">';
-            echo '<img src="' . $item["image"] . '" alt="' . $item["name"] . '">';
-            echo '<div class="card-body">';
-            echo '<div class="category">' . $item["category"] . '</div>';
-            echo '<div class="name">' . $item["name"] . '</div>';
-            echo '<div class="price">' . $item["price"];
-            if ($item["old_price"]) echo ' <span style="text-decoration:line-through;color:gray;">' . $item["old_price"] . '</span>';
-            echo '</div>';
-            echo '<div class="rating"><i class="fa fa-star"></i> ' . $item["rating"] . '</div>';
-            echo '</div></div></div>';
-        }
-        ?>
+                        <div class="actions" style="margin-top: 10px;">
+                            <a href="viewFurnitureDetailsUI.php?id=<?php echo urlencode($item->furnitureID); ?>" class="btn">View</a>
+                            <a href="addToCart.php?id=<?php echo urlencode($item->furnitureID); ?>" class="btn">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
 </div>
 </body>
