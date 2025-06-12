@@ -1,0 +1,49 @@
+version: "3.1"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+# Rule to ask for product name if missing when user wants manual
+- rule: Ask for product name on get_manual intent if product_name slot not set
+  condition:
+  - slot_was_set:
+    - product_name: null
+  steps:
+  - intent: get_manual
+  - action: utter_ask_product_name
+
+# Rule to ask for order ID if missing on cancel_order intent
+- rule: Ask for order ID on cancel_order intent if order_id slot not set
+  condition:
+  - slot_was_set:
+    - order_id: null
+  steps:
+  - intent: cancel_order
+  - action: utter_ask_order_id
+
+# Rule to ask for order ID if missing on ask_delivery intent
+- rule: Ask for order ID on ask_delivery intent if order_id slot not set
+  condition:
+  - slot_was_set:
+    - order_id: null
+  steps:
+  - intent: ask_delivery
+  - action: utter_ask_order_id
+
+# Rule to ask for dimensions if missing on search_furniture intent
+- rule: Ask for dimensions on search_furniture intent if dimensions slot not set
+  condition:
+  - slot_was_set:
+    - dimensions: null
+  steps:
+  - intent: search_furniture
+  - action: utter_ask_dimensions

@@ -1,0 +1,15 @@
+{
+  "0": "affirm",
+  "1": "ask_delivery",
+  "2": "bot_challenge",
+  "3": "cancel_order",
+  "4": "deny",
+  "5": "escalate_issue",
+  "6": "get_manual",
+  "7": "goodbye",
+  "8": "greet",
+  "9": "mood_great",
+  "10": "mood_unhappy",
+  "11": "provide_feedback",
+  "12": "search_furniture"
+}
