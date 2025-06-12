@@ -23,7 +23,6 @@ db.sqlite3
 
 # Rasa specific
 models/
-data/
 results/
 *.tar.gz
 *.log

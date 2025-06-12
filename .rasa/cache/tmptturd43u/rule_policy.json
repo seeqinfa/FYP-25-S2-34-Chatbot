@@ -1,0 +1,38 @@
+{
+  "lookup": {
+    "rules": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"order_id\": \"should_not_be_set\"}, \"user\": {\"intent\": \"ask_delivery\"}}]": "utter_ask_order_id",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"order_id\": \"should_not_be_set\"}, \"user\": {\"intent\": \"ask_delivery\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_order_id\"}, \"slots\": {\"order_id\": \"should_not_be_set\"}, \"user\": {\"intent\": \"ask_delivery\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"dimensions\": \"should_not_be_set\"}, \"user\": {\"intent\": \"search_furniture\"}}]": "utter_ask_dimensions",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"dimensions\": \"should_not_be_set\"}, \"user\": {\"intent\": \"search_furniture\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_dimensions\"}, \"slots\": {\"dimensions\": \"should_not_be_set\"}, \"user\": {\"intent\": \"search_furniture\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"order_id\": \"should_not_be_set\"}, \"user\": {\"intent\": \"cancel_order\"}}]": "utter_ask_order_id",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"order_id\": \"should_not_be_set\"}, \"user\": {\"intent\": \"cancel_order\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_order_id\"}, \"slots\": {\"order_id\": \"should_not_be_set\"}, \"user\": {\"intent\": \"cancel_order\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}]": "utter_goodbye",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}, {\"prev_action\": {\"action_name\": \"utter_goodbye\"}, \"user\": {\"intent\": \"goodbye\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"product_name\": \"should_not_be_set\"}, \"user\": {\"intent\": \"get_manual\"}}]": "utter_ask_product_name",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"product_name\": \"should_not_be_set\"}, \"user\": {\"intent\": \"get_manual\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_product_name\"}, \"slots\": {\"product_name\": \"should_not_be_set\"}, \"user\": {\"intent\": \"get_manual\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bot_challenge\"}}]": "utter_iamabot",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bot_challenge\"}}, {\"prev_action\": {\"action_name\": \"utter_iamabot\"}, \"user\": {\"intent\": \"bot_challenge\"}}]": "action_listen"
+    },
+    "rule_only_slots": [],
+    "rule_only_loops": [],
+    "rules_for_loop_unhappy_path": {},
+    "rules_not_in_stories": [
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"order_id\": \"should_not_be_set\"}, \"user\": {\"intent\": \"ask_delivery\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_order_id\"}, \"slots\": {\"order_id\": \"should_not_be_set\"}, \"user\": {\"intent\": \"ask_delivery\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bot_challenge\"}}, {\"prev_action\": {\"action_name\": \"utter_iamabot\"}, \"user\": {\"intent\": \"bot_challenge\"}}]",
+      "predicting default action with intent session_start",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"product_name\": \"should_not_be_set\"}, \"user\": {\"intent\": \"get_manual\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"order_id\": \"should_not_be_set\"}, \"user\": {\"intent\": \"cancel_order\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_order_id\"}, \"slots\": {\"order_id\": \"should_not_be_set\"}, \"user\": {\"intent\": \"cancel_order\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"bot_challenge\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"order_id\": \"should_not_be_set\"}, \"user\": {\"intent\": \"ask_delivery\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"dimensions\": \"should_not_be_set\"}, \"user\": {\"intent\": \"search_furniture\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_dimensions\"}, \"slots\": {\"dimensions\": \"should_not_be_set\"}, \"user\": {\"intent\": \"search_furniture\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}, {\"prev_action\": {\"action_name\": \"utter_goodbye\"}, \"user\": {\"intent\": \"goodbye\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"order_id\": \"should_not_be_set\"}, \"user\": {\"intent\": \"cancel_order\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"product_name\": \"should_not_be_set\"}, \"user\": {\"intent\": \"get_manual\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_product_name\"}, \"slots\": {\"product_name\": \"should_not_be_set\"}, \"user\": {\"intent\": \"get_manual\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"dimensions\": \"should_not_be_set\"}, \"user\": {\"intent\": \"search_furniture\"}}]",
+      "predicting default action with intent back",
+      "predicting default action with intent restart"
+    ]
+  }
+}

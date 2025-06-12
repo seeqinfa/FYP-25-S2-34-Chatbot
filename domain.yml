@@ -2,32 +2,101 @@ version: "3.1"
 
 intents:
   - greet
+  - ask_delivery
+  - cancel_order
+  - search_furniture
+  - escalate_issue
+  - provide_feedback
+  - get_manual
   - goodbye
+  - bot_challenge
   - affirm
   - deny
-  - mood_great
   - mood_unhappy
-  - bot_challenge
+  - mood_great
+
+entities:
+  - order_id
+  - dimensions
+  - product_name
+
+slots:
+  order_id:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: order_id
+
+  dimensions:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: dimensions
+
+  product_name:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: product_name
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
+    - text: "Hello! How can I assist you with your furniture needs today?"
 
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+  utter_ask_order_id:
+    - text: "Please provide your order ID."
 
-  utter_did_that_help:
-  - text: "Did that help you?"
+  utter_order_cancelled:
+    - text: "Your order has been cancelled successfully."
 
-  utter_happy:
-  - text: "Great, carry on!"
+  utter_no_order_found:
+    - text: "Sorry, I couldn't find that order. Please check the ID and try again."
+
+  utter_ask_dimensions:
+    - text: "Please provide the dimensions (L x W x H) for your space."
+
+  utter_show_furniture:
+    - text: "Here are some products that might fit your space."
+
+  utter_escalate:
+    - text: "Connecting you to a human agent now..."
+
+  utter_feedback_ack:
+    - text: "Thanks for your feedback!"
+
+  utter_ask_product_name:
+    - text: "Which furniture item are you looking for a manual for?"
+
+  utter_manual_link:
+    - text: "Here's the instruction manual: {manual_link}"
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "Goodbye! Let me know if you need anything else."
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+    - text: "I am your virtual assistant powered by AI."
+
+  utter_happy:
+    - text: "I'm glad to hear that!"
+
+  utter_cheer_up:
+    - text: "Here's something to cheer you up: https://giphy.com/gifs/funny-dog-3oEduQAsYcJKQH2XsI"
+
+  utter_did_that_help:
+    - text: "Did that help solve your issue?"
+
+  utter_order_status:
+    - text: "Your order status is: {status}"
+
+actions:
+  - action_lookup_order_status
+  - action_cancel_order
+  - action_recommend_furniture
+  - action_fetch_manual_link
+  - action_store_feedback
 
 session_config:
   session_expiration_time: 60

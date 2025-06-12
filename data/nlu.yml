@@ -1,0 +1,103 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hi
+    - hello
+    - hey there
+    - good morning
+    - good evening
+    - what's up
+
+- intent: ask_delivery
+  examples: |
+    - where is my order?
+    - can you track my order?
+    - when will my sofa arrive?
+    - track order [1234](order_id)
+    - is my furniture delivered yet?
+
+- intent: cancel_order
+  examples: |
+    - I want to cancel my order
+    - can you cancel my order?
+    - cancel my order please
+    - I don't need the order anymore
+    - remove my order
+
+- intent: search_furniture
+  examples: |
+    - I need a sofa for a small room
+    - show me furniture that fits [200x100x100](dimensions)
+    - I’m looking for a table that fits in my space
+    - recommend a bed for a room 3m x 2m
+    - find compatible furniture for [200x100x90](dimensions)
+
+- intent: get_manual
+  examples: |
+    - I need the manual for [Sofa Deluxe](product_name)
+    - where can I find the instruction manual?
+    - show me the user guide for my chair
+    - give me the manual for this table
+
+- intent: provide_feedback
+  examples: |
+    - I want to give feedback
+    - here's my feedback
+    - you were very helpful
+    - the bot didn’t help
+    - I had a great experience
+
+- intent: escalate_issue
+  examples: |
+    - I want to talk to a human
+    - connect me to an agent
+    - escalate this issue
+    - I need to speak to someone
+    - this is too complex
+
+- intent: goodbye
+  examples: |
+    - bye
+    - goodbye
+    - see you later
+    - thanks, bye
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - who made you?
+    - are you human?
+    - what are you?
+
+- intent: affirm
+  examples: |
+    - yes
+    - yep
+    - sure
+    - absolutely
+    - of course
+
+- intent: deny
+  examples: |
+    - no
+    - nope
+    - not really
+    - I don't think so
+
+- intent: mood_unhappy
+  examples: |
+    - I'm not happy
+    - this is frustrating
+    - I'm upset
+    - this sucks
+    - bad experience
+
+- intent: mood_great
+  examples: |
+    - I'm happy
+    - great!
+    - feeling good
+    - everything's perfect
+    - awesome bot
