@@ -84,7 +84,7 @@ class AdminController {
         if (!$stmt) {
             throw new Exception(mysqli_error($conn));
         }
-    
+        $price = round((float)$price, 2);
         mysqli_stmt_bind_param($stmt, "ssdiss", 
             $name, $category, $price, $quantity, $description, $imagePath);
     

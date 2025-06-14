@@ -1,6 +1,6 @@
 <?php
-require_once '../../adminheader.php';
-#require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminController.php';
+require_once '../../header.php';
+require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminController.php';
 
 $controller = new AdminController();
 ?> 
@@ -267,8 +267,8 @@ $controller = new AdminController();
                 <div class="card-title">Product Management</div>
                 <div class="card-text">Add, edit, or remove products from your inventory</div>
                 <div class="btn-container">
-                    <a href="addProduct.php" class="btn btn-primary">Add Product</a>
-                    <a href="editProducts.php" class="btn btn-secondary">View All</a>
+                    <a href="AdminAddProduct.php" class="btn btn-primary">Add Product</a>
+                    <a href="AdminManageProduct.php" class="btn btn-secondary">View All</a>
                 </div>
             </div>
         </div>
@@ -290,71 +290,9 @@ $controller = new AdminController();
         </div>
     </div>
 
-    <!-- Product Management Section -->
-    <h2 class="section-title">Add New Product</h2>
-    <form action="addProduct.php" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <input type="text" name="productName" placeholder="Product Name" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <input type="number" name="price" placeholder="Price" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <input type="file" name="image" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <textarea name="description" placeholder="Description" class="form-control" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Product</button>
-    </form>
-
-    <!-- User Management Section -->
-    <h2 class="section-title">User Management</h2>
-    <div class="search-container">
-        <input type="text" placeholder="Search users...">
-        <button type="submit"><i class="fas fa-search"></i> Search</button>
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th>User ID</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $dummyUsers = [
-                ['id' => 1, 'email' => 'admin@luxfurn.com', 'status' => 'Admin'],
-                ['id' => 2, 'email' => 'john@example.com', 'status' => 'Active'],
-                ['id' => 3, 'email' => 'jane@example.com', 'status' => 'Banned']
-            ];
-
-            foreach ($dummyUsers as $user) {
-                echo "<tr>";
-                echo "<td>{$user['id']}</td>";
-                echo "<td>{$user['email']}</td>";
-                echo "<td>{$user['status']}</td>";
-                echo "<td>";
-                if ($user['status'] === 'Banned') {
-                    echo "<button class='action-btn btn-edit'>Unban</button>";
-                } else if ($user['status'] === 'Active' && $user['id'] != 1) {
-                    echo "<button class='action-btn btn-delete'>Ban</button>";
-                }
-                echo "<button class='action-btn btn-edit'>Edit</button>";
-                echo "</td>";
-                echo "</tr>";
-            }
-            ?>
+  
         </tbody>
     </table>
-    <div class="pagination">
-        <a href="#">&laquo;</a>
-        <a href="#" class="active">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">&raquo;</a>
     </div>
 </div>
 </body>

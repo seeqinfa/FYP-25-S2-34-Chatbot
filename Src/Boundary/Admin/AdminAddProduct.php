@@ -1,9 +1,13 @@
 <?php
-include '../../header.php';
 require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminController.php';
 
 $controller = new AdminController();
 $error = '';
+$successMsg = '';
+if (isset($_GET['success']) && $_GET['success'] == '1') {
+    $successMsg = 'Product added successfully!';
+}
+
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -16,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Handle image upload
     $imagePath = 'null';
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = dirname(__DIR__, 2) . '../../';
+        $uploadDir = dirname(__DIR__, 2) . '/img/';
         
         // Create directory if it doesn't exist
         if (!is_dir($uploadDir)) {
@@ -61,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $success = $controller->addProduct($name, $category, $price, $quantity, $description, $imagePath);
             
             if ($success) {
-                header("Location: AdminManageProduct.php?success=1");
+                header("Location: AdminAddProduct.php?success=1");
                 exit();
             } else {
                 $error = "Failed to add product. Please try again.";
@@ -73,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+include '../../header.php';
 ?>
 
 <!DOCTYPE html>
@@ -169,6 +174,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="form-container">
         <h2 class="form-title">Add New Product</h2>
         
+        <?php if (!empty($successMsg)): ?>
+            <div class="success-message"><?php echo htmlspecialchars($successMsg); ?></div>
+        <?php endif; ?>
+
         <?php if (!empty($error)): ?>
             <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>

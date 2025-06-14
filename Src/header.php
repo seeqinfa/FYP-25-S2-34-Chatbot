@@ -72,7 +72,7 @@ require_once dirname(__DIR__) . '/src/config.php';
         <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewFurnitureUI.php">View Furniture</a>
         <?php if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']): ?>
             <?php if ($_SESSION['role'] === 'admin'): ?>
-                <a href="adminDashboard.php">Admin Dashboard</a>
+                <a href="../admin/adminDashboardUI.php">Admin Dashboard</a>
             <?php endif; ?>
             <span style="color:white; margin-left:20px;">Welcome, <?= htmlspecialchars($_SESSION['username']) ?></span>
             <a href="<?php echo CONTROLLERS_URL; ?>/logoutController.php">Logout</a>

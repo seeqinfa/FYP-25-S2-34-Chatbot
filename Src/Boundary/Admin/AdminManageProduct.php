@@ -55,13 +55,14 @@ $furnitureList = $controller->getFurniturePaginated($offset, $itemsPerPage, $sea
                         <td style="padding: 12px 15px; text-align: center;">
                             <div style="display: flex; align-items: center; justify-content: center; padding: 8px 0px; gap: 20px;">
                                 <a href="viewFurnitureDetailsUI.php?id=<?php echo urlencode($item->furnitureID); ?>" 
-                                        class="btn"
-                                        style="background-color:rgb(100, 91, 235)">Edit</a>
+                                class="btn" 
+                                style="background-color: purple;">Edit</a>
                                 <button onclick="confirmRemove('<?php echo $item->furnitureID; ?>', '<?php echo htmlspecialchars(addslashes($item->name)); ?>')" 
                                         class="btn" 
-                                        style="background-color: #ff5c5c;">Remove</button>
+                                        style="background-color: red;">Remove</button>
                             </div>
                         </td>
+
                     </tr>
                 <?php endforeach; ?>
             </tbody>

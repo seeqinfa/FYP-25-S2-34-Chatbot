@@ -212,6 +212,10 @@ header {
     font-size:1em;
     color:white;
     font-weight: 500;
+    text-decoration: none;
+    display: flex;               
+    justify-content: center;    
+    align-items: center;        
 }
 
 .login-register{
@@ -337,4 +341,13 @@ header {
     justify-content: center;
     gap: 12px;
     margin-top: 12px;
+}
+
+.success-message {
+    color: #2ecc71;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #eafaf1;
+    border-radius: 6px;
+    border-left: 4px solid #2ecc71;
 }
