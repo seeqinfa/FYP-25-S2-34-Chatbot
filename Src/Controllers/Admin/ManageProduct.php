@@ -84,7 +84,7 @@ class AdminController {
         if (!$stmt) {
             throw new Exception(mysqli_error($conn));
         }
-    
+        $price = round((float)$price, 2);
         mysqli_stmt_bind_param($stmt, "ssdiss", 
             $name, $category, $price, $quantity, $description, $imagePath);
     
@@ -98,15 +98,15 @@ class AdminController {
 
         $sql = "INSERT INTO furnitures 
             (name, category, price, stock_quantity, description) 
-            VALUES (?, ?, ?, ?, ?, ?)";
+            VALUES (?, ?, ?, ?, ?)";
     
         $stmt = mysqli_prepare($conn, $sql);
         if (!$stmt) {
             throw new Exception(mysqli_error($conn));
         }
-    
-        mysqli_stmt_bind_param($stmt, "ssdiss", 
-            $name, $category, $price, $quantity, $description, $imagePath);
+        $price = round((float)$price, 2);
+        mysqli_stmt_bind_param($stmt, "ssdis", 
+            $name, $category, $price, $quantity, $description);
     
         $success = mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
