@@ -5,7 +5,7 @@ $controller = new AdminController();
 $error = '';
 $successMsg = '';
 if (isset($_GET['success']) && $_GET['success'] == '1') {
-    $successMsg = 'Product added successfully!';
+    $successMsg = 'Product edited successfully!';
 }
 
 
@@ -16,42 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $quantity = intval($_POST['quantity'] ?? 0);
     $description = trim($_POST['description'] ?? '');
     $category = trim($_POST['category'] ?? '');
-    
-    // Handle image upload
-    $imagePath = 'null';
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = dirname(__DIR__, 2) . '../../img/';
-        
-        // Create directory if it doesn't exist
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-        
-        $fileName = uniqid() . '_' . basename($_FILES['image']['name']);
-        $uploadFile = $uploadDir . $fileName;
-        
-        // Validate image
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        $fileType = $_FILES['image']['type'];
-        $maxFileSize = 2 * 1024 * 1024; // 2MB
-        
-        if (in_array($fileType, $allowedTypes)) {
-            if ($_FILES['image']['size'] <= $maxFileSize) {
-                if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
-                    $imagePath = '../../img/' . $fileName;
-                } else {
-                    $error = "Failed to upload image.";
-                }
-            } else {
-                $error = "Image must be less than 2MB.";
-            }
-        } else {
-            $error = "Only JPG, PNG, and GIF files are allowed.";
-        }
-    } else {
-        $error = "Product image is required.";
-    }
-    
     // Validate inputs
     if (empty($error)) {
         if (empty($name) || $price <= 0 || $quantity < 0 || empty($category)) {
@@ -59,16 +23,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
-    // Add product if no errors
+    // edit product if no errors
     if (empty($error)) {
         try {
-            $success = $controller->addProduct($name, $category, $price, $quantity, $description, $imagePath);
+            $success = $controller->editProduct($name, $category, $price, $quantity, $description);
             
             if ($success) {
-                header("Location: AdminAddProduct.php?success=1");
+                header("Location: AdminEditProduct.php?success=1");
                 exit();
             } else {
-                $error = "Failed to add product. Please try again.";
+                $error = "Failed to edit product. Please try again.";
             }
         } catch (mysqli_sql_exception $e) {
             $error = "Database error: " . $e->getMessage();
@@ -172,7 +136,7 @@ include '../../header.php';
 </head>
 <body>
     <div class="form-container">
-        <h2 class="form-title">Add New Product</h2>
+        <h2 class="form-title">Edit Product</h2>
         
         <?php if (!empty($successMsg)): ?>
             <div class="success-message"><?php echo htmlspecialchars($successMsg); ?></div>
@@ -181,14 +145,9 @@ include '../../header.php';
         <?php if (!empty($error)): ?>
             <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
-        
-        <form method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="image">Product Image: *</label>
-                <input type="file" id="image" name="image" accept="image/*" required>
-                <small>Accepted formats: JPG, PNG, JPEG (Max 2MB)</small>
-            </div>
-            
+                 
+        <form method="POST" action="AdminEditProduct.php" enctype="multipart/form-data">
+            <input type="hidden" name="furnitureID" value="<?php echo htmlspecialchars($_GET['id'] ?? ''); ?>"> 
             <div class="form-group">
                 <label for="name">Product Name: *</label>
                 <input type="text" id="name" name="name" required>
@@ -222,7 +181,7 @@ include '../../header.php';
                 </select>
             </div>
             
-            <button type="submit" class="btn-submit">Add Product</button>
+            <button type="submit" class="btn-submit">Update Product</button>
             <a href="AdminManageProduct.php" class="btn-cancel">Cancel</a>
         </form>
     </div>

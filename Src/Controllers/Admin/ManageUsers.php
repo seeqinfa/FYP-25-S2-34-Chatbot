@@ -28,7 +28,7 @@ class AdminController {
     public function getAllUsers() {
         global $conn;
     
-        $sql = "SELECT id, username, email, is_suspended FROM users";
+        $sql = "SELECT id, username, email, status FROM users";
         $result = mysqli_query($conn, $sql);
     
         $users = [];
@@ -42,7 +42,7 @@ class AdminController {
     public function suspendUser($userId) {
         global $conn;
     
-        $sql = "UPDATE users SET is_suspended = 1 WHERE id = ?";
+        $sql = "UPDATE users SET status = 1 WHERE id = ?";
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "i", $userId);
         return mysqli_stmt_execute($stmt);
@@ -51,7 +51,7 @@ class AdminController {
     public function unsuspendUser($userId) {
         global $conn;
     
-        $sql = "UPDATE users SET is_suspended = 0 WHERE id = ?";
+        $sql = "UPDATE users SET status = 0 WHERE id = ?";
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "i", $userId);
         return mysqli_stmt_execute($stmt);

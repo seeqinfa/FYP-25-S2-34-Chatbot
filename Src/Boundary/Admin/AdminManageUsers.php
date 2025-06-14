@@ -1,6 +1,6 @@
 <?php
-include '../../adminheader.php';
-require_once dirname(__DIR__, 2) . '/Controllers/ManageUsers.php';
+include '../../header.php';
+require_once dirname(__DIR__, 2) . '/Controllers/Admin/ManageUsers.php';
 
 $controller = new AdminController();
 $error = '';
@@ -124,13 +124,13 @@ $users = $controller->getAllUsers();
                         <td><?php echo htmlspecialchars($user['id']); ?></td>
                         <td><?php echo htmlspecialchars($user['username']); ?></td>
                         <td><?php echo htmlspecialchars($user['email']); ?></td>
-                        <td class="<?php echo $user['is_suspended'] ? 'status-suspended' : 'status-active'; ?>">
-                            <?php echo $user['is_suspended'] ? 'Suspended' : 'Active'; ?>
+                        <td class="<?php echo $user['status'] ? 'status-active' : 'status-suspended'; ?>">
+                            <?php echo $user['status'] ? 'Active' : 'Suspended'; ?>
                         </td>
                         <td>
                             <form method="POST" style="display: inline;">
                                 <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                                <?php if ($user['is_suspended']): ?>
+                                <?php if ($user['status']): ?>
                                     <button type="submit" name="action" value="unsuspend" class="btn btn-unsuspend">Unsuspend</button>
                                 <?php else: ?>
                                     <button type="submit" name="action" value="suspend" class="btn btn-suspend">Suspend</button>

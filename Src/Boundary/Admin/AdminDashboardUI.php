@@ -283,8 +283,7 @@ $controller = new AdminController();
                 <div class="card-title">User Management</div>
                 <div class="card-text">View and manage all user accounts</div>
                 <div class="btn-container">
-                    <a href="viewUsers.php" class="btn btn-primary">View Users</a>
-                    <a href="banUsers.php" class="btn btn-secondary">Manage Bans</a>
+                    <a href="AdminManageUsers.php" class="btn btn-primary">View Users</a>
                 </div>
             </div>
         </div>
