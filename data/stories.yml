@@ -1,62 +1,40 @@
 version: "3.1"
-
 stories:
-
-- story: happy path
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_great
-  - action: utter_happy
-
-- story: sad path 1
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
-
-- story: sad path 2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: deny
-  - action: utter_goodbye
-
-- story: provide product name for manual
-  steps:
-  - intent: get_manual
-  - slot_was_set:
-    - product_name: "sofa"
-  - action: action_fetch_manual_link
-  - action: utter_manual_link
-
-- story: provide order id for cancel order
-  steps:
-  - intent: cancel_order
-  - slot_was_set:
-    - order_id: "1234"
-  - action: action_cancel_order
-  - action: utter_order_cancelled
-
-- story: provide order id for delivery status
+- story: check order delivery
   steps:
   - intent: ask_delivery
-  - slot_was_set:
-    - order_id: "1234"
-  - action: action_lookup_order_status
-  - action: utter_order_status
+  - action: utter_ask_order_id
+  - intent: provide_order_id
+  - action: action_check_order
 
-- story: provide dimensions for furniture search
+- story: cancel order
+  steps:
+  - intent: cancel_order
+  - action: utter_ask_order_id
+  - intent: provide_order_id
+  - action: action_cancel_order
+
+- story: find furniture
   steps:
   - intent: search_furniture
-  - slot_was_set:
-    - dimensions: "2x2x2"
-  - action: action_recommend_furniture
-  - action: utter_show_furniture
+  - action: utter_ask_dimensions
+  - intent: provide_dimensions
+  - action: action_find_furniture
+
+- story: get instruction manual
+  steps:
+  - intent: instruction_manual
+  - action: action_get_manual
+
+- story: escalate to human
+  steps:
+  - intent: escalate
+  - action: utter_escalate
+
+- story: give feedback
+  steps:
+  - intent: feedback
+  - action: utter_feedback_request
+  - intent: feedback
+  - action: action_store_feedback
+  - action: utter_thanks_feedback

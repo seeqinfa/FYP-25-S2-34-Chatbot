@@ -1,103 +1,83 @@
 version: "3.1"
-
 nlu:
 - intent: greet
   examples: |
     - hi
     - hello
-    - hey there
+    - hey
     - good morning
     - good evening
-    - what's up
-
-- intent: ask_delivery
-  examples: |
-    - where is my order?
-    - can you track my order?
-    - when will my sofa arrive?
-    - track order [1234](order_id)
-    - is my furniture delivered yet?
-
-- intent: cancel_order
-  examples: |
-    - I want to cancel my order
-    - can you cancel my order?
-    - cancel my order please
-    - I don't need the order anymore
-    - remove my order
-
-- intent: search_furniture
-  examples: |
-    - I need a sofa for a small room
-    - show me furniture that fits [200x100x100](dimensions)
-    - I’m looking for a table that fits in my space
-    - recommend a bed for a room 3m x 2m
-    - find compatible furniture for [200x100x90](dimensions)
-
-- intent: get_manual
-  examples: |
-    - I need the manual for [Sofa Deluxe](product_name)
-    - where can I find the instruction manual?
-    - show me the user guide for my chair
-    - give me the manual for this table
-
-- intent: provide_feedback
-  examples: |
-    - I want to give feedback
-    - here's my feedback
-    - you were very helpful
-    - the bot didn’t help
-    - I had a great experience
-
-- intent: escalate_issue
-  examples: |
-    - I want to talk to a human
-    - connect me to an agent
-    - escalate this issue
-    - I need to speak to someone
-    - this is too complex
 
 - intent: goodbye
   examples: |
     - bye
     - goodbye
-    - see you later
-    - thanks, bye
+    - see you
+    - talk later
 
-- intent: bot_challenge
+- intent: ask_delivery
   examples: |
-    - are you a bot?
-    - who made you?
-    - are you human?
-    - what are you?
+    - when will my order arrive?
+    - track my delivery
+    - order delivery status
+    - is my order on the way?
+
+- intent: cancel_order
+  examples: |
+    - cancel my order
+    - I want to cancel an order
+    - remove my order
+
+- intent: search_furniture
+  examples: |
+    - I need a sofa for 3 meters wide space
+    - show me furniture that fits 200x100x75
+    - recommend furniture for small room
+
+- intent: instruction_manual
+  examples: |
+    - I need the manual for dining table
+    - show me the instruction guide for sofa bed
+    - where is the product manual for [Alton chair](furniture_name)?
+
+- intent: escalate
+  examples: |
+    - talk to a human
+    - I need help from an agent
+    - escalate this issue
+
+- intent: feedback
+  examples: |
+    - I'd like to give feedback
+    - this chatbot was helpful
+    - I want to rate the support
+
+- intent: product_inquiry
+  examples: |
+    - show me sofas
+    - what dining tables do you have?
+    - I'm looking for beds
 
 - intent: affirm
   examples: |
     - yes
-    - yep
+    - okay
     - sure
-    - absolutely
-    - of course
 
 - intent: deny
   examples: |
     - no
-    - nope
     - not really
-    - I don't think so
+    - nope
 
-- intent: mood_unhappy
+- intent: provide_order_id
   examples: |
-    - I'm not happy
-    - this is frustrating
-    - I'm upset
-    - this sucks
-    - bad experience
+    - my order id is 12345
+    - it's 987654
+    - order number 56789
 
-- intent: mood_great
+- intent: provide_dimensions
   examples: |
-    - I'm happy
-    - great!
-    - feeling good
-    - everything's perfect
-    - awesome bot
+    - 200x150x80
+    - the space is 3x2x1 meters
+    - 300cm by 100cm by 90cm

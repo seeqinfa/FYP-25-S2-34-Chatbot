@@ -2,23 +2,23 @@ version: "3.1"
 
 intents:
   - greet
+  - goodbye
   - ask_delivery
   - cancel_order
   - search_furniture
-  - escalate_issue
-  - provide_feedback
-  - get_manual
-  - goodbye
-  - bot_challenge
+  - instruction_manual
+  - escalate
+  - feedback
+  - product_inquiry
   - affirm
   - deny
-  - mood_unhappy
-  - mood_great
+  - provide_order_id
+  - provide_dimensions
 
 entities:
   - order_id
+  - furniture_name
   - dimensions
-  - product_name
 
 slots:
   order_id:
@@ -28,6 +28,13 @@ slots:
       - type: from_entity
         entity: order_id
 
+  furniture_name:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: furniture_name
+
   dimensions:
     type: text
     influence_conversation: true
@@ -35,67 +42,39 @@ slots:
       - type: from_entity
         entity: dimensions
 
-  product_name:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: from_entity
-        entity: product_name
-
 responses:
   utter_greet:
-    - text: "Hello! How can I assist you with your furniture needs today?"
-
-  utter_ask_order_id:
-    - text: "Please provide your order ID."
-
-  utter_order_cancelled:
-    - text: "Your order has been cancelled successfully."
-
-  utter_no_order_found:
-    - text: "Sorry, I couldn't find that order. Please check the ID and try again."
-
-  utter_ask_dimensions:
-    - text: "Please provide the dimensions (L x W x H) for your space."
-
-  utter_show_furniture:
-    - text: "Here are some products that might fit your space."
-
-  utter_escalate:
-    - text: "Connecting you to a human agent now..."
-
-  utter_feedback_ack:
-    - text: "Thanks for your feedback!"
-
-  utter_ask_product_name:
-    - text: "Which furniture item are you looking for a manual for?"
-
-  utter_manual_link:
-    - text: "Here's the instruction manual: {manual_link}"
-
+    - text: "Hi there! How can I assist you today?"
   utter_goodbye:
     - text: "Goodbye! Let me know if you need anything else."
-
-  utter_iamabot:
-    - text: "I am your virtual assistant powered by AI."
-
-  utter_happy:
-    - text: "I'm glad to hear that!"
-
-  utter_cheer_up:
-    - text: "Here's something to cheer you up: https://giphy.com/gifs/funny-dog-3oEduQAsYcJKQH2XsI"
-
-  utter_did_that_help:
-    - text: "Did that help solve your issue?"
-
+  utter_ask_order_id:
+    - text: "Please provide your order ID."
+  utter_ask_dimensions:
+    - text: "What are the dimensions of your space? (e.g., 200x100x80 cm)"
   utter_order_status:
-    - text: "Your order status is: {status}"
+    - text: "Your order {order_id} is currently being processed and will be delivered soon."
+  utter_order_canceled:
+    - text: "Your order {order_id} has been canceled successfully."
+  utter_no_order_found:
+    - text: "Sorry, I couldn’t find an order with that ID."
+  utter_show_furniture:
+    - text: "Here are some products that match your space: [product_list]."
+  utter_escalate:
+    - text: "Connecting you to a human agent now..."
+  utter_instruction_manual:
+    - text: "Here is the instruction manual for {furniture_name}: [link]"
+  utter_feedback_request:
+    - text: "Please provide your feedback about this chat."
+  utter_thanks_feedback:
+    - text: "Thank you for your feedback!"
+  utter_product_listing:
+    - text: "Here are our latest furniture items: [listing_link]"
 
 actions:
-  - action_lookup_order_status
+  - action_check_order
   - action_cancel_order
-  - action_recommend_furniture
-  - action_fetch_manual_link
+  - action_find_furniture
+  - action_get_manual
   - action_store_feedback
 
 session_config:
