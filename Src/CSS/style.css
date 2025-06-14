@@ -7,9 +7,10 @@ html,
 }
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
+    align-items: center;
+    min-height: -50px;
     background: url(../img/H.jpg) no-repeat center center;
     background-size: cover;
     background-attachment: fixed; 
@@ -81,69 +82,52 @@ header {
     color: black;
 }
 
-.wrapper{
-    position:relative;
-    width:400px;
-    height:440px;
-    background:transparent;
-    border: 2px solid rgba(255,255,255,0.5);;
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 0 30px rgba(0,0,0,.5);
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    transform:scale(0);
-    transition:transform .5s ease, height .2s ease;
-}
-
-.wrapper.active-popup{
-    transform:scale(1);
-}
-
-.wrapper .form-box{
-    width:100%;
-    padding:40px;
-}
-
-.wrapper .form-box.login{
-    transition: transform .18s ease;
-    transform: translateX(0);
-}
-
-.wrapper.active .form-box.login{
-    transition:none;
-    transform:translateX(0);
-}
-
-.wrapper .form-box.register{
-    position: absolute;
-    transition: none;
-    transform: translateX(400px);
-}
-
-.wrapper.active .form-box.register{
-    transition: transform .18s ease;
-    transform:translateX(0px);
-}
-
-.wrapper .icon-close{
-    position:absolute;
+.wrapper {
+    position: fixed;
     top: 0;
-    right: 0;
-    width: 45px;
-    height: 45px;
-    background: black;
-    font-size: 2em; 
-    color: white;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom-left-radius: 20px;
-    cursor: pointer;
-    z-index: 1;
+    z-index: 9999;
+    transform: scale(0);
+    transition: transform 0.3s ease;
 }
+
+.wrapper.active-popup {
+    transform: scale(1);
+}
+
+.wrapper .form-box {
+    width: 400px;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.icon-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    background: black;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+}
+
 
 .form-box h2{
     font-size: 2em;

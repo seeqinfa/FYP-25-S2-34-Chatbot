@@ -18,7 +18,7 @@ $furnitureList = $controller->getFurniturePaginated($offset, $itemsPerPage, $sea
         <input type="text" name="search" placeholder="Search by name or category"
                value="<?php echo htmlspecialchars($searchTerm); ?>"
                style="padding: 8px; flex: 1; border: 1px solid #ccc; border-radius: 4px;">
-        <button type="submit" style="padding: 8px 16px; background-color: #e67e22; color: white; border: none; border-radius: 4px; cursor: pointer;">Search</button>
+        <button type="submit" style="padding: 16px 20px; background-color: #e67e22; color: white; border: none; border-radius: 4px; cursor: pointer;">Search</button>
     </form>
 
     <div class="furniture-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
