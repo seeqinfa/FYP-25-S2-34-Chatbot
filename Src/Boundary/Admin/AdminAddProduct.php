@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (in_array($fileType, $allowedTypes)) {
             if ($_FILES['image']['size'] <= $maxFileSize) {
                 if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
-                    $imagePath = '../../' . $fileName;
+                    $imagePath = '../../img/' . $fileName;
                 } else {
                     $error = "Failed to upload image.";
                 }
