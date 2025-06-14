@@ -14,6 +14,23 @@ $furnitureList = $controller->getFurniturePaginated($offset, $itemsPerPage, $sea
 ?>
 
 <div class="container" style="margin-top: 140px; max-width: 1200px; width: 100%; padding: 0 20px;">
+	<?php
+    // Display success message
+    if (isset($_SESSION['success_message'])) {
+        echo '<div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #c3e6cb;">';
+        echo htmlspecialchars($_SESSION['success_message']);
+        echo '</div>';
+        unset($_SESSION['success_message']);
+    }
+
+    // Display error message
+    if (isset($_SESSION['error_message'])) {
+        echo '<div class="alert alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #f5c6cb;">';
+        echo htmlspecialchars($_SESSION['error_message']);
+        echo '</div>';
+        unset($_SESSION['error_message']);
+    }
+    ?>
     <form method="GET" style="margin-bottom: 20px; display: flex; gap: 10px;">
         <input type="text" name="search" placeholder="Search by name or category"
                value="<?php echo htmlspecialchars($searchTerm); ?>"
