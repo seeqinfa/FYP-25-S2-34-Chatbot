@@ -70,6 +70,7 @@ require_once dirname(__DIR__) . '/src/config.php';
         <a href="#">Home</a>
         <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/aboutpageUI.php">About</a>
         <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewFurnitureUI.php">View Furniture</a>
+        <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewCart.php">View Cart</a>
         <?php if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']): ?>
             <?php if ($_SESSION['role'] === 'admin'): ?>
                 <a href="../admin/adminDashboardUI.php">Admin Dashboard</a>
