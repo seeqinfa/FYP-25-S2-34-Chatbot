@@ -2,6 +2,7 @@
 
 require_once dirname(__DIR__) . '/config.php';
 require_once dirname(__DIR__) . '/db_config.php';
+require_once dirname(__DIR__) . '/db_connect.php';
 
 class UserAccount {
     private $conn;

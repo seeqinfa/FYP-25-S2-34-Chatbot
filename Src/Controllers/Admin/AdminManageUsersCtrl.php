@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__DIR__, 2) . '/Entities/userAccount.php';
-
 $controller = new AdminManageUsersCtrl();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
@@ -38,7 +37,7 @@ class AdminManageUsersCtrl {
     public function suspendUser($userId) {
         global $conn;
     
-        $sql = "UPDATE users SET status = 1 WHERE id = ?";
+        $sql = "UPDATE users SET status = 0 WHERE id = ?";
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "i", $userId);
         return mysqli_stmt_execute($stmt);
@@ -47,7 +46,7 @@ class AdminManageUsersCtrl {
     public function unsuspendUser($userId) {
         global $conn;
     
-        $sql = "UPDATE users SET status = 0 WHERE id = ?";
+        $sql = "UPDATE users SET status = 1 WHERE id = ?";
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "i", $userId);
         return mysqli_stmt_execute($stmt);
