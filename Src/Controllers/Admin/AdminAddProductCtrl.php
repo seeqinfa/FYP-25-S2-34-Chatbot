@@ -1,49 +1,14 @@
 <?php
-require_once dirname(__DIR__, 2) . '/db_connect.php';
 require_once dirname(__DIR__, 2) . '/Entities/furniture.php';
 
-class AdminController {
-    private $db;
-
-    public function __construct() {
-        global $conn;
-        $this->db = $conn;
-    }
-
+class AdminAddProductCtrl {
     // Product Management Methods
     public function countFurniture($searchTerm = '') {
-        $searchTerm = '%' . $searchTerm . '%';
-        $sql = "SELECT COUNT(*) AS total FROM furnitures WHERE name LIKE ? OR category LIKE ?";
-        $stmt = mysqli_prepare($this->db, $sql);
-        mysqli_stmt_bind_param($stmt, "ss", $searchTerm, $searchTerm);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-        $row = mysqli_fetch_assoc($result);
-        return $row['total'];
+        return Furniture::count($searchTerm);
     }
 
     public function getFurniturePaginated($offset, $limit, $searchTerm = '') {
-        $furnitures = [];
-        $searchTerm = '%' . $searchTerm . '%';
-        $sql = "SELECT * FROM furnitures WHERE name LIKE ? OR category LIKE ? LIMIT ?, ?";
-        $stmt = mysqli_prepare($this->db, $sql);
-        mysqli_stmt_bind_param($stmt, "ssii", $searchTerm, $searchTerm, $offset, $limit);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-
-        while ($row = mysqli_fetch_assoc($result)) {
-            $furnitures[] = new Furniture(
-                $row['furnitureID'],
-                $row['name'],
-                $row['category'],
-                $row['description'],
-                $row['price'],
-                $row['stock_quantity'],
-                $row['image_url']
-            );
-        }
-
-        return $furnitures;
+        return Furniture::getPaginated($offset, $limit, $searchTerm);
     }
 
     public function getFurnitureById($id) {
@@ -95,17 +60,11 @@ class AdminController {
     }
 
     public function removeFurniture($furnitureId) {
-        $sql = "DELETE FROM furnitures WHERE furnitureID = ?";
-        $stmt = mysqli_prepare($this->db, $sql);
-        mysqli_stmt_bind_param($stmt, "i", $furnitureId);
-        $success = mysqli_stmt_execute($stmt);
-        
-        return ['success' => $success];
-    }
-
-    // User Management Methods (existing ones)
-    public function getProducts() {
-        // Implementation if needed
+        $furniture = Furniture::findById($furnitureId);
+        if ($furniture) {
+            return ['success' => $furniture->delete()];
+        }
+        return ['success' => false];
     }
 }
 ?>

@@ -1,7 +1,7 @@
 <?php
-require_once dirname(__DIR__, 2) . '/Controllers/Admin/ManageProduct.php';
+require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminAddProductCtrl.php';
 
-$controller = new AdminController();
+$controller = new AdminAddProductCtrl();
 $error = '';
 $successMsg = '';
 if (isset($_GET['success']) && $_GET['success'] == '1') {

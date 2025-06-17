@@ -1,8 +1,8 @@
 <?php
 include '../../header.php';
-require_once dirname(__DIR__, 2) . '/Controllers/Admin/ManageUsers.php';
+require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminManageUsersCtrl.php';
 
-$controller = new AdminController();
+$controller = new AdminManageUsersCtrl();
 $error = '';
 $success = '';
 
@@ -131,9 +131,9 @@ $users = $controller->getAllUsers();
                             <form method="POST" style="display: inline;">
                                 <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
                                 <?php if ($user['status']): ?>
-                                    <button type="submit" name="action" value="unsuspend" class="btn btn-unsuspend">Unsuspend</button>
-                                <?php else: ?>
                                     <button type="submit" name="action" value="suspend" class="btn btn-suspend">Suspend</button>
+                                <?php else: ?>
+                                    <button type="submit" name="action" value="unsuspend" class="btn btn-unsuspend">Unsuspend</button>
                                 <?php endif; ?>
                             </form>
                         </td>

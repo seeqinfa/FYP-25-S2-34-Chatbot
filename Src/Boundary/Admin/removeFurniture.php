@@ -1,9 +1,8 @@
 <?php
-require_once dirname(__DIR__, 2) . '/db_connect.php';
-require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminController.php';
+require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminAddProductCtrl.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
-    $controller = new AdminController();
+    $controller = new AdminAddProductCtrl();
     $result = $controller->removeFurniture($_GET['id']);
     
     header('Content-Type: application/json');

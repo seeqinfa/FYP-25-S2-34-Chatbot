@@ -1,10 +1,8 @@
 <?php
-require_once dirname(__DIR__, 2) . '/db_connect.php';
 require_once dirname(__DIR__, 2) . '/Entities/userAccount.php';
 
-$controller = new AdminController(); 
+$controller = new AdminManageUsersCtrl();
 
-// Handle suspend/unsuspend actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $userId = intval($_POST['user_id']);
     
@@ -22,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 }
 
 
-class AdminController {
+class AdminManageUsersCtrl {
     public function getAllUsers() {
         global $conn;
     
@@ -55,3 +53,4 @@ class AdminController {
         return mysqli_stmt_execute($stmt);
     }
 }
+?>
