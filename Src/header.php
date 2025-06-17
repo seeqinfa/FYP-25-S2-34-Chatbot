@@ -60,6 +60,62 @@ require_once dirname(__DIR__) . '/src/config.php';
             cursor: pointer;
             z-index: 2;
         }
+        /* Dropdown container in navigation */
+        .nav-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Top link styled like nav links */
+        .nav-link {
+            color: white;
+            padding: 10px 16px;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        /* Dropdown content box */
+        .nav-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            right: 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        /* Dropdown links */
+        .nav-dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            display: block;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+
+        /* Hover effect on dropdown links */
+        .nav-dropdown-content a:hover {
+            background-color: #e67e22;
+            color: white;
+        }
+
+        /* Show dropdown on hover */
+        .nav-dropdown:hover .nav-dropdown-content {
+            display: block;
+        }
+        .nav-dropdown-content a::before {
+            content: none !important;
+            display: none;
+        }
+        .nav-dropdown-content a {
+            margin-left: 0 !important;
+        }
+
     </style>
 </head>
 <body>
@@ -70,7 +126,13 @@ require_once dirname(__DIR__) . '/src/config.php';
         <a href="#">Home</a>
         <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/aboutpageUI.php">About</a>
         <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewFurnitureUI.php">View Furniture</a>
-        <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewCart.php">View Cart</a>
+        <div class="nav-dropdown">
+            <a href="#" class="nav-link">My Orders ▾</a>
+            <div class="nav-dropdown-content">
+                <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewCart.php">View Cart</a>
+                <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewOrderUI.php">View Order</a>
+            </div>
+        </div>
         <?php if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']): ?>
             <?php if ($_SESSION['role'] === 'admin'): ?>
                 <a href="../admin/adminDashboardUI.php">Admin Dashboard</a>
