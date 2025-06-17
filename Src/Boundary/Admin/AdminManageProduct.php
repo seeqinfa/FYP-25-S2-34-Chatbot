@@ -45,8 +45,8 @@ $furnitureList = $controller->getFurniturePaginated($offset, $itemsPerPage, $sea
                         <td style="padding: 12px 15px; text-align: center;">
                             <?php 
                             // Display quantity or 'Out of Stock' if 0, 'N/A' if null
-                            if (isset($item->quantity)) {
-                                echo htmlspecialchars($item->quantity > 0 ? $item->quantity : 'Out of Stock');
+                            if (isset($item->stock_quantity)) {
+                                echo htmlspecialchars($item->stock_quantity > 0 ? $item->stock_quantity : 'Out of Stock');
                         } else {
                             echo 'N/A';
                 }

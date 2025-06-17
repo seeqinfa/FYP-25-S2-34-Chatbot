@@ -14,15 +14,17 @@ class Furniture
     public function __construct(array $data = [])
     {
         foreach ($data as $key => $value) {
-            $property = str_contains($key, '_')
-                      ? $key
-                      : strtolower(preg_replace('/([A-Z])/', '_$1', $key));
-            if (property_exists($this, $property)) {
-                $this->$property = $value;
-            }
+        if (property_exists($this, $key)) {
+            $this->$key = $value;
+            continue;
+        }
+
+        $camel = lcfirst(str_replace('_', '', ucwords($key, '_')));
+        if (property_exists($this, $camel)) {
+            $this->$camel = $value;
         }
     }
-
+    }
 
     public static function count(string $searchTerm = ''): int
     {

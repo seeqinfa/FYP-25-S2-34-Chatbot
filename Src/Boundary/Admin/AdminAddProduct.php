@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Handle image upload
     $imagePath = 'null';
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = dirname(__DIR__, 2) . '../../img/';
+        $uploadDir = dirname(__DIR__, 2) . '/img/';
         
         // Create directory if it doesn't exist
         if (!is_dir($uploadDir)) {

@@ -8,7 +8,7 @@ class AdminAddProductCtrl {
     }
 
     public function getFurniturePaginated($offset, $limit, $searchTerm = '') {
-        return Furniture::getPaginated($offset, $limit, $searchTerm);
+        return Furniture::findPaginated($offset, $limit, $searchTerm);
     }
 
     public function getFurnitureById($id) {
