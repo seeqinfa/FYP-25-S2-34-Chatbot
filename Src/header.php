@@ -22,7 +22,7 @@ require_once dirname(__DIR__) . '/src/config.php';
             width: 100vw;
             height: 100vh;
             background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(100px);
             display: flex;
             justify-content: center;
             align-items: center;

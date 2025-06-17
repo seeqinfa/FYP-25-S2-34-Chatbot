@@ -17,4 +17,16 @@ class Order {
         $result = $stmt->get_result();
         return $result->fetch_assoc();
     }
+    public function updateStatus($orderId, $newStatus)
+    {
+        $stmt = $this->conn->prepare("UPDATE orders SET order_status = ?, updated_at = NOW() WHERE order_id = ?");
+        $stmt->bind_param("si", $newStatus, $orderId);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            error_log("Order::updateStatus failed - " . $stmt->error);
+            return false;
+        }
+    }
 }
