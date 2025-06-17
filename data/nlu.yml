@@ -72,9 +72,9 @@ nlu:
 
 - intent: provide_order_id
   examples: |
-    - my order id is 12345
-    - it's 987654
-    - order number 56789
+    - my order id is [12345](order_id)
+    - order number [987654](order_id)
+    - it's [56789](order_id)
 
 - intent: provide_dimensions
   examples: |
