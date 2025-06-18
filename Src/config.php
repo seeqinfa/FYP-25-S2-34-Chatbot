@@ -31,4 +31,14 @@ function requireOnce($path) {
 // Error reporting (set to 0 in production)
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
+$dsn = 'mysql:host=localhost;dbname=luxfurn;charset=utf8mb4';
+$user = 'root';            // ← adjust
+$pass = '';                // ← adjust
+
+$pdo = new PDO($dsn, $user, $pass, [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+]);
+
 ?>
