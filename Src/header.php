@@ -115,13 +115,35 @@ require_once dirname(__DIR__) . '/src/config.php';
         .nav-dropdown-content a {
             margin-left: 0 !important;
         }
+			.logo-container {
+			display: flex;
+			align-items: center;
+			gap: 10px;          
+		}
 
+		/* Control logo size */
+		.logo-img {
+			height: 40px;       
+			width: auto;
+		}
+
+		/* Brand name styling */
+		.logo-text {
+			margin: 0;
+			font-size: 24px;
+			font-weight: bold;
+		}
     </style>
 </head>
 <body>
 
 <header>
-    <h2 class="logo">LuxFurn</h2>
+    <div class="logo-container">
+    <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/index.php" class="logo-link">
+        <img src="/FYP-25-S2-34-Chatbot/Src/img/logo.png" alt="LuxFurn" class="logo-img">
+        <h2 class="logo-text">LuxFurn</h2>
+    </a>
+	</div>
     <nav class="navigation">
         <a href="#">Home</a>
         <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/aboutpageUI.php">About</a>
