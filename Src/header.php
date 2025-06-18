@@ -147,7 +147,7 @@ require_once dirname(__DIR__) . '/src/config.php';
         <div class="nav-dropdown">
             <a href="#" class="nav-link">My Orders ▾</a>
             <div class="nav-dropdown-content">
-                <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewCart.php">View Cart</a>
+                <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/CartUI.php">View Cart</a>
                 <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewOrderUI.php">View Order</a>
             </div>
         </div>
