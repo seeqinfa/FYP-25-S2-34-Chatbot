@@ -1,29 +1,19 @@
 <?php
 session_start();
 header('Content-Type: application/json');
-
-if (empty($_SESSION['is_logged_in'])) {
-    echo json_encode(['error' => 'not_logged_in']);
-    exit;
-}
-
 require_once __DIR__ . '/../Entities/ChatbotEntity.php';
 
-$username = $_SESSION['username'];
-$message  = trim($_POST['message'] ?? '');
-if ($message === '') {
-    echo json_encode(['error' => 'empty']);
+if (empty($_SESSION['is_logged_in'])) {
+    echo json_encode(['error'=>'not_logged_in']);
     exit;
 }
 
+$username = $_SESSION['username'];
+$userMsg  = $_POST['user'] ?? '';
+$botMsg   = $_POST['bot'] ?? '';
+
 $bot = new ChatbotEntity();
+if ($userMsg !== '') $bot->saveMessage($username, 'user', $userMsg);
+if ($botMsg  !== '') $bot->saveMessage($username, 'bot',  $botMsg);
 
-/* 1. save user msg */
-$bot->saveMessage($username, 'user', $message);
-
-/* 2. get reply + save it */
-$reply = $bot->getBotResponse($message);
-$bot->saveMessage($username, 'bot', $reply);
-
-/* 3. return reply */
-echo json_encode(['response' => $reply]);
+echo json_encode(['status'=>'saved']);

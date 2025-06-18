@@ -241,80 +241,109 @@ require_once dirname(__DIR__) . '/src/config.php';
 
 <!-- Internal Scripts -->
 <script>
-document.addEventListener(
-		"DOMContentLoaded", () => {const loginBtn = document.querySelector(".btnLogin");
-        const wrapper = document.getElementById("loginWrapper");
-        const closeBtn = document.getElementById("closeLogin");
-        const registerLink = document.querySelector(".register-link");
-        const loginLink = document.querySelector(".login-link");
-        const loginForm = document.querySelector(".form-box.login");
-        const registerForm = document.querySelector(".form-box.register");
+document.addEventListener("DOMContentLoaded", () => {
+    /* ==========  LOGIN / REGISTER POP-UP  ========== */
+    const loginBtn      = document.querySelector(".btnLogin");
+    const wrapper       = document.getElementById("loginWrapper");
+    const closeBtn      = document.getElementById("closeLogin");
+    const registerLink  = document.querySelector(".register-link");
+    const loginLink     = document.querySelector(".login-link");
+    const loginForm     = document.querySelector(".form-box.login");
+    const registerForm  = document.querySelector(".form-box.register");
 
-        loginBtn?.addEventListener("click", () => {
-            document.body.style.overflow = 'hidden';
-            wrapper.classList.add("active-popup");
-            loginForm.style.display = "block";
-            registerForm.style.display = "none";
-        });
+    loginBtn?.addEventListener("click", () => {
+        document.body.style.overflow = "hidden";
+        wrapper.classList.add("active-popup");
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+    });
+    closeBtn?.addEventListener("click", () => {
+        document.body.style.overflow = "";
+        wrapper.classList.remove("active-popup");
+    });
+    registerLink?.addEventListener("click", e => {
+        e.preventDefault();
+        loginForm.style.display    = "none";
+        registerForm.style.display = "block";
+    });
+    loginLink?.addEventListener("click", e => {
+        e.preventDefault();
+        loginForm.style.display    = "block";
+        registerForm.style.display = "none";
+    });
 
-        closeBtn?.addEventListener("click", () => {
-            document.body.style.overflow = '';
-            wrapper.classList.remove("active-popup");
-        });
-
-        registerLink?.addEventListener("click", (e) => {
-            e.preventDefault();
-            loginForm.style.display = "none";
-            registerForm.style.display = "block";
-        });
-
-        loginLink?.addEventListener("click", (e) => {
-            e.preventDefault();
-            loginForm.style.display = "block";
-            registerForm.style.display = "none";
-        });
-
+    /* ==========  CHAT (run only when logged in)  ========== */
+    <?php if (!empty($_SESSION['is_logged_in'])): ?>
     const form = document.getElementById("chat-form");
     const input = document.getElementById("chat-input");
     const log   = document.getElementById("chat-log");
-    if (!form || !input || !log) return;   // pages without chatbot
+    if (!form || !input || !log) return;          // page without chatbot
 
-    /* ───── 1.  LOAD SAVED HISTORY ───── */
+    /* ---- 1. Load saved history from PHP ---- */
     fetch("/FYP-25-S2-34-Chatbot/Src/Controllers/chatHistoryController.php")
         .then(r => r.json())
         .then(history => {
-            history.forEach(row => {
-                const who   = row.sender === "user" ? "You"    : "LuxBot";
-                const clazz = row.sender === "user" ? "user-message" : "bot-message";
-                const div   = document.createElement("div");
-                div.className = `chat-message ${clazz}`;
-                div.innerHTML = `<strong>${who}:</strong> ${row.message_text}`;
-                log.appendChild(div);
-            });
-            log.scrollTop = log.scrollHeight;
+            history.forEach(row => addBubble(row.sender, row.message_text));
+            scrollToBottom();
         })
         .catch(err => console.error("history error:", err));
 
-    /* ───── 2.  SEND NEW MESSAGE ───── */
+    /* ---- 2. Send new message → Rasa → save in PHP ---- */
     form.addEventListener("submit", async e => {
         e.preventDefault();
-        const msg = input.value.trim();
-        if (!msg) return;
+        const userText = input.value.trim();
+        if (!userText) return;
 
-        // show user bubble immediately
-        log.innerHTML += `<div class="chat-message user-message"><strong>You:</strong> ${msg}</div>`;
+        addBubble("user", userText);
         input.value = "";
 
-        const res  = await fetch("/FYP-25-S2-34-Chatbot/Src/Controllers/chatbotController.php", {
+        /* 2a. Ask Rasa for reply */
+        let botReplies = [];
+        try {
+            const rasaRes = await fetch("http://localhost:5005/webhooks/rest/webhook", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    sender: "<?=$_SESSION['username']?>",   // use session as sender id
+                    message: userText
+                })
+            });
+            botReplies = await rasaRes.json();   // array
+        } catch (err) {
+            console.error("Rasa error:", err);
+            addBubble("bot", "Sorry, I'm having trouble connecting to the server.");
+            scrollToBottom();
+            return;
+        }
+
+        /* 2b. Show Rasa replies in bubbles */
+        if (botReplies.length === 0) {
+            addBubble("bot", "…");
+        } else {
+            botReplies.forEach(r => r.text && addBubble("bot", r.text));
+        }
+        scrollToBottom();
+
+        /* 2c. Save both user & bot lines via PHP controller */
+        // combine all bot texts into one string separated by || (or save only first)
+        const botText = botReplies.map(r => r.text).filter(Boolean).join(" || ");
+
+        fetch("/FYP-25-S2-34-Chatbot/Src/Controllers/chatbotController.php", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: "message=" + encodeURIComponent(msg)
-        });
-        const data = await res.json();
-
-        // show bot bubble
-        log.innerHTML += `<div class="chat-message bot-message"><strong>LuxBot:</strong> ${data.response}</div>`;
-        log.scrollTop = log.scrollHeight;
+            body: "user=" + encodeURIComponent(userText) +
+                  "&bot=" + encodeURIComponent(botText)
+        }).catch(err => console.error("save error:", err));
     });
+
+    /* ---- Helper functions ---- */
+    function addBubble(sender, text) {
+        const label = sender === "user" ? "You" : "LuxBot";
+        const cls   = sender === "user" ? "user-message" : "bot-message";
+        log.insertAdjacentHTML("beforeend",
+            `<div class="chat-message ${cls}"><strong>${label}:</strong> ${text}</div>`);
+    }
+    function scrollToBottom() { log.scrollTop = log.scrollHeight; }
+    <?php endif; ?>
 });
 </script>
