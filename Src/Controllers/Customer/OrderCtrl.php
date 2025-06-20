@@ -1,13 +1,12 @@
 <?php
-require_once dirname(__DIR__, 2) . '/Entities/OrderCheckout.php';
-require_once dirname(__DIR__, 2) . '/Entities/OrderItem.php';
+require_once dirname(__DIR__, 2) . '/Entities/Order.php';
 
 class OrderCtrl {
     
     public function createOrder($customerData, $cartItems, $totals) {
         try {
             // Create Order entity and set properties
-            $order = new OrderCheckout();
+            $order = new Order();
             $order->setCustomerFirstName($customerData['first_name']);
             $order->setCustomerLastName($customerData['last_name']);
             $order->setCustomerEmail($customerData['email']);
@@ -23,16 +22,14 @@ class OrderCtrl {
             $order->setOrderStatus('pending');
             $order->setSpecialInstructions($customerData['special_instructions']);
             
-            // Create OrderItem entities for each cart item
+            // Create Order entities for each cart item
             foreach ($cartItems as $item) {
-                $orderItem = new OrderItem();
-                $orderItem->setFurnitureId($item['furnitureID']);
-                $orderItem->setFurnitureName($item['name']);
-                $orderItem->setUnitPrice($item['price']);
-                $orderItem->setQuantity($item['quantity']);
-                $orderItem->setTotalPrice($item['price'] * $item['quantity']);
-                
-                $order->addItem($orderItem);
+                $order->addItem(
+					$item['furnitureID'], 
+					$item['name'], 
+					$item['price'], 
+					$item['quantity']
+				);
             }
             
             // Save order (this will handle database operations)
@@ -46,11 +43,7 @@ class OrderCtrl {
     }
     
     public function getOrderById($orderId) {
-        return OrderCheckout::findById($orderId);
-    }
-    
-    public function getOrderItems($orderId) {
-        return OrderItem::findByOrderId($orderId);
+        return Order::findById($orderId);
     }
     
     public function validateOrderData($postData) {
@@ -130,7 +123,7 @@ class OrderCtrl {
     }
     
     public function updateOrderStatus($orderId, $status) {
-        $order = OrderCheckout::findById($orderId);
+        $order = Order::findById($orderId);
         if (!$order) {
             throw new Exception("Order not found");
         }

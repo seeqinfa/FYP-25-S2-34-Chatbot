@@ -82,24 +82,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php if ($orderInfo): ?>
         <div class="order-info">
-            <h3>Order #<?php echo $orderInfo['order_id']; ?></h3>
+            <h3>Order #<?php echo $orderInfo->getOrderId(); ?></h3>
             <ul>
-                <li><strong>Name:</strong> <?php echo htmlspecialchars($orderInfo['customer_first_name'] . ' ' . $orderInfo['customer_last_name']); ?></li>
-                <li><strong>Email:</strong> <?php echo htmlspecialchars($orderInfo['customer_email']); ?></li>
-                <li><strong>Address:</strong> <?php echo htmlspecialchars($orderInfo['shipping_address'] . ', ' . $orderInfo['shipping_city'] . ', ' . $orderInfo['shipping_state'] . ' ' . $orderInfo['shipping_zip']); ?></li>
-                <li><strong>Status:</strong> <?php echo htmlspecialchars($orderInfo['order_status']); ?></li>
-                <li><strong>Total:</strong> $<?php echo number_format($orderInfo['total_amount'], 2); ?></li>
-                <li><strong>Ordered on:</strong> <?php echo $orderInfo['created_at']; ?></li>
+                <li><strong>Name:</strong> <?php echo htmlspecialchars($orderInfo->getCustomerFirstName() . ' ' . $orderInfo->getCustomerLastName()); ?></li>
+                <li><strong>Email:</strong> <?php echo htmlspecialchars($orderInfo->getCustomerEmail()); ?></li>
+                <li><strong>Address:</strong> <?php echo htmlspecialchars($orderInfo->getShippingAddress() . ', ' . $orderInfo->getShippingCity() . ', ' . $orderInfo->getShippingState() . ' ' . $orderInfo->getShippingZip()); ?></li>
+                <li><strong>Status:</strong> <?php echo htmlspecialchars($orderInfo->getOrderStatus()); ?></li>
+                <li><strong>Total:</strong> $<?php echo number_format($orderInfo->getTotalAmount(), 2); ?></li>
+                <li><strong>Ordered on:</strong> <?php echo $orderInfo->getCreatedAt(); ?></li>
             </ul>
 
             <?php
             // show cancel button only if order is still cancellable
             $nonCancellable = ['Cancelled', 'Shipped', 'Delivered'];   // tweak as needed
-            if (!in_array($orderInfo['order_status'], $nonCancellable)):
+            if (!in_array($orderInfo->getOrderStatus(), $nonCancellable)):
             ?>
                 <!-- CANCEL FORM -->
                 <form method="POST" onsubmit="return confirm('Are you sure you want to cancel this order?');">
-                    <input type="hidden" name="order_id" value="<?php echo $orderInfo['order_id']; ?>">
+                    <input type="hidden" name="order_id" value="<?php echo $orderInfo->getOrderId(); ?>">
                     <button type="submit" name="cancel_order" class="btn cancel">Cancel Order</button>
                 </form>
             <?php endif; ?>
