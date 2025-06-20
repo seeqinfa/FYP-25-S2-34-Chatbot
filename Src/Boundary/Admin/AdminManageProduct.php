@@ -1,8 +1,8 @@
 <?php
 include '../../header.php';
-require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminAddProductCtrl.php';
+require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminManageProductCtrl.php';
 
-$controller = new AdminAddProductCtrl();
+$controller = new AdminManageProductCtrl();
 $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
 $currentPage = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $itemsPerPage = 9;
