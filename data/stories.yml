@@ -1,37 +1,45 @@
 version: "3.1"
 stories:
-- story: check order delivery
+- story: check_order_delivery
   steps:
   - intent: ask_delivery
   - action: utter_ask_order_id
   - intent: provide_order_id
+    entities:
+        - order_id
+  - slot_was_set:
+      - order_id
   - action: action_check_order
 
-- story: cancel order
+- story: cancel_order
   steps:
   - intent: cancel_order
   - action: utter_ask_order_id
   - intent: provide_order_id
+    entities:
+      - order_id
+  - slot_was_set:
+      - order_id
   - action: action_cancel_order
 
-- story: find furniture
+- story: find_furniture
   steps:
   - intent: search_furniture
   - action: utter_ask_dimensions
   - intent: provide_dimensions
   - action: action_find_furniture
 
-- story: get instruction manual
+- story: get_instruction_manual
   steps:
   - intent: instruction_manual
   - action: action_get_manual
 
-- story: escalate to human
+- story: escalate_to_human
   steps:
   - intent: escalate
   - action: utter_escalate
 
-- story: give feedback
+- story: give_feedback
   steps:
   - intent: feedback
   - action: utter_feedback_request

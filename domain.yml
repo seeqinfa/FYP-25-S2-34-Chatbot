@@ -14,6 +14,7 @@ intents:
   - deny
   - provide_order_id
   - provide_dimensions
+  - nlu_fallback
 
 entities:
   - order_id
@@ -69,6 +70,16 @@ responses:
     - text: "Thank you for your feedback!"
   utter_product_listing:
     - text: "Here are our latest furniture items: [listing_link]"
+  utter_fallback:
+    - text: |
+        Sorry, I didn't understand that. Here's some common queries I can help you with:
+      
+          1. Browse our furniture catalog  
+          2. Check your order status  
+          3. Leave feedback or a review  
+          4. Talk to a human agent  
+      
+        Just type what you'd like to do!
 
 actions:
   - action_check_order

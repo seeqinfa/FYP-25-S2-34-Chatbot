@@ -14,3 +14,14 @@ rules:
   steps:
   - intent: escalate
   - action: utter_escalate
+
+- rule: Cancel order rule
+  steps:
+  - intent: cancel_order
+  - action: utter_ask_order_id
+
+- rule: Handle fallback
+  steps:
+  - intent: nlu_fallback
+  - action: utter_fallback
+

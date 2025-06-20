@@ -14,6 +14,8 @@ nlu:
     - goodbye
     - see you
     - talk later
+    - bye bye
+    - I'm done here
 
 - intent: ask_delivery
   examples: |
@@ -21,63 +23,110 @@ nlu:
     - track my delivery
     - order delivery status
     - is my order on the way?
+    - has my order shipped?
+    - delivery status please
+    - what's the ETA for my package?
+    - can you check if my order has been shipped?
+    - track my package
+    - status of my furniture delivery?
 
 - intent: cancel_order
   examples: |
     - cancel my order
     - I want to cancel an order
     - remove my order
+    - I'd like to cancel
+    - cancel it
+    - call off my order
+    - I don't want my order
+    - abort my purchase
+    - cancel the item I ordered
 
 - intent: search_furniture
   examples: |
     - I need a sofa for 3 meters wide space
     - show me furniture that fits 200x100x75
     - recommend furniture for small room
+    - show me something for my living room
+    - find me a small coffee table
+    - do you have recliners?
+    - I'm looking for a wardrobe
+    - I want a new bed
 
 - intent: instruction_manual
   examples: |
     - I need the manual for dining table
     - show me the instruction guide for sofa bed
     - where is the product manual for [Alton chair](furniture_name)?
+    - give me the user guide for [Luna sofa](furniture_name)
+    - where can I find the manual for [wooden bed](furniture_name)?
+    - manual for [dining set](furniture_name)
+    - how do I assemble my [Dario table](furniture_name)?
 
 - intent: escalate
   examples: |
     - talk to a human
     - I need help from an agent
     - escalate this issue
+    - I want to talk to a human
 
 - intent: feedback
   examples: |
     - I'd like to give feedback
     - this chatbot was helpful
     - I want to rate the support
+    - this could be better
+    - how do I leave a review?
+    - I'm not satisfied
 
 - intent: product_inquiry
   examples: |
     - show me sofas
     - what dining tables do you have?
     - I'm looking for beds
+    - what's available in chairs?
+    - looking for side tables
+    - show me some shelves
+    - do you have bookcases?
+    - got any cabinets?
+    - any storage solutions?
 
 - intent: affirm
   examples: |
     - yes
     - okay
     - sure
+    - definitely
+    - absolutely
+    - yeah
+    - sure thing
+    - yup
 
 - intent: deny
   examples: |
     - no
     - not really
     - nope
+    - nah
+    - not at all
+    - I don't think so
+    - never mind
 
 - intent: provide_order_id
   examples: |
     - my order id is [12345](order_id)
     - order number [987654](order_id)
     - it's [56789](order_id)
+    - order [112233](order_id)
+    - tracking number is [445566](order_id)
+    - it's order [998877](order_id)
 
 - intent: provide_dimensions
   examples: |
     - 200x150x80
     - the space is 3x2x1 meters
     - 300cm by 100cm by 90cm
+    - it's 2m x 1.5m x 80cm
+    - my space is 250 by 120 by 90
+    - the room is 4x3x2
+    - 400x200x100
