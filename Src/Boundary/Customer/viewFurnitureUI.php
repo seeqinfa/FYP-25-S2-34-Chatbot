@@ -48,7 +48,7 @@ $furnitureList = $controller->getFurniturePaginated($offset, $itemsPerPage, $sea
                     <div class="price" style="font-size: 16px; color: #e67e22;">$<?php echo htmlspecialchars($item->price); ?></div>
                     <div class="actions" style="display: flex; justify-content: center; gap: 10px; margin-top: 12px;">
                         <a href="viewFurnitureDetailsUI.php?id=<?php echo urlencode($item->furnitureID); ?>" class="btn">View</a>
-                        <a href="addToCart.php?id=<?php echo urlencode($item->furnitureID); ?>" class="btn">Add to Cart</a>
+                        <a href="../../Controllers/Customer/CartCtrl.php?action=add&id=<?php echo urlencode($item->furnitureID); ?>" class="btn">Add to Cart</a>
                     </div>
                 </div>
             </div>
