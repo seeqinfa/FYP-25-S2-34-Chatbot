@@ -15,6 +15,7 @@ intents:
   - provide_order_id
   - provide_dimensions
   - nlu_fallback
+  - ask_help
 
 entities:
   - order_id
@@ -74,9 +75,25 @@ responses:
     - text: |
         Sorry, I didn't understand that. Here's some common queries I can help you with:
       
-          1. Browse our furniture catalog  
+          1. Browse our furniture catalog 
+
           2. Check your order status  
+
           3. Leave feedback or a review  
+
+          4. Talk to a human agent  
+      
+        Just type what you'd like to do!
+  utter_ask_help:
+    - text: |
+        Here's some common queries I can help you with:
+      
+          1. Browse our furniture catalog 
+
+          2. Check your order status  
+
+          3. Leave feedback or a review  
+
           4. Talk to a human agent  
       
         Just type what you'd like to do!

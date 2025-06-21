@@ -25,3 +25,8 @@ rules:
   - intent: nlu_fallback
   - action: utter_fallback
 
+- rule: Ask help
+  steps:
+  - intent: ask_help
+  - action: utter_ask_help
+

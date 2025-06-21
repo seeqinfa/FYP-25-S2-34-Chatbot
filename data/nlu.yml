@@ -130,3 +130,26 @@ nlu:
     - my space is 250 by 120 by 90
     - the room is 4x3x2
     - 400x200x100
+
+- intent: ask_help
+  examples: |
+    - what can you help me with?
+    - how can you help me?
+    - what do you do?
+    - what are your features?
+    - help
+    - I need help
+    - can you help me?
+    - what can you do?
+    - how do I use this?
+    - I need some assistance
+    - tell me how you work
+    - show me what you can do
+    - I’m not sure how this works
+    - guide me
+    - help me out
+    - assist me
+    - can you assist me?
+    - where can I start?
+    - what can I ask you?
+    - give me some help options
