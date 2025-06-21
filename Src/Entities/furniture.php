@@ -132,6 +132,7 @@ class Furniture
     public function delete(): bool
     {
         if (!$this->furnitureID) {
+            error_log("Delete failed: furnitureID is null");
             throw new RuntimeException('Cannot delete unsaved Furniture');
         }
 
@@ -140,6 +141,11 @@ class Furniture
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, 'i', $this->furnitureID);
         $ok = mysqli_stmt_execute($stmt);
+
+        if (!$ok) {
+            error_log("MySQL error: " . mysqli_error($conn));
+        }
+
         mysqli_stmt_close($stmt);
         return $ok;
     }

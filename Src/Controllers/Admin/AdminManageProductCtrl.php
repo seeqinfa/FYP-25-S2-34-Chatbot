@@ -80,4 +80,20 @@ class AdminManageProductCtrl {
     
         return $success;
     }
+    public function removeFurniture(int $id): array
+    {
+        $furniture = Furniture::findById($id);
+
+        if (!$furniture) {
+            return ['success' => false, 'message' => 'Furniture not found'];
+        }
+
+        $deleted = $furniture->delete();
+
+        if (!$deleted) {
+            return ['success' => false, 'message' => 'Failed to delete furniture'];
+        }
+
+        return ['success' => true];
+    }
 }
