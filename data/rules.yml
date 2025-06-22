@@ -30,3 +30,25 @@ rules:
   - intent: ask_help
   - action: utter_ask_help
 
+- rule: Activate feedback form
+  steps:
+  - intent: feedback_request
+  - action: feedback_text_form
+  - active_loop: feedback_text_form
+
+- rule: Submit feedback form
+  condition:
+  - active_loop: feedback_text_form
+  steps:
+  - action: feedback_text_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_store_feedback
+  - action: utter_thanks_feedback
+
+- rule: Provide recommendation
+  steps:
+  - intent: search_furniture
+  - action: utter_ask_dimensions
+

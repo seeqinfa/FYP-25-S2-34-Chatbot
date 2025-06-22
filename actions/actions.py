@@ -64,3 +64,17 @@ class ActionCheckOrder(Action):
             dispatcher.utter_message(response="utter_no_order_found")
 
         return []
+    
+class SubmitFeedbackForm(Action):
+    def name(self) -> str:
+        return "action_store_feedback"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+        
+        feedback = tracker.get_slot("feedback_text")
+        print("Collected feedback:", feedback)
+        print("All slots:", tracker.slots)
+
+        return []

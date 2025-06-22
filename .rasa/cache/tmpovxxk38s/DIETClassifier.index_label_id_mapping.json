@@ -1,0 +1,16 @@
+{
+  "0": "affirm",
+  "1": "ask_delivery",
+  "2": "ask_help",
+  "3": "cancel_order",
+  "4": "deny",
+  "5": "escalate",
+  "6": "feedback_request",
+  "7": "goodbye",
+  "8": "greet",
+  "9": "instruction_manual",
+  "10": "product_inquiry",
+  "11": "provide_dimensions",
+  "12": "provide_order_id",
+  "13": "search_furniture"
+}

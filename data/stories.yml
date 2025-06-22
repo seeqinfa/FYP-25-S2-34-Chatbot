@@ -27,7 +27,7 @@ stories:
   - intent: search_furniture
   - action: utter_ask_dimensions
   - intent: provide_dimensions
-  - action: action_find_furniture
+  - action: utter_example_rec
 
 - story: get_instruction_manual
   steps:
@@ -41,8 +41,74 @@ stories:
 
 - story: give_feedback
   steps:
-  - intent: feedback
-  - action: utter_feedback_request
-  - intent: feedback
+  - intent: feedback_request
+  - action: feedback_text_form
+  - active_loop: feedback_text_form
+  - slot_was_set:
+    - requested_slot: feedback_text
+  - slot_was_set:
+    - feedback_text: test 
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
   - action: action_store_feedback
   - action: utter_thanks_feedback
+
+- story: interactive_story_1
+  steps:
+  - intent: ask_delivery
+  - action: utter_ask_order_id
+  - intent: provide_order_id
+    entities:
+    - order_id: '12345'
+  - slot_was_set:
+    - order_id: '12345'
+  - action: action_check_order
+  - intent: cancel_order
+  - action: utter_ask_order_id
+  - intent: provide_order_id
+    entities:
+    - order_id: '12345'
+  - slot_was_set:
+    - order_id: '12345'
+  - action: action_cancel_order
+
+- story: interactive_story_2
+  steps:
+  - intent: search_furniture
+    entities:
+    - furniture_name: chair
+  - slot_was_set:
+    - furniture_name: chair
+  - action: utter_ask_dimensions
+  - intent: provide_dimensions
+  - action: utter_example_rec
+
+- story: interactive_story_3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_delivery
+  - action: utter_ask_order_id
+  - intent: provide_order_id
+    entities:
+    - order_id: '56789'
+  - slot_was_set:
+    - order_id: '56789'
+  - action: action_check_order
+  - intent: cancel_order
+  - action: utter_ask_order_id
+  - intent: provide_order_id
+    entities:
+    - order_id: '12345'
+  - slot_was_set:
+    - order_id: '12345'
+  - action: action_cancel_order
+  - intent: search_furniture
+    entities:
+    - furniture_name: chair
+  - slot_was_set:
+    - furniture_name: chair
+  - action: utter_ask_dimensions
+  - intent: provide_dimensions
+  - action: utter_example_rec

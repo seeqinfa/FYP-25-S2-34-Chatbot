@@ -7,7 +7,7 @@ nlu:
     - hey
     - good morning
     - good evening
-
+    - Hello
 - intent: goodbye
   examples: |
     - bye
@@ -16,7 +16,6 @@ nlu:
     - talk later
     - bye bye
     - I'm done here
-
 - intent: ask_delivery
   examples: |
     - when will my order arrive?
@@ -29,7 +28,8 @@ nlu:
     - can you check if my order has been shipped?
     - track my package
     - status of my furniture delivery?
-
+    - I want to check on my order
+    - Can I check up on an order
 - intent: cancel_order
   examples: |
     - cancel my order
@@ -41,7 +41,6 @@ nlu:
     - I don't want my order
     - abort my purchase
     - cancel the item I ordered
-
 - intent: search_furniture
   examples: |
     - I need a sofa for 3 meters wide space
@@ -52,7 +51,8 @@ nlu:
     - do you have recliners?
     - I'm looking for a wardrobe
     - I want a new bed
-
+    - I'm thinking of buying a new computer [chair](furniture_name), do you have any recommendations?
+    - I'm thinking of buying a new computer [chair](furniture_name), do you have any recommendations?
 - intent: instruction_manual
   examples: |
     - I need the manual for dining table
@@ -62,23 +62,21 @@ nlu:
     - where can I find the manual for [wooden bed](furniture_name)?
     - manual for [dining set](furniture_name)
     - how do I assemble my [Dario table](furniture_name)?
-
 - intent: escalate
   examples: |
     - talk to a human
     - I need help from an agent
     - escalate this issue
     - I want to talk to a human
-
-- intent: feedback
+- intent: feedback_request
   examples: |
     - I'd like to give feedback
-    - this chatbot was helpful
+    - I'd like to leave a review
     - I want to rate the support
-    - this could be better
+    - Can I share my thoughts?
     - how do I leave a review?
-    - I'm not satisfied
-
+    - I want to rate the chatbot
+    - I want to provide feedback
 - intent: product_inquiry
   examples: |
     - show me sofas
@@ -90,7 +88,6 @@ nlu:
     - do you have bookcases?
     - got any cabinets?
     - any storage solutions?
-
 - intent: affirm
   examples: |
     - yes
@@ -101,7 +98,6 @@ nlu:
     - yeah
     - sure thing
     - yup
-
 - intent: deny
   examples: |
     - no
@@ -111,7 +107,6 @@ nlu:
     - not at all
     - I don't think so
     - never mind
-
 - intent: provide_order_id
   examples: |
     - my order id is [12345](order_id)
@@ -120,7 +115,9 @@ nlu:
     - order [112233](order_id)
     - tracking number is [445566](order_id)
     - it's order [998877](order_id)
-
+    - [12345](order_id)
+    - [56789](order_id)
+    - [12345](order_id)
 - intent: provide_dimensions
   examples: |
     - 200x150x80
@@ -130,7 +127,7 @@ nlu:
     - my space is 250 by 120 by 90
     - the room is 4x3x2
     - 400x200x100
-
+    - 200x100x80cm
 - intent: ask_help
   examples: |
     - what can you help me with?
@@ -145,7 +142,7 @@ nlu:
     - I need some assistance
     - tell me how you work
     - show me what you can do
-    - I’m not sure how this works
+    - I'm not sure how this works
     - guide me
     - help me out
     - assist me
