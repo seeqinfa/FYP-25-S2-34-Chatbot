@@ -36,7 +36,7 @@ class AdminRatingandReivewsCtrl
     private function redirectBack(): void
     {
         // Return to Boundary page
-        header("Location: ../Boundary/AdminManageChatbotReviewsUI.php");
+        header("Location: ../../Boundary/Admin/AdminRatingandReviewsUI.php");
         exit;
     }
 }

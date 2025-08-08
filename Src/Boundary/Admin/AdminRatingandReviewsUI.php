@@ -61,7 +61,7 @@ $totalPages = max(1, (int)ceil($totalRows / $perPage));
                 <td><?= (int)$r['rating'] ?> ★</td>
                 <td><?= nl2br(htmlspecialchars($r['comment'])) ?></td>
                 <td>
-                    <form method="post" action="../Controllers/AdminRatingandReivewsCtrl.php">
+                    <form method="post" action="../../Controllers/Admin/AdminRatingandReviewsCtrl.php">
                         <input type="hidden" name="action" value="save_admin_comment">
                         <input type="hidden" name="reviewID" value="<?= (int)$r['reviewID'] ?>">
                         <textarea name="admin_comment"><?= htmlspecialchars($r['admin_comment'] ?? '') ?></textarea>
@@ -72,7 +72,7 @@ $totalPages = max(1, (int)ceil($totalRows / $perPage));
                 </td>
                 <td><?= htmlspecialchars($r['created_at']) ?></td>
                 <td>
-                    <form method="post" action="../Controllers/AdminRatingandReivewsCtrl.php" onsubmit="return confirm('Delete this review?');">
+                    <form method="post" action="../../Controllers/Admin/AdminRatingandReviewsCtrl.php" onsubmit="return confirm('Delete this review?');">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="reviewID" value="<?= (int)$r['reviewID'] ?>">
                         <button type="submit" class="btn btn-secondary">Delete</button>

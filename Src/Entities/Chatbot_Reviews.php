@@ -1,6 +1,6 @@
 <?php
 // Src/Entities/Chatbot_Reviews.php
-require_once dirname(__DIR__) . '/db_connect.php'; // expects /Src/db_connect.php
+require_once dirname(__DIR__) . '/db_connect.php';
 
 class Chatbot_Reviews
 {
