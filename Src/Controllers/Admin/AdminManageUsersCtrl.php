@@ -51,5 +51,7 @@ class AdminManageUsersCtrl {
         mysqli_stmt_bind_param($stmt, "i", $userId);
         return mysqli_stmt_execute($stmt);
     }
+
+    
 }
 ?>

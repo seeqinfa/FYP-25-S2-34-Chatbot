@@ -252,39 +252,54 @@ require_once '../../header.php';
 <div class="dashboard-container">
     <h1 class="section-title">Admin Dashboard</h1>
     
-    <!-- Quick Actions Section -->
-    <div class="grid-container">
-        <!-- Manage Products Card -->
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-box-open"></i>
-                <h3>Manage Products</h3>
-            </div>
-            <div class="card-body">
-                <div class="card-title">Product Management</div>
-                <div class="card-text">Add, edit, or remove products from your inventory</div>
-                <div class="btn-container">
-                    <a href="AdminAddProduct.php" class="btn btn-primary">Add Product</a>
-                    <a href="AdminManageProduct.php" class="btn btn-secondary">View All</a>
-                </div>
-            </div>
+<!-- Quick Actions Section -->
+<div class="grid-container">
+    <!-- Manage Products Card -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-box-open"></i>
+            <h3>Manage Products</h3>
         </div>
-
-        <!-- Manage Users Card -->
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-users"></i>
-                <h3>Manage Users</h3>
-            </div>
-            <div class="card-body">
-                <div class="card-title">User Management</div>
-                <div class="card-text">View and manage all user accounts</div>
-                <div class="btn-container">
-                    <a href="AdminManageUsers.php" class="btn btn-primary">View Users</a>
-                </div>
+        <div class="card-body">
+            <div class="card-title">Product Management</div>
+            <div class="card-text">Add, edit, or remove products from your inventory</div>
+            <div class="btn-container">
+                <a href="AdminAddProduct.php" class="btn btn-primary">Add Product</a>
+                <a href="AdminManageProduct.php" class="btn btn-secondary">View All</a>
             </div>
         </div>
     </div>
+
+    <!-- Manage Users Card -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-users"></i>
+            <h3>Manage Users</h3>
+        </div>
+        <div class="card-body">
+            <div class="card-title">User Management</div>
+            <div class="card-text">View and manage all user accounts</div>
+            <div class="btn-container">
+                <a href="AdminManageUsers.php" class="btn btn-primary">View Users</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Ratings & Reviews Card -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-star"></i>
+            <h3>Ratings & Reviews</h3>
+        </div>
+        <div class="card-body">
+            <div class="card-title">Review Management</div>
+            <div class="card-text">View customer ratings and reviews</div>
+            <div class="btn-container">
+                <a href="AdminRatingandReviewsUI.php" class="btn btn-primary">View Reviews</a>
+            </div>
+        </div>
+    </div>
+</div>
 
   
         </tbody>
