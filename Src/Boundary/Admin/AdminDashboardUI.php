@@ -299,8 +299,22 @@ require_once '../../header.php';
             </div>
         </div>
     </div>
-</div>
 
+<!-- Assign Support Ticket-->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-ticket-alt"></i>
+            <h3>Support Tickets</h3>
+        </div>
+        <div class="card-body">
+            <div class="card-title">Ticket Assignment</div>
+            <div class="card-text">Manage and assign support tickets to agents</div>
+            <div class="btn-container">
+                <a href=".php" class="btn btn-primary">Manage Tickets</a>
+            </div>
+        </div>
+    </div>
+</div>
   
         </tbody>
     </table>
