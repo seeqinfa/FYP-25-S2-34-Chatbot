@@ -1,4 +1,5 @@
 version: "3.1"
+
 nlu:
 - intent: greet
   examples: |
@@ -8,6 +9,7 @@ nlu:
     - good morning
     - good evening
     - Hello
+
 - intent: goodbye
   examples: |
     - bye
@@ -16,6 +18,7 @@ nlu:
     - talk later
     - bye bye
     - I'm done here
+
 - intent: ask_delivery
   examples: |
     - when will my order arrive?
@@ -30,6 +33,7 @@ nlu:
     - status of my furniture delivery?
     - I want to check on my order
     - Can I check up on an order
+
 - intent: cancel_order
   examples: |
     - cancel my order
@@ -41,6 +45,7 @@ nlu:
     - I don't want my order
     - abort my purchase
     - cancel the item I ordered
+
 - intent: search_furniture
   examples: |
     - I need a sofa for 3 meters wide space
@@ -52,22 +57,14 @@ nlu:
     - I'm looking for a wardrobe
     - I want a new bed
     - I'm thinking of buying a new computer [chair](furniture_name), do you have any recommendations?
-    - I'm thinking of buying a new computer [chair](furniture_name), do you have any recommendations?
-- intent: instruction_manual
-  examples: |
-    - I need the manual for dining table
-    - show me the instruction guide for sofa bed
-    - where is the product manual for [Alton chair](furniture_name)?
-    - give me the user guide for [Luna sofa](furniture_name)
-    - where can I find the manual for [wooden bed](furniture_name)?
-    - manual for [dining set](furniture_name)
-    - how do I assemble my [Dario table](furniture_name)?
+
 - intent: escalate
   examples: |
     - talk to a human
     - I need help from an agent
     - escalate this issue
     - I want to talk to a human
+
 - intent: feedback_request
   examples: |
     - I'd like to give feedback
@@ -77,6 +74,7 @@ nlu:
     - how do I leave a review?
     - I want to rate the chatbot
     - I want to provide feedback
+
 - intent: product_inquiry
   examples: |
     - show me sofas
@@ -88,6 +86,7 @@ nlu:
     - do you have bookcases?
     - got any cabinets?
     - any storage solutions?
+
 - intent: affirm
   examples: |
     - yes
@@ -98,6 +97,7 @@ nlu:
     - yeah
     - sure thing
     - yup
+
 - intent: deny
   examples: |
     - no
@@ -107,6 +107,11 @@ nlu:
     - not at all
     - I don't think so
     - never mind
+
+- regex: order_id
+  examples: |
+    - \b\d{4,12}\b
+
 - intent: provide_order_id
   examples: |
     - my order id is [12345](order_id)
@@ -117,7 +122,7 @@ nlu:
     - it's order [998877](order_id)
     - [12345](order_id)
     - [56789](order_id)
-    - [12345](order_id)
+
 - intent: provide_dimensions
   examples: |
     - 200x150x80
@@ -128,6 +133,7 @@ nlu:
     - the room is 4x3x2
     - 400x200x100
     - 200x100x80cm
+
 - intent: ask_help
   examples: |
     - what can you help me with?
@@ -150,3 +156,32 @@ nlu:
     - where can I start?
     - what can I ask you?
     - give me some help options
+
+- intent: inform
+  examples: |
+    - [Ergo Chair](furniture_name)
+    - [Recliner Seat](furniture_name)
+    - [TV Console](furniture_name)
+    - [Bookshelf Classic](furniture_name)
+    - [Coffee Table](furniture_name)
+    - [Queen Bed Frame](furniture_name)
+
+- lookup: furniture_name
+  examples: |
+    - Ergo Chair
+    - Recliner Seat
+    - TV Console
+    - Bookshelf Classic
+    - Coffee Table
+    - Queen Bed Frame
+
+- intent: instruction_manual
+  examples: |
+    - I need the manual for [Ergo Chair](furniture_name)
+    - show me the instructions for the [Recliner Seat](furniture_name)
+    - where is the product manual for [TV Console](furniture_name)?
+    - manual for [Bookshelf Classic](furniture_name)
+    - can I get the assembly guide for the [Queen Bed Frame](furniture_name)?
+    - instruction manual
+    - I need the manual
+    - can I get an instruction manual please

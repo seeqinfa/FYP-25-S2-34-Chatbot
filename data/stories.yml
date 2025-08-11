@@ -29,11 +29,6 @@ stories:
   - intent: provide_dimensions
   - action: utter_example_rec
 
-- story: get_instruction_manual
-  steps:
-  - intent: instruction_manual
-  - action: action_get_manual
-
 - story: escalate_to_human
   steps:
   - intent: escalate
@@ -112,3 +107,19 @@ stories:
   - action: utter_ask_dimensions
   - intent: provide_dimensions
   - action: utter_example_rec
+  
+- story: manual direct with entity
+  steps:
+    - intent: instruction_manual
+      entities:
+        - furniture_name: "TV Console"
+    - action: action_get_manual
+
+- story: manual follow-up text
+  steps:
+    - intent: instruction_manual
+    - action: action_get_manual
+    - intent: inform
+      entities:
+        - furniture_name: "Ergo Chair"
+    - action: action_get_manual
