@@ -17,7 +17,7 @@ intents:
   - search_furniture
   - instruction_manual
   - inform
-
+  - select_order
 entities:
   - order_id
   - furniture_name
@@ -62,7 +62,18 @@ slots:
         conditions:
           - active_loop: manual_form
             requested_slot: manual_furniture
-
+            
+  cancel_context:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: custom
+  info_context:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: custom
+      
 forms:
   feedback_text_form:
     ignored_intents:
@@ -120,7 +131,19 @@ responses:
 
   utter_product_listing:
     - text: "Here are our latest furniture items: [listing_link]"
-
+  utter_ask_which_order_cancel:
+  - text: "Which order would you like to cancel? (I’ve listed your orders above.) You can click a button or type the order ID."
+  utter_ask_which_order_status:
+  - text: "Which order would you like to check? (I’ve listed your orders above.) You can click a button or type the order ID."
+  utter_confirm_cancel:
+  - text: "Confirm cancel for order #{order_id}?"
+    buttons:
+      - title: "Yes, cancel it"
+        payload: /affirm
+      - title: "No"
+        payload: /deny
+  utter_cancel_aborted:
+  - text: "Cancellation aborted."
   utter_fallback:
     - text: |
         Sorry, I didn't understand that. Here's some common queries I can help you with:
@@ -156,8 +179,10 @@ actions:
   - action_find_furniture
   - action_get_manual
   - action_reset_manual_slot
-  # (No need to list utter_ actions here.)
-
+  - action_pick_order_for_cancel
+  - action_pick_order_for_info
+  - action_order_details
+  - utter_ask_order_id
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: false

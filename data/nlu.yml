@@ -97,17 +97,18 @@ nlu:
     - yeah
     - sure thing
     - yup
-
+    - confirm
+    - y
 - intent: deny
   examples: |
     - no
+    - n
     - not really
     - nope
     - nah
     - not at all
     - I don't think so
     - never mind
-
 - regex: order_id
   examples: |
     - \b\d{4,12}\b
@@ -185,3 +186,10 @@ nlu:
     - instruction manual
     - I need the manual
     - can I get an instruction manual please
+
+- intent: select_order
+  examples: |
+    - choose [2](order_id)
+    - select [3](order_id)
+    - order #[4](order_id)
+    - open order [10](order_id)
