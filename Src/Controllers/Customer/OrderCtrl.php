@@ -5,8 +5,15 @@ class OrderCtrl {
     
     public function createOrder($customerData, $cartItems, $totals) {
         try {
+			$username = $_SESSION['username'] ?? null;
+			if (!$username) {
+				throw new RuntimeException('User must be logged in to place an order.');
+			}
+
+
             // Create Order entity and set properties
             $order = new Order();
+			$order->setUsername($username);
             $order->setCustomerFirstName($customerData['first_name']);
             $order->setCustomerLastName($customerData['last_name']);
             $order->setCustomerEmail($customerData['email']);
