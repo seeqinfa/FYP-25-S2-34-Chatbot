@@ -218,7 +218,7 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
         </div>
         <?php if (!empty($_SESSION['is_logged_in'])): ?>
             <?php if (!empty($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                <a href="../admin/adminDashboardUI.php">Admin Dashboard</a>
+                <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/admin/adminDashboardUI.php">Admin Dashboard</a>
             <?php endif; ?>
             <span style="color:white; margin-left:20px;">Welcome, <?= htmlspecialchars($_SESSION['username']) ?></span>
             <a href="<?= CONTROLLERS_URL ?>/logoutController.php">Logout</a>

@@ -9,9 +9,68 @@ if (!function_exists('h')) {
 
 if (empty($_SESSION['username'])) {
     http_response_code(401);
-    echo "Please log in.";
+    ?>
+    <!doctype html>
+    <html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <title>Please Log In</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f8f8f8;
+      }
+      .login-message {
+        background: white;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        text-align: center;
+        font-size: 1.2rem;
+        color: #333;
+      }
+      .btn {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 18px;
+        background-color: #e67e22;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .btn:hover {
+        background-color: #cf6d17;
+      }
+    </style>
+    </head>
+    <body>
+      <div class="login-message">
+        Please log in to view your orders.
+        <br>
+        <a href="#" class="btn" onclick="openLoginPopup()">Login</a>
+      </div>
+
+      <script>
+        function openLoginPopup() {
+          const loginBtn = document.querySelector(".btnLogin");
+          if (loginBtn) loginBtn.click();
+        }
+      </script>
+    </body>
+    </html>
+    <?php
     exit;
 }
+
 $USERNAME = $_SESSION['username'];
 
 require_once dirname(__DIR__, 2) . '/Controllers/Customer/viewOrderCtrl.php';
