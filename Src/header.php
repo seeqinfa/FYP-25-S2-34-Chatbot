@@ -192,6 +192,22 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
             gap: 10px;
             color: inherit;
         }
+		
+		.chat-buttons {
+			margin-top: 5px;
+		}
+		.chat-button {
+			margin: 3px;
+			padding: 6px 12px;
+			border: none;
+			background-color: #e28743;
+			color: white;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		.chat-button:hover {
+			background-color: #0056b3;
+		}
 
 
     </style>
@@ -374,7 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    sender: "<?= htmlspecialchars($_SESSION['username']) ?>",
+                    sender: "<?=$_SESSION['user_id']?>|<?=$_SESSION['username']?>",
                     message: userText
                 })
             });
@@ -390,7 +406,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (botReplies.length === 0) {
             addBubble("bot", "…");
         } else {
-            botReplies.forEach(r => r.text && addBubble("bot", r.text));
+            botReplies.forEach(r => {
+				const text = r.text || "";
+				const buttons = r.buttons || [];
+				addBubble("bot", text, buttons);
+			});
         }
         scrollToBottom();
 
@@ -404,13 +424,55 @@ document.addEventListener("DOMContentLoaded", () => {
                   "&bot=" + encodeURIComponent(botText)
         }).catch(err => console.error("save error:", err));
     });
+	/* ---- CHATBOT BUTTONS ---- */
+	log.addEventListener("click", async e => {
+		if (!e.target.classList.contains("chat-button")) return;
 
+		const payload = e.target.getAttribute("data-payload");
+		if (!payload) return;
+
+		addBubble("user", e.target.textContent);
+
+		try {
+			const rasaRes = await fetch("http://localhost:5005/webhooks/rest/webhook", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					sender: "<?=$_SESSION['user_id']?>|<?=$_SESSION['username']?>",
+					message: payload
+				})
+			});
+			const botReplies = await rasaRes.json();
+			botReplies.forEach(r => {
+				const text = r.text || "";
+				const buttons = r.buttons || [];
+				addBubble("bot", text, buttons);
+			});
+			scrollToBottom();
+		} catch (err) {
+			console.error("Rasa error:", err);
+			addBubble("bot", "Sorry, I'm having trouble.");
+		}
+	});
     /* ---- Helper functions ---- */
-    function addBubble(sender, text) {
+    function addBubble(sender, text, buttons = []) {
         const label = sender === "user" ? "You" : "LuxBot";
         const cls   = sender === "user" ? "user-message" : "bot-message";
-        log.insertAdjacentHTML("beforeend",
-            `<div class="chat-message ${cls}"><strong>${label}:</strong> ${text}</div>`);
+        
+		// Create base message
+		let html = `<div class="chat-message ${cls}"><strong>${label}:</strong> ${text}`;
+		
+		// Append buttons if they exist
+		if (buttons.length > 0) {
+			html += `<div class="chat-buttons">`;
+			buttons.forEach(btn => {
+				html += `<button class="chat-button" data-payload="${btn.payload}">${btn.title}</button>`;
+			});
+			html += `</div>`;
+		}
+
+		html += `</div>`;
+		log.insertAdjacentHTML("beforeend", html);
     }
     function scrollToBottom() { log.scrollTop = log.scrollHeight; }
     <?php endif; ?>
