@@ -4,6 +4,12 @@ rules:
   steps:
   - intent: greet
   - action: utter_greet
+  - action: utter_main_menu
+  
+- rule: Show menu on start
+  steps:
+    - intent: show_menu
+    - action: utter_main_menu
 
 - rule: Say goodbye
   steps:
@@ -27,20 +33,18 @@ rules:
 
 - rule: Activate feedback form
   steps:
-  - intent: feedback_request
-  - action: feedback_text_form
-  - active_loop: feedback_text_form
+    - intent: feedback_request
+    - action: feedback_form
+    - active_loop: feedback_form
 
 - rule: Submit feedback form
   condition:
-  - active_loop: feedback_text_form
+    - active_loop: feedback_form
   steps:
-  - action: feedback_text_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  - action: action_store_feedback
-  - action: utter_thanks_feedback
+    - action: feedback_form
+    - active_loop: null
+    - action: action_store_feedback
+    - action: utter_thank_for_feedback
 
 - rule: Provide recommendation
   steps:

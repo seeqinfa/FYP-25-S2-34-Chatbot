@@ -10,6 +10,7 @@ intents:
   - feedback_request
   - goodbye
   - greet
+  - show_menu
   - nlu_fallback
   - product_inquiry
   - provide_dimensions
@@ -45,13 +46,22 @@ slots:
       - type: from_entity
         entity: dimensions
 
+  feedback_rating:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: feedback_form
+            requested_slot: feedback_rating
   feedback_text:
     type: text
     influence_conversation: false
     mappings:
       - type: from_text
         conditions:
-          - active_loop: feedback_text_form
+          - active_loop: feedback_form
+            requested_slot: feedback_text
 
   # slot used by the manual form
   manual_furniture:
@@ -75,10 +85,9 @@ slots:
       - type: custom
       
 forms:
-  feedback_text_form:
-    ignored_intents:
-      - feedback_request
+  feedback_form:
     required_slots:
+      - feedback_rating
       - feedback_text
 
   manual_form:
@@ -94,6 +103,27 @@ forms:
 responses:
   utter_greet:
     - text: "Hi there! How can I assist you today?"
+
+  utter_main_menu:
+    - text: "Please choose an option:"
+      buttons:
+        - title: "Check Order Status"
+          payload: /ask_delivery
+        - title: "Cancel Order"
+          payload: /cancel_order
+        - title: "Furniture Recommendations"
+          payload: /product_inquiry
+        - title: "Feedback"
+          payload: /feedback_request
+          
+  utter_ask_feedback_rating:
+    - text: "Please rate our service from 1–5 ⭐⭐⭐⭐⭐"
+    
+  utter_ask_feedback_text:
+    - text: "Share your feedback."
+    
+  utter_thank_for_feedback:
+    - text: "Thanks for your feedback! 🙏"
 
   utter_goodbye:
     - text: "Goodbye! Let me know if you need anything else."
@@ -122,9 +152,6 @@ responses:
   # Use the slot filled by manual_form
   utter_instruction_manual:
     - text: "Here is the instruction manual for {manual_furniture}: [link]"
-
-  utter_ask_feedback_text:
-    - text: "Please provide your feedback about this chat."
 
   utter_thanks_feedback:
     - text: "Thank you for your feedback!"
@@ -175,6 +202,7 @@ responses:
 actions:
   - action_check_order
   - action_cancel_order
+  - utter_greet
   - action_store_feedback
   - action_find_furniture
   - action_get_manual

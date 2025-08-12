@@ -12,20 +12,24 @@ stories:
   - intent: escalate
   - action: utter_escalate
 
-- story: give_feedback
+- story: feedback_request
   steps:
   - intent: feedback_request
-  - action: feedback_text_form
-  - active_loop: feedback_text_form
+  - action: feedback_form
+  - active_loop: feedback_form
+  - slot_was_set:
+    - requested_slot: feedback_rating
+  - slot_was_set:
+    - feedback_rating: "5"
   - slot_was_set:
     - requested_slot: feedback_text
   - slot_was_set:
-    - feedback_text: test 
+    - feedback_text: "Great service!"
   - slot_was_set:
     - requested_slot: null
   - active_loop: null
   - action: action_store_feedback
-  - action: utter_thanks_feedback
+  - action: utter_thank_for_feedback
 
 - story: interactive_story_2
   steps:

@@ -1,7 +1,7 @@
 from typing import Any, Text, Dict, List, Optional
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet, EventType, FollowupAction
+from rasa_sdk.events import SlotSet, EventType, FollowupAction 
 import urllib.parse
 import re
 import string
@@ -366,19 +366,55 @@ class ActionOrderDetails(Action):
                 pass
                 
 
-
 class SubmitFeedbackForm(Action):
     def name(self) -> str:
         return "action_store_feedback"
 
-    def run(
-        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]
-    ) -> List[Dict[str, Any]]:
-
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+        
         feedback = tracker.get_slot("feedback_text")
         print("Collected feedback:", feedback)
         print("All slots:", tracker.slots)
 
+        return [SlotSet("feedback_text", None),
+            SlotSet("requested_slot", None),
+            ActiveLoop(None)]
+
+class ActionStoreFeedback(Action):
+    def name(self) -> str:
+        return "action_store_feedback"
+
+    def run(self, dispatcher, tracker, domain):
+        rating = tracker.get_slot("feedback_rating")
+        text = tracker.get_slot("feedback_text")
+
+        sender_id = tracker.sender_id
+        user_id, username = sender_id.split("|", 1)  # split into ID and username
+
+        import mysql.connector
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="luxfurn"
+        )
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            INSERT INTO chatbot_reviews (user_id, rating, comment)
+            VALUES (%s, %s, %s)
+            """,
+            (user_id, rating, text)
+        )
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        dispatcher.utter_message(text="Thanks for your feedback!")
         return []
 
 

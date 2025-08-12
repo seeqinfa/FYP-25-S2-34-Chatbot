@@ -10,6 +10,35 @@ nlu:
     - good evening
     - Hello
 
+- intent: show_menu
+  examples: |
+    - show me the menu
+    - what can I do
+    - options
+    - main menu
+- intent: give_feedback
+  examples: |
+    - I want to give feedback
+    - Can I leave a review?
+    - feedback
+
+- intent: inform_rating
+  examples: |
+    - 5
+    - five
+    - 4
+    - four
+    - I give 3 stars
+    - 2 stars
+    - 1 star
+
+- intent: inform_feedback_text
+  examples: |
+    - Great service!
+    - It was okay
+    - I didn’t like it
+    - none
+    
 - intent: goodbye
   examples: |
     - bye
