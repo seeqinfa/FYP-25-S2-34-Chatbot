@@ -12,8 +12,10 @@ $totalPrice = $cartController->getCartTotal();
     <h2 style="text-align: center; margin-bottom: 30px;">Shopping Cart</h2>
     
     <?php if ($cartController->isCartEmpty()): ?>
-        <div style="text-align: center; padding: 50px;">
-            <h3>Your cart is empty</h3>
+        <div style="text-align: center; padding: 50px; padding-bottom: 20px;">
+            <h3 style="padding-bottom: 30px;">
+            Your cart is empty
+            </h3>
             <a href="viewFurnitureUI.php" style="background-color: #e67e22; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Continue Shopping</a>
         </div>
     <?php else: ?>

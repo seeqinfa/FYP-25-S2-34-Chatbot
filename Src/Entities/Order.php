@@ -425,5 +425,47 @@ class Order {
 
         return $orders;
     }
+    public static function getByIdForUser(int $orderId, string $username): ?array
+    {
+        if (!self::$db) { $tmp = new self(); } // ensure DB initialized
+
+        $sql = "SELECT * FROM orders WHERE order_id = ? AND username = ?";
+        $stmt = self::$db->prepare($sql);
+        $stmt->bind_param("is", $orderId, $username);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        return $res->fetch_assoc() ?: null;
+    }
+
+    public static function listForUser(string $username, int $limit = 50, int $offset = 0): array
+    {
+        if (!self::$db) { $tmp = new self(); }
+
+        $sql = "SELECT order_id, total_amount, order_status, created_at
+                FROM orders
+                WHERE username = ?
+            ORDER BY created_at DESC
+                LIMIT ? OFFSET ?";
+        $stmt = self::$db->prepare($sql);
+        $stmt->bind_param("sii", $username, $limit, $offset);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        return $res->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public static function cancelForUser(int $orderId, string $username): bool
+    {
+        if (!self::$db) { $tmp = new self(); }
+
+        $sql = "UPDATE orders
+                SET order_status = 'cancelled', updated_at = CURRENT_TIMESTAMP
+                WHERE order_id = ? AND username = ?
+                AND order_status IN ('pending','processing')";
+        $stmt = self::$db->prepare($sql);
+        $stmt->bind_param("is", $orderId, $username);
+        $stmt->execute();
+        return $stmt->affected_rows > 0;
+    }
+
 }
 ?>

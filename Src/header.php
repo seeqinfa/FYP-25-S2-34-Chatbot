@@ -3,6 +3,35 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once dirname(__DIR__) . '/src/config.php';
+
+/* -------------------------------------------------------------------
+   Backfill session with user_id (and role) from DB when username exists
+   Assumes: $conn is a mysqli connection and users table has (id, username, role)
+------------------------------------------------------------------- */
+if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
+    if (isset($conn) && $conn instanceof mysqli) {
+        if ($stmt = $conn->prepare("SELECT id, role FROM users WHERE username = ? LIMIT 1")) {
+            $stmt->bind_param('s', $_SESSION['username']);
+            if ($stmt->execute()) {
+                $res = $stmt->get_result();
+                if ($row = $res->fetch_assoc()) {
+                    $_SESSION['user_id'] = (int)$row['id'];
+                    if (empty($_SESSION['role']) && isset($row['role'])) {
+                        $_SESSION['role'] = $row['role'];
+                    }
+                    // Ensure login flag is aligned
+                    if (empty($_SESSION['is_logged_in'])) {
+                        $_SESSION['is_logged_in'] = true;
+                    }
+                } else {
+                    // Username not found in DB → clear inconsistent session bits
+                    unset($_SESSION['user_id'], $_SESSION['role'], $_SESSION['is_logged_in']);
+                }
+            }
+            $stmt->close();
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -109,6 +138,36 @@ require_once dirname(__DIR__) . '/src/config.php';
             display: block;
         }
 
+        /* Put this AFTER your existing nav CSS (ideally in header.php after the current styles) */
+
+        /* Keep dropdown panel solid white above everything */
+        header .navigation .nav-dropdown-content {
+        background: #fff;
+        z-index: 1000;
+        }
+
+        /* Stronger selector so it beats `.navigation a { color:white; }` */
+        header .navigation .nav-dropdown-content a {
+        color: #000;               /* default black text */
+        background: #fff;          /* no transparency */
+        padding: 12px 16px;
+        display: block;
+        text-decoration: none;
+        font-size: 14px;
+        margin-left: 0;            /* don’t inherit nav spacing */
+        }
+
+        /* Remove the animated underline from dropdown items */
+        header .navigation .nav-dropdown-content a::after {
+        content: none !important;
+        }
+
+        /* Hover state: orange bg, white text */
+        header .navigation .nav-dropdown-content a:hover {
+        background: #e67e22;
+        color: #fff;
+        }
+
         /* Logo */
         .logo-img {
             height: 40px;
@@ -143,7 +202,13 @@ require_once dirname(__DIR__) . '/src/config.php';
     </div>
     <nav class="navigation">
         <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/aboutpageUI.php">About</a>
-        <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewFurnitureUI.php">View Furniture</a>
+        <div class="nav-dropdown">
+            <a href="#" class="nav-link">Furniture ▾</a>
+            <div class="nav-dropdown-content">
+                <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewFurnitureUI.php">View Furniture</a>
+                <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/CustomerInstructionmanualUI.php">Instruction Manuals</a>
+            </div>
+        </div>
         <div class="nav-dropdown">
             <a href="#" class="nav-link">My Orders ▾</a>
             <div class="nav-dropdown-content">
@@ -152,7 +217,7 @@ require_once dirname(__DIR__) . '/src/config.php';
             </div>
         </div>
         <?php if (!empty($_SESSION['is_logged_in'])): ?>
-            <?php if ($_SESSION['role'] === 'admin'): ?>
+            <?php if (!empty($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                 <a href="../admin/adminDashboardUI.php">Admin Dashboard</a>
             <?php endif; ?>
             <span style="color:white; margin-left:20px;">Welcome, <?= htmlspecialchars($_SESSION['username']) ?></span>
@@ -304,7 +369,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    sender: "<?=$_SESSION['username']?>",   // use session as sender id
+                    sender: "<?= htmlspecialchars($_SESSION['username']) ?>",
                     message: userText
                 })
             });
@@ -325,7 +390,6 @@ document.addEventListener("DOMContentLoaded", () => {
         scrollToBottom();
 
         /* 2c. Save both user & bot lines via PHP controller */
-        // combine all bot texts into one string separated by || (or save only first)
         const botText = botReplies.map(r => r.text).filter(Boolean).join(" || ");
 
         fetch("/FYP-25-S2-34-Chatbot/Src/Controllers/chatbotController.php", {
