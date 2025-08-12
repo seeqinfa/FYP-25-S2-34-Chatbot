@@ -1,4 +1,9 @@
 <?php
+
+if (isset($_SERVER['SCRIPT_FILENAME']) && realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) {
+    header('Location: /FYP-25-S2-34-Chatbot/Src/Boundary/index.php');
+    exit;
+}
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
