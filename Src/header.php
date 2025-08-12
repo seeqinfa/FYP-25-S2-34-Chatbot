@@ -7,6 +7,8 @@ if (isset($_SERVER['SCRIPT_FILENAME']) && realpath(__FILE__) === realpath($_SERV
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+$flash = $_SESSION['message'] ?? null;
+if ($flash !== null) { unset($_SESSION['message']); }
 require_once dirname(__DIR__) . '/src/config.php';
 
 /* -------------------------------------------------------------------
@@ -208,11 +210,39 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
 		.chat-button:hover {
 			background-color: #0056b3;
 		}
-
+	  /* Centered flash overlay */
+	  .flash-overlay{
+		position:fixed; inset:0;
+		display:flex; align-items:center; justify-content:center;
+		background:rgba(0,0,0,.35);
+		z-index:10000; /* above nav/modal */
+	  }
+	  .flash-box{
+		position:relative;
+		background:#fdecea; color:#721c24;
+		border:1px solid #f5c6cb; border-radius:10px;
+		padding:16px 44px 16px 16px;
+		width:min(520px,90vw); max-width:90vw;
+		text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.2);
+		font-size:14px;
+	  }
+	  .flash-box .flash-close{
+		position:absolute; right:8px; top:6px;
+		background:transparent; border:0; font-size:20px;
+		cursor:pointer; line-height:1;
+	  }
 
     </style>
 </head>
 <body>
+<?php if (!empty($flash)): ?>
+  <div class="flash-overlay" id="flashOverlay" role="dialog" aria-modal="true" aria-live="polite">
+    <div class="flash-box">
+      <?= htmlspecialchars($flash) ?>
+      <button type="button" class="flash-close" aria-label="Close">×</button>
+    </div>
+  </div>
+<?php endif; ?>
 
 <header>
     <div class="logo-container">
@@ -321,6 +351,7 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
     </div>
 <?php endif; ?>
 
+</body>
 <!-- External Scripts -->
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -336,7 +367,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginLink     = document.querySelector(".login-link");
     const loginForm     = document.querySelector(".form-box.login");
     const registerForm  = document.querySelector(".form-box.register");
+	const flashOverlay = document.getElementById('flashOverlay');
+	if (flashOverlay) {
+	  const closeBtn = flashOverlay.querySelector('.flash-close');
+	  function closeFlash(){ flashOverlay.remove(); }
 
+	  closeBtn && closeBtn.addEventListener('click', function(e){ e.preventDefault(); closeFlash(); });
+	  flashOverlay.addEventListener('click', function(e){ if (e.target === flashOverlay) closeFlash(); });
+	  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeFlash(); }, { once:true });
+	}
+	
     loginBtn?.addEventListener("click", () => {
         document.body.style.overflow = "hidden";
         wrapper.classList.add("active-popup");
