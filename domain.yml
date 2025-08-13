@@ -26,6 +26,7 @@ entities:
   - contact_email
   - category
   - dimensions
+  - product_name
 
 slots:
   order_id:
@@ -250,6 +251,7 @@ actions:
   - action_order_details
   - utter_ask_order_id
   - action_create_support_ticket
+  - action_show_furniture_recommendations
 
 session_config:
   session_expiration_time: 60

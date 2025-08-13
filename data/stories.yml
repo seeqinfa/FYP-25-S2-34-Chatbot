@@ -1,12 +1,5 @@
 version: "3.1"
 stories:
-- story: find_furniture
-  steps:
-  - intent: search_furniture
-  - action: utter_ask_dimensions
-  - intent: provide_dimensions
-  - action: utter_example_rec
-
 - story: escalate_to_human
   steps:
   - intent: escalate
@@ -30,17 +23,6 @@ stories:
   - active_loop: null
   - action: action_store_feedback
   - action: utter_thank_for_feedback
-
-- story: interactive_story_2
-  steps:
-  - intent: search_furniture
-    entities:
-    - furniture_name: chair
-  - slot_was_set:
-    - furniture_name: chair
-  - action: utter_ask_dimensions
-  - intent: provide_dimensions
-  - action: utter_example_rec
   
 - story: manual direct with entity
   steps:

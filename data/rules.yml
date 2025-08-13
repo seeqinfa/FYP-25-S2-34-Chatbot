@@ -46,11 +46,6 @@ rules:
     - action: action_store_feedback
     - action: utter_thank_for_feedback
 
-- rule: Provide recommendation
-  steps:
-  - intent: search_furniture
-  - action: utter_ask_dimensions
-
 #cancel flow
 - rule: Start cancel flow (auto-pick or list)
   steps:
@@ -121,3 +116,8 @@ rules:
     - action: ticket_form
     - active_loop: null
     - action: action_create_support_ticket
+
+- rule: Show furniture recommendations via link
+  steps:
+    - intent: search_furniture
+    - action: action_show_furniture_recommendations

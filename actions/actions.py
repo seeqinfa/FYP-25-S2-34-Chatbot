@@ -7,6 +7,7 @@ import re
 import string
 import mysql.connector
 from mysql.connector.connection import MySQLConnection
+from urllib.parse import quote_plus
 # -------------------------------------------------------------------
 # Shared data / constants
 # -------------------------------------------------------------------
@@ -596,3 +597,53 @@ class ActionCreateSupportTicket(Action):
                 if conn and conn.is_connected(): conn.close()
             except Exception:
                 pass
+
+class ActionShowFurnitureRecommendations(Action):
+    def name(self) -> Text:
+        return "action_show_furniture_recommendations"
+
+    def _extract_query(self, tracker: Tracker) -> Optional[str]:
+        # Prefer an extracted entity if you use one
+        ents = tracker.latest_message.get("entities", []) or []
+        for e in ents:
+            if e.get("entity") in {"product_name", "furniture", "search_term"}:
+                val = (e.get("value") or "").strip()
+                if val:
+                    return val
+
+        # Fallback: use the raw user text minus common lead-in phrases
+        text = (tracker.latest_message.get("text") or "").strip()
+        if not text:
+            return None
+
+        # Strip simple prefixes like "I'm looking for", "show me", "find", "search"
+        lowered = text.lower()
+        prefixes = [
+            "i'm looking for", "im looking for", "i am looking for",
+            "show me", "find", "search", "i want a", "i want an", "i want"
+        ]
+        for p in prefixes:
+            if lowered.startswith(p):
+                text = text[len(p):].strip(" :,-")
+                break
+        return text if text else None
+    
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+
+        query = self._extract_query(tracker) or "furniture"
+        q = quote_plus(query)
+
+        # Base URL to your customer search UI
+        base = "http://localhost/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewFurnitureUI.php"
+        url = f"{base}?search={q}"
+
+        # Friendly message + direct link
+        dispatcher.utter_message(
+            text=f"LuxFurn's options for '{query}' are: <a href='{url}' target='_blank'>Click here</a>"
+        )
+        return []

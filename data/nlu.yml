@@ -77,15 +77,12 @@ nlu:
 
 - intent: search_furniture
   examples: |
-    - I need a sofa for 3 meters wide space
-    - show me furniture that fits 200x100x75
-    - recommend furniture for small room
-    - show me something for my living room
-    - find me a small coffee table
-    - do you have recliners?
-    - I'm looking for a wardrobe
-    - I want a new bed
-    - I'm thinking of buying a new computer [chair](furniture_name), do you have any recommendations?
+    - I'm looking for a black chair
+    - show me [black chair](product_name)
+    - find [brown sofa](product_name)
+    - I want a [wooden dining table](product_name)
+    - [office desk](product_name)
+    - search [blue armchair](product_name)
 
 - intent: open_support_ticket
   examples: |
