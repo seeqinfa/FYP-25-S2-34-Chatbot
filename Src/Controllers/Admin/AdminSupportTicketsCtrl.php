@@ -41,5 +41,8 @@ class AdminSupportTicketsCtrl {
     public function updateTicketStatus(int $ticketId, string $status): bool {
         return $this->ticketEntity->updateStatus($ticketId, $status);
     }
+    public function resolveTicket(int $ticketId): bool {
+    return $this->ticketEntity->updateStatus($ticketId, 'resolved');
+}
 }
 ?>
