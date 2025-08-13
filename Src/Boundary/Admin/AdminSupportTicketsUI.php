@@ -15,6 +15,10 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 // Use logged-in admin id if available; otherwise reply anonymously
 $adminId = $_SESSION['admin_id'] ?? null;
 
+// View-only flag when opening from the View button
+$mode = $_GET['mode'] ?? $_POST['mode'] ?? null;
+$viewOnly = (($mode === 'view') || (isset($_GET['readonly']) && $_GET['readonly'] == '1'));
+
 
 // Generate CSRF token
 if (empty($_SESSION['csrf_token'])) {
@@ -22,13 +26,28 @@ if (empty($_SESSION['csrf_token'])) {
 }
 
 // Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['response'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['response']) && !$viewOnly) {
     $ticketId = (int)($_POST['ticket_id'] ?? 0);
     $message  = trim($_POST['response'] ?? '');
 
     try {
         $controller->respondToTicket($ticketId, $adminId, $message);
         $success = "Reply sent.";
+    } catch (Throwable $e) {
+        $error = $e->getMessage();
+    }
+}
+// Handle ticket resolution
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['resolve_ticket'])) {
+    try {
+        $ticketId = (int)($_POST['ticket_id'] ?? 0);
+        $controller->resolveTicket($ticketId);
+        $success = "Ticket marked as resolved.";
+        // Refresh the ticket data
+        $ticket = $controller->getTicketDetails($ticketId);
+        if ($ticket) {
+            $ticket['replies'] = $controller->getTicketReplies($ticket['id']);
+        }
     } catch (Throwable $e) {
         $error = $e->getMessage();
     }
@@ -73,7 +92,7 @@ $tickets = $controller->getAllTickets();
         }
         th, td {
             padding: 12px 15px;
-            text-align: left;
+            text-align: center;
             border-bottom: 1px solid #ddd;
         }
         th {
@@ -93,7 +112,7 @@ $tickets = $controller->getAllTickets();
             font-weight: bold;
         }
         .btn {
-            padding: 6px 12px;
+            padding: 0px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -198,16 +217,19 @@ $tickets = $controller->getAllTickets();
                     <?php endforeach; ?>
                 <?php endif; ?>
                 
-                <form method="POST">
-                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-                    <input type="hidden" name="ticket_id" value="<?php echo (int)$ticket['id']; ?>">
-                <div>
-                    <label for="response"><strong>Your Response:</strong></label>
-                    <textarea name="response" id="response" required oninput="updateCounter()"></textarea>
-                    <span id="charCounter">0/1000 characters</span>
-                </div>
-                    <button type="submit" class="btn btn-respond">Send Response</button>
-                </form>
+                <?php if (!$viewOnly): ?>
+                    <form method="POST">
+                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                        <input type="hidden" name="ticket_id" value="<?php echo (int)$ticket['id']; ?>">
+                        <input type="hidden" name="mode" value="<?php echo htmlspecialchars($mode); ?>">
+                        <div>
+                            <label for="response"><strong>Your Response:</strong></label>
+                            <textarea name="response" id="response" required oninput="updateCounter()"></textarea>
+                            <span id="charCounter">0/1000 characters</span>
+                        </div>
+                        <button type="submit" class="btn btn-respond">Send Response</button>
+                    </form>
+                <?php endif; ?>
 
             </div>
         <?php else: ?>
@@ -232,7 +254,7 @@ $tickets = $controller->getAllTickets();
                             <td><?php echo htmlspecialchars($ticket['created_at']); ?></td>
                             <td>
                                 <a href="AdminSupportTicketsUI.php?id=<?php echo $ticket['id']; ?>" class="btn btn-respond">Respond</a>
-                                <a href="AdminSupportTicketsUI.php?id=<?php echo $ticket['id']; ?>" class="btn btn-view">View</a>
+                                <a href="AdminSupportTicketsUI.php?id=<?php echo $ticket['id']; ?>&mode=view" class="btn btn-view">View</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
