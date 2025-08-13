@@ -46,32 +46,34 @@ class ChatbotEntity
         $stmt->execute([':u'=>$username, ':s'=>$sender, ':t'=>$text]);
     }
 
-    public function fetchRecentMessages(string $username, int $limit = 1000): array
-    {
-        $limit = (int)$limit;
-        $stmt = $this->db->prepare(
-            "SELECT sender, message_text
-               FROM chat_messages
-              WHERE username = :u
-              ORDER BY created_at ASC
-              LIMIT $limit"
-        );
-        $stmt->execute([':u'=>$username]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    /* ---------- 3. Admin helpers (listing & drill-down) ---------- */
+    public function fetchRecentMessages(string $username, int $limit = 100): array
+	{
+		$limit = max(1, (int)$limit);
 
-    /**
-     * List conversations grouped by username with counts and timestamps.
-     * Returns: ['rows' => [...], 'total' => int]
-     *
-     * Each row: [
-     *   'username'   => string,
-     *   'started_at' => string (YYYY-MM-DD HH:MM:SS),
-     *   'last_at'    => string,
-     *   'msg_count'  => int
-     * ]
-     */
+
+		$sql = "
+			SELECT sender, message_text, created_at
+			FROM (
+				SELECT sender, message_text, created_at
+				FROM chat_messages
+				WHERE username = :u
+				ORDER BY created_at DESC
+				LIMIT :lim
+			) recent
+			ORDER BY created_at ASC
+		";
+
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindValue(':u', $username, PDO::PARAM_STR);
+
+		$stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
+
+		$stmt->execute();
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$stmt->closeCursor();
+		return $rows;
+	}
+
     public function listConversations(
         string $search = '',
         int $page = 1,
@@ -142,23 +144,33 @@ class ChatbotEntity
      *   'created_at'   => string
      * ]
      */
-    public function getConversationByUsername(string $username, int $limit = 1000): array {
-        $limit = max(1, (int)$limit);
-
-        $sql = "
+public function getConversationByUsername(string $username, int $limit = 100): array {
+    // Pull most recent N, then present oldest -> newest
+    $sql = "
+        SELECT sender, message_text, created_at
+        FROM (
             SELECT sender, message_text, created_at
             FROM chat_messages
             WHERE username = :u
-            ORDER BY created_at ASC
+            ORDER BY created_at DESC, sender DESC
             LIMIT :lim
-        ";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':u', $username, PDO::PARAM_STR);
-        $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
-        $stmt->execute();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $stmt->closeCursor();
-        return $rows;
-    }
+        ) recent
+        ORDER BY created_at ASC, sender ASC
+    ";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindValue(':u', $username, PDO::PARAM_STR);
+
+    // Depending on your PDO settings, binding LIMIT may require emulated prepares.
+    // If you ever get a SQL error here, cast and inline:
+    // $limit = (int)$limit; $sql = str_replace(':lim', $limit, $sql);
+    $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
+
+    $stmt->execute();
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->closeCursor();
+    return $rows;
+}
+
 
 }
