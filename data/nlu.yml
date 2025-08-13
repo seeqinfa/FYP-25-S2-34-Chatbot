@@ -87,12 +87,16 @@ nlu:
     - I want a new bed
     - I'm thinking of buying a new computer [chair](furniture_name), do you have any recommendations?
 
-- intent: escalate
+- intent: open_support_ticket
   examples: |
-    - talk to a human
-    - I need help from an agent
-    - escalate this issue
     - I want to talk to a human
+    - I need support
+    - Start a support ticket
+    - Raise a ticket
+    - I have an issue with my order
+    - I need help from support
+    - Can I open a ticket?
+    - I want to contact support
 
 - intent: feedback_request
   examples: |

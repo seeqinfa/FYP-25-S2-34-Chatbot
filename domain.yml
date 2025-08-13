@@ -19,9 +19,12 @@ intents:
   - instruction_manual
   - inform
   - select_order
+  - open_support_ticket
 entities:
   - order_id
   - furniture_name
+  - contact_email
+  - category
   - dimensions
 
 slots:
@@ -63,6 +66,24 @@ slots:
           - active_loop: feedback_form
             requested_slot: feedback_text
 
+  ticket_subject:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: ticket_form
+            requested_slot: ticket_subject
+  
+  ticket_message:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: ticket_form
+            requested_slot: ticket_message
+
   # slot used by the manual form
   manual_furniture:
     type: text
@@ -99,6 +120,11 @@ forms:
       - provide_dimensions
     required_slots:
       - manual_furniture
+  
+  ticket_form:
+    required_slots:
+      - ticket_subject
+      - ticket_message
 
 responses:
   utter_greet:
@@ -199,6 +225,18 @@ responses:
   utter_ask_manual_furniture:
     - text: "Which furniture item do you need the instruction manual for?"
 
+  utter_ask_ticket_subject:
+    - text: "What's the subject of your support request? (e.g., 'Damaged item delivered')"
+
+  utter_ask_ticket_message:
+    - text: "Please describe the issue in a sentence or two."
+
+  utter_ticket_created:
+    - text: "Ticket #{ticket_id} created. Our team will follow up shortly."
+
+  utter_ticket_error:
+    - text: "Sorry—something went wrong creating your ticket."
+
 actions:
   - action_check_order
   - action_cancel_order
@@ -211,6 +249,8 @@ actions:
   - action_pick_order_for_info
   - action_order_details
   - utter_ask_order_id
+  - action_create_support_ticket
+
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: false

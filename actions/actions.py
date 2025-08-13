@@ -533,3 +533,66 @@ class ActionResetManualSlot(Action):
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[EventType]:
         return [SlotSet("manual_furniture", None)]
+
+class ActionCreateSupportTicket(Action):
+    def name(self) -> Text:
+        return "action_create_support_ticket"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
+        subject = (tracker.get_slot("ticket_subject") or "").strip()
+        message = (tracker.get_slot("ticket_message") or "").strip()
+
+        # Expect sender_id to look like "123|username" (you already use this pattern)
+        user_id = None
+        try:
+            sender_id = tracker.sender_id or ""
+            parts = sender_id.split("|", 1)
+            if parts and parts[0].strip().isdigit():
+                user_id = int(parts[0].strip())
+        except Exception:
+            user_id = None
+
+        if not user_id:
+            dispatcher.utter_message(text="Please log in to create a support ticket.")
+            return []
+
+        if not subject or not message:
+            dispatcher.utter_message(text="I need both a subject and a brief description to file your ticket.")
+            return []
+
+        conn = cur = None
+        try:
+            conn = _connect()
+            cur = conn.cursor()
+            cur.execute(
+                """
+                INSERT INTO support_tickets (user_id, subject, message)
+                VALUES (%s, %s, %s)
+                """,
+                (user_id, subject, message),
+            )
+            conn.commit()
+
+            # get the new ticket id
+            ticket_id = cur.lastrowid
+
+            dispatcher.utter_message(response="utter_ticket_created", ticket_id=ticket_id)
+            return [
+                SlotSet("ticket_subject", None),
+                SlotSet("ticket_message", None),
+            ]
+        except Exception as e:
+            print("DB error create ticket:", e)
+            dispatcher.utter_message(response="utter_ticket_error")
+            return []
+        finally:
+            try:
+                if cur: cur.close()
+                if conn and conn.is_connected(): conn.close()
+            except Exception:
+                pass

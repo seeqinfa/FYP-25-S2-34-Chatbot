@@ -107,3 +107,17 @@ rules:
   steps:
     - intent: instruction_manual
     - action: action_get_manual
+
+- rule: Open ticket → run form
+  steps:
+    - intent: open_support_ticket
+    - action: ticket_form
+    - active_loop: ticket_form
+
+- rule: Submit ticket form
+  condition:
+    - active_loop: ticket_form
+  steps:
+    - action: ticket_form
+    - active_loop: null
+    - action: action_create_support_ticket
