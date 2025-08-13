@@ -1,10 +1,10 @@
 <?php
-// Src/Controllers/Admin/AdminSupportTicketsCtrl.php
+// Src/Controllers/Admin/CustomerSupportTicketsCtrl.php
 declare(strict_types=1);
 
 require_once dirname(__DIR__, 2) . '/Entities/Support_Tickets.php';
 
-final class AdminSupportTicketsCtrl
+final class CustomerSupportTicketsCtrl
 {
     private SupportTicketRepo $repo;
 
@@ -68,5 +68,12 @@ final class AdminSupportTicketsCtrl
             throw new RuntimeException('Repository is missing getTicketsForAdmin().');
         }
         return $this->repo->getTicketsForAdmin($adminId);
+    }
+    public function getTicketsForUser(int $userId): array
+    {
+        if (!method_exists($this->repo, 'getTicketsForUser')) {
+            throw new RuntimeException('Repository is missing getTicketsForUser().');
+        }
+        return $this->repo->getTicketsForUser($userId);
     }
 }

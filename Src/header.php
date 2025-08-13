@@ -251,32 +251,39 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
             <h2 class="logo-text">LuxFurn</h2>
         </a>
     </div>
-    <nav class="navigation">
-        <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/aboutpageUI.php">About</a>
-        <div class="nav-dropdown">
-            <a href="#" class="nav-link">Furniture ▾</a>
-            <div class="nav-dropdown-content">
-                <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewFurnitureUI.php">View Furniture</a>
-                <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/CustomerInstructionmanualUI.php">Instruction Manuals</a>
-            </div>
+   <nav class="navigation">
+    <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/aboutpageUI.php">About</a>
+    <div class="nav-dropdown">
+        <a href="#" class="nav-link">Furniture ▾</a>
+        <div class="nav-dropdown-content">
+            <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewFurnitureUI.php">View Furniture</a>
+            <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/CustomerInstructionmanualUI.php">Instruction Manuals</a>
         </div>
-        <div class="nav-dropdown">
-            <a href="#" class="nav-link">My Orders ▾</a>
-            <div class="nav-dropdown-content">
-                <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/CartUI.php">View Cart</a>
-                <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewOrderUI.php">View Order</a>
-            </div>
+    </div>
+    <div class="nav-dropdown">
+        <a href="#" class="nav-link">My Orders ▾</a>
+        <div class="nav-dropdown-content">
+            <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/CartUI.php">View Cart</a>
+            <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewOrderUI.php">View Order</a>
         </div>
-        <?php if (!empty($_SESSION['is_logged_in'])): ?>
-            <?php if (!empty($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/admin/adminDashboardUI.php">Admin Dashboard</a>
-            <?php endif; ?>
-            <span style="color:white; margin-left:20px;">Welcome, <?= htmlspecialchars($_SESSION['username']) ?></span>
-            <a href="<?= CONTROLLERS_URL ?>/logoutController.php">Logout</a>
-        <?php else: ?>
-            <button class="btnLogin">Login</button>
+    </div>
+    <div class="nav-dropdown">
+        <a href="#" class="nav-link">Tickets ▾</a>
+        <div class="nav-dropdown-content">
+            <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/CustomerSupportTicketsUI.php">My Tickets</a>
+        </div>
+    </div>
+    <?php if (!empty($_SESSION['is_logged_in'])): ?>
+        <?php if (!empty($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+            <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/admin/adminDashboardUI.php">Admin Dashboard</a>
         <?php endif; ?>
-    </nav>
+        <span style="color:white; margin-left:20px;">Welcome, <?= htmlspecialchars($_SESSION['username']) ?></span>
+        <a href="<?= CONTROLLERS_URL ?>/logoutController.php">Logout</a>
+    <?php else: ?>
+        <button class="btnLogin">Login</button>
+    <?php endif; ?>
+</nav>
+
 </header>
 
 <!-- Login/Register Modal -->

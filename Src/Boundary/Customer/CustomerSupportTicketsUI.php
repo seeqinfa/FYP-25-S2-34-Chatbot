@@ -1,36 +1,37 @@
 <?php
 include '../../header.php';
-require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminSupportTicketsCtrl.php';
+require_once dirname(__DIR__, 2) . '/Controllers/Customer/CustomerSupportTicketsCtrl.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
 
-/* Resolve current admin id from session.
-   You said user id is passed via header.php, so we use user_id. */
-$adminId = $_SESSION['user_id'] ?? null;
+/* The logged-in customer */
+$userId = $_SESSION['user_id'] ?? null;
 
-$ctrl = new AdminSupportTicketsCtrl();
+/* Use the customer controller */
+$ctrl = new CustomerSupportTicketsCtrl();
+
 $error = $success = '';
 $mode = $_GET['mode'] ?? $_POST['mode'] ?? null;
 $viewOnly = ($mode === 'view') || (isset($_GET['readonly']) && $_GET['readonly'] == '1');
 
 /* CSRF */
-if (empty($_SESSION['csrf_ticket'])) {
-    $_SESSION['csrf_ticket'] = bin2hex(random_bytes(32));
+if (empty($_SESSION['csrf_ticket_user'])) {
+    $_SESSION['csrf_ticket_user'] = bin2hex(random_bytes(32));
 }
-$csrf = $_SESSION['csrf_ticket'];
+$csrf = $_SESSION['csrf_ticket_user'];
 
 /* Helper: enforce ownership */
-function ensure_assigned_or_throw(?array $ticket, ?int $adminId): void {
+function ensure_owner_or_throw(?array $ticket, ?int $userId): void {
     if (!$ticket) {
         throw new RuntimeException('Ticket not found.');
     }
-    if (!$adminId || (int)$ticket['assigned_admin_id'] !== (int)$adminId) {
+    if (!$userId || (int)$ticket['user_id'] !== (int)$userId) {
         http_response_code(403);
         throw new RuntimeException('You are not allowed to view or modify this ticket.');
     }
 }
 
-/* POST: reply (only if assigned to this admin and not in view mode) */
+/* POST: reply (customer) — no resolve here */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['response'])) {
     try {
         if ($viewOnly) { throw new RuntimeException('View-only mode: replies are disabled.'); }
@@ -38,37 +39,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['response'])) {
 
         $ticketId = (int)($_POST['ticket_id'] ?? 0);
         $t = $ctrl->getTicketDetails($ticketId);
-        ensure_assigned_or_throw($t, $adminId);
+        ensure_owner_or_throw($t, $userId);
 
         $msg = trim($_POST['response'] ?? '');
-        $ctrl->respondToTicket($ticketId, $adminId, $msg);
+        // Save as customer reply (admin_id = NULL inside the controller/repo)
+        if (method_exists($ctrl, 'respondAsCustomer')) {
+            $ctrl->respondAsCustomer($ticketId, (int)$userId, $msg);
+        } else {
+            // fallback if you still use the admin-style method
+            $ctrl->respondToTicket($ticketId, null, $msg);
+        }
         $success = 'Reply sent.';
-        $_GET['id'] = $ticketId; // stay on the same ticket
-    } catch (Throwable $e) { $error = $e->getMessage(); }
-}
-
-/* POST: resolve (only if assigned to this admin and not in view mode) */
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['resolve_ticket'])) {
-    try {
-        if ($viewOnly) { throw new RuntimeException('View-only mode: cannot resolve in view mode.'); }
-        if (!hash_equals($csrf, $_POST['csrf'] ?? '')) { throw new RuntimeException('Invalid CSRF token.'); }
-
-        $ticketId = (int)($_POST['ticket_id'] ?? 0);
-        $t = $ctrl->getTicketDetails($ticketId);
-        ensure_assigned_or_throw($t, $adminId);
-
-        $ctrl->resolveTicket($ticketId);
-        $success = 'Ticket marked as resolved.';
         $_GET['id'] = $ticketId;
     } catch (Throwable $e) { $error = $e->getMessage(); }
 }
 
-/* GET: single ticket view (only if assigned to this admin) */
+/* GET: single ticket view (only yours) */
 $ticket = null; $replies = [];
 if (isset($_GET['id'])) {
     try {
         $ticket = $ctrl->getTicketDetails((int)$_GET['id']);
-        ensure_assigned_or_throw($ticket, $adminId);
+        ensure_owner_or_throw($ticket, $userId);
         $replies = $ctrl->getTicketReplies((int)$ticket['id']);
     } catch (Throwable $e) {
         $error = $e->getMessage();
@@ -76,22 +67,31 @@ if (isset($_GET['id'])) {
     }
 }
 
-/* Listing: only tickets assigned to this admin */
+/* Listing: only tickets created by this user */
 $tickets = [];
 if (!$ticket) {
-    if ($adminId) {
-        // requires getTicketsForAdmin($adminId) in controller
-        $tickets = $ctrl->getTicketsForAdmin((int)$adminId);
+    if ($userId) {
+        if (method_exists($ctrl, 'getTicketsForUser')) {
+            $tickets = $ctrl->getTicketsForUser((int)$userId);
+        } else {
+            // fallback: if your controller exposes listTicketsForUser
+            $tickets = $ctrl->listTicketsForUser((int)$userId);
+        }
     } else {
-        $error = 'Please log in to see your assigned tickets.';
+        $error = 'Please log in to see your tickets.';
     }
+}
+
+/* Helper: label for replies (admin vs you) */
+function reply_label(?int $adminId): string {
+    return is_null($adminId) ? 'You' : ('Admin #' . $adminId);
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Support Tickets</title>
+<title>My Support Tickets</title>
 <link rel="stylesheet" href="../../CSS/style.css">
 <style>
   .container { margin-top:140px; max-width:1200px; padding:0 20px; margin-inline:auto; }
@@ -113,7 +113,6 @@ if (!$ticket) {
   .btn-blue { background:#3498db; }
   .btn-purple { background:#9b59b6; }
   .btn-grey { background:#95a5a6; }
-  .btn-green { background:#27ae60; }
 
   textarea { width:100%; min-height:120px; padding:10px; border:1px solid #ddd; border-radius:6px; resize:vertical; }
   .reply { background:#fafafa; border:1px solid #eee; border-radius:8px; padding:10px; margin:8px 0; }
@@ -122,7 +121,7 @@ if (!$ticket) {
 </head>
 <body>
 <div class="container">
-  <h1>Support Tickets</h1>
+  <h1>My Support Tickets</h1>
 
   <div class="fixed-ticket-width">
     <?php if ($success): ?><div class="message ok"><?= htmlspecialchars($success) ?></div><?php endif; ?>
@@ -131,21 +130,21 @@ if (!$ticket) {
 
   <?php if ($ticket): ?>
     <div class="fixed-ticket-width">
-      <a class="btn btn-grey" href="AdminSupportTicketsUI.php">&larr; Back to Tickets</a>
+      <a class="btn btn-grey" href="CustomerSupportTicketsUI.php">&larr; Back to My Tickets</a>
 
       <div class="panel">
         <h2>Ticket #<?= (int)$ticket['id'] ?> — <?= htmlspecialchars($ticket['subject']) ?></h2>
         <p><strong>Status:</strong>
           <span class="status-<?= strtolower($ticket['status']) ?>"><?= htmlspecialchars(ucfirst($ticket['status'])) ?></span>
         </p>
-        <p><strong>Original Message:</strong></p>
+        <p><strong>Your original message:</strong></p>
         <div class="reply"><?= nl2br(htmlspecialchars($ticket['message'])) ?></div>
 
         <?php if ($replies): ?>
-          <h3>Responses</h3>
+          <h3>Conversation</h3>
           <?php foreach ($replies as $r): ?>
             <div class="reply">
-              <div class="meta">Admin #<?= htmlspecialchars((string)$r['admin_id']) ?> • <?= htmlspecialchars($r['created_at']) ?></div>
+              <div class="meta"><?= htmlspecialchars(reply_label($r['admin_id'])) ?> • <?= htmlspecialchars($r['created_at']) ?></div>
               <div><?= nl2br(htmlspecialchars($r['message'])) ?></div>
             </div>
           <?php endforeach; ?>
@@ -156,24 +155,15 @@ if (!$ticket) {
             <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf) ?>">
             <input type="hidden" name="ticket_id" value="<?= (int)$ticket['id'] ?>">
             <div>
-              <label><strong>Your response</strong></label>
+              <label><strong>Your reply</strong></label>
               <textarea name="response" required></textarea>
             </div>
             <div style="margin-top:8px;">
-              <button type="submit" class="btn btn-blue">Send Response</button>
+              <button type="submit" class="btn btn-blue">Send Reply</button>
             </div>
           </form>
-
-          <form method="post" style="margin-top:8px;">
-            <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf) ?>">
-            <input type="hidden" name="ticket_id" value="<?= (int)$ticket['id'] ?>">
-            <input type="hidden" name="resolve_ticket" value="1">
-            <button type="submit" class="btn btn-green">Mark as Resolved</button>
-          </form>
-
         <?php elseif (strtolower($ticket['status']) !== 'resolved'): ?>
-          <div class="message ok">Viewing only. Replies and resolving are disabled.</div>
-
+          <div class="message ok">Viewing only. Replies are disabled.</div>
         <?php else: ?>
           <div class="message ok">This ticket is resolved. Replies are disabled.</div>
         <?php endif; ?>
@@ -194,10 +184,10 @@ if (!$ticket) {
             </tr>
           </thead>
           <tbody>
-            <?php if (!$adminId): ?>
-              <tr><td colspan="5">Please log in to see your assigned tickets.</td></tr>
+            <?php if (!$userId): ?>
+              <tr><td colspan="5">Please log in to see your tickets.</td></tr>
             <?php elseif (!$tickets): ?>
-              <tr><td colspan="5">No tickets assigned to you.</td></tr>
+              <tr><td colspan="5">You have no tickets yet.</td></tr>
             <?php else: foreach ($tickets as $t): ?>
               <tr>
                 <td><?= (int)$t['id'] ?></td>
@@ -205,8 +195,8 @@ if (!$ticket) {
                 <td class="status-<?= strtolower($t['status']) ?>"><?= htmlspecialchars(ucfirst($t['status'])) ?></td>
                 <td><?= htmlspecialchars($t['created_at']) ?></td>
                 <td>
-                  <a class="btn btn-blue" href="AdminSupportTicketsUI.php?id=<?= (int)$t['id'] ?>">Respond</a>
-                  <a class="btn btn-purple" href="AdminSupportTicketsUI.php?id=<?= (int)$t['id'] ?>&mode=view">View</a>
+                  <a class="btn btn-blue" href="CustomerSupportTicketsUI.php?id=<?= (int)$t['id'] ?>">Reply</a>
+                  <a class="btn btn-purple" href="CustomerSupportTicketsUI.php?id=<?= (int)$t['id'] ?>&mode=view">View</a>
                 </td>
               </tr>
             <?php endforeach; endif; ?>

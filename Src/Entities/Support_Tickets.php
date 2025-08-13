@@ -1,79 +1,119 @@
 <?php
-require_once dirname(__DIR__) . '/db_connect.php';
+// Src/Entities/SupportTicket.php
+declare(strict_types=1);
 
-class Support_Tickets {
-    private $conn;
+require_once dirname(__DIR__) . '/config.php'; // exposes $pdo
 
-    public function __construct($conn) {
-        $this->conn = $conn;
+final class SupportTicketRepo
+{
+    private PDO $db;
+
+    public function __construct(?PDO $pdo = null)
+    {
+        $this->db = $pdo ?? ($GLOBALS['pdo'] ?? null);
+        if (!$this->db instanceof PDO) {
+            throw new RuntimeException('Database connection not initialized.');
+        }
+        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     }
 
-    /** Fetch all tickets, newest first */
-    public function getAllTickets(): array {
-        $sql = "SELECT id, user_id, assigned_admin_id, subject, message, status, created_at
-                FROM support_tickets
-                ORDER BY created_at DESC";
-        $result = mysqli_query($this->conn, $sql);
-        if (!$result) {
-            throw new Exception("DB error fetching tickets: " . mysqli_error($this->conn));
+    /* ---------- Queries ---------- */
+
+    public function listTickets(?string $status = null): array
+    {
+        if ($status) {
+            $st = $this->db->prepare(
+                "SELECT id, user_id, assigned_admin_id, subject, message, status, created_at, updated_at
+                   FROM support_tickets
+                  WHERE status = ?
+                  ORDER BY created_at DESC"
+            );
+            $st->execute([$status]);
+            return $st->fetchAll();
         }
-        $tickets = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $tickets[] = $row;
-        }
-        return $tickets;
+        return $this->db->query(
+            "SELECT id, user_id, assigned_admin_id, subject, message, status, created_at, updated_at
+               FROM support_tickets
+              ORDER BY created_at DESC"
+        )->fetchAll();
     }
 
-    /** Single ticket by id */
-    public function getTicketById(int $ticketId): ?array {
-        $stmt = mysqli_prepare($this->conn, "SELECT id, user_id, assigned_admin_id, subject, message, status, created_at FROM support_tickets WHERE id = ?");
-        mysqli_stmt_bind_param($stmt, "i", $ticketId);
-        if (!mysqli_stmt_execute($stmt)) {
-            throw new Exception("DB error fetching ticket: " . mysqli_error($this->conn));
-        }
-        $res = mysqli_stmt_get_result($stmt);
-        $row = mysqli_fetch_assoc($res);
+    public function getTicket(int $ticketId): ?array
+    {
+        $st = $this->db->prepare(
+            "SELECT id, user_id, assigned_admin_id, subject, message, status, created_at, updated_at
+               FROM support_tickets
+              WHERE id = ?"
+        );
+        $st->execute([$ticketId]);
+        $row = $st->fetch();
         return $row ?: null;
     }
 
-    /** Assign to an admin (column may be NULL) */
-    public function assignToAdmin(int $ticketId, ?int $adminId): bool {
-        $stmt = mysqli_prepare($this->conn, "UPDATE support_tickets SET assigned_admin_id = ? WHERE id = ?");
-        mysqli_stmt_bind_param($stmt, "ii", $adminId, $ticketId);
-        return mysqli_stmt_execute($stmt);
+    public function getReplies(int $ticketId): array
+    {
+        $st = $this->db->prepare(
+            "SELECT id, ticket_id, admin_id, message, created_at
+               FROM support_ticket_replies
+              WHERE ticket_id = ?
+              ORDER BY created_at ASC, id ASC"
+        );
+        $st->execute([$ticketId]);
+        return $st->fetchAll();
     }
 
-    /** Update ticket status: open/responded/resolved */
-    public function updateStatus(int $ticketId, string $status): bool {
-        $allowed = ['open','responded','resolved'];
-        if (!in_array($status, $allowed, true)) {
-            throw new InvalidArgumentException("Invalid status");
-        }
-        $stmt = mysqli_prepare($this->conn, "UPDATE support_tickets SET status = ? WHERE id = ?");
-        mysqli_stmt_bind_param($stmt, "si", $status, $ticketId);
-        return mysqli_stmt_execute($stmt);
+    /* ---------- Mutations ---------- */
+
+    public function addReply(int $ticketId, ?int $adminId, string $message): void
+    {
+        $st = $this->db->prepare(
+            "INSERT INTO support_ticket_replies (ticket_id, admin_id, message)
+             VALUES (?, ?, ?)"
+        );
+        $st->execute([$ticketId, $adminId, $message]);
     }
 
-    /** Add a reply from an admin; also records created_at */
-    public function addReply(int $ticketId, ?int $adminId, string $message): bool {
-        $stmt = mysqli_prepare($this->conn, "INSERT INTO ticket_replies (ticket_id, admin_id, message) VALUES (?, ?, ?)");
-        mysqli_stmt_bind_param($stmt, "iis", $ticketId, $adminId, $message);
-        return mysqli_stmt_execute($stmt);
+    public function bumpStatusAfterReply(int $ticketId): void
+    {
+        $st = $this->db->prepare(
+            "UPDATE support_tickets
+                SET status = CASE WHEN status <> 'resolved' THEN 'responded' ELSE status END,
+                    updated_at = CURRENT_TIMESTAMP
+              WHERE id = ?"
+        );
+        $st->execute([$ticketId]);
     }
 
-    /** Get all replies for a ticket */
-    public function getReplies(int $ticketId): array {
-        $stmt = mysqli_prepare($this->conn, "SELECT id, ticket_id, admin_id, message, created_at FROM ticket_replies WHERE ticket_id = ? ORDER BY created_at ASC");
-        mysqli_stmt_bind_param($stmt, "i", $ticketId);
-        if (!mysqli_stmt_execute($stmt)) {
-            throw new Exception("DB error fetching replies: " . mysqli_error($this->conn));
-        }
-        $res = mysqli_stmt_get_result($stmt);
-        $rows = [];
-        while ($row = mysqli_fetch_assoc($res)) {
-            $rows[] = $row;
-        }
-        return $rows;
+    public function resolve(int $ticketId): void
+    {
+        $st = $this->db->prepare(
+            "UPDATE support_tickets
+                SET status = 'resolved', updated_at = CURRENT_TIMESTAMP
+              WHERE id = ?"
+        );
+        $st->execute([$ticketId]);
+    }
+    public function getTicketsForAdmin(int $adminId): array
+    {
+        $st = $this->db->prepare(
+            "SELECT id, user_id, assigned_admin_id, subject, message, status, created_at, updated_at
+            FROM support_tickets
+            WHERE assigned_admin_id = ?
+            ORDER BY created_at DESC"
+        );
+        $st->execute([$adminId]);
+        return $st->fetchAll();
+    }
+    public function getTicketsForUser(int $userId): array
+    {
+        $st = $this->db->prepare(
+            "SELECT id, user_id, assigned_admin_id, subject, message, status, created_at, updated_at
+            FROM support_tickets
+            WHERE user_id = ?
+            ORDER BY created_at DESC"
+        );
+        $st->execute([$userId]);
+        return $st->fetchAll();
     }
 }
-?>
