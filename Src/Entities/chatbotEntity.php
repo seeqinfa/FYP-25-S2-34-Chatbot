@@ -46,14 +46,14 @@ class ChatbotEntity
         $stmt->execute([':u'=>$username, ':s'=>$sender, ':t'=>$text]);
     }
 
-    public function fetchRecentMessages(string $username, int $limit = 100): array
+    public function fetchRecentMessages(string $username, int $limit = 1000): array
     {
         $limit = (int)$limit;
         $stmt = $this->db->prepare(
             "SELECT sender, message_text
                FROM chat_messages
               WHERE username = :u
-              ORDER BY created_at DSC
+              ORDER BY created_at ASC
               LIMIT $limit"
         );
         $stmt->execute([':u'=>$username]);

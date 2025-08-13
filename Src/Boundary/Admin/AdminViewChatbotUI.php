@@ -39,7 +39,13 @@ if ($user !== '') {
     <link rel="stylesheet" href="../../CSS/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .container { margin-top: 140px; max-width: 1200px; padding: 0 20px; margin-inline: auto; }
+        /* Keep page width stable even when vertical scrollbar toggles */
+        :root { scrollbar-gutter: stable both-edges; }
+        @supports not (scrollbar-gutter: stable) {
+          html { overflow-y: scroll; } /* fallback */
+        }
+
+        .container { margin-top: 140px; max-width: 1200px; width:100%; padding: 0 20px; margin-inline: auto; }
         .section-title { font-size: 24px; margin: 30px 0 20px; color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px; }
 
         .searchbar { display:flex; gap:10px; margin-bottom:20px; flex-wrap: wrap; }
@@ -54,32 +60,33 @@ if ($user !== '') {
           background:#fff;
           border-radius:8px;
           box-shadow:0 4px 10px rgba(0,0,0,.1);
-          min-height: 360px;   /* fixed height */
-          max-height: 360px;   /* fixed height */
+          min-height: 360px;
+          max-height: 360px;
           display:flex;
           flex-direction:column;
-          overflow:hidden;     /* clip inner scroll area */
+          overflow:hidden;
           margin-bottom: 16px;
         }
         .list-scroll {
-          flex:1;              /* fill remaining height */
+          flex:1;
           overflow:auto;       /* table scrolls inside */
         }
         .list-pager {
           border-top:1px solid #eee;
           padding:8px;
           text-align:center;
-          min-height:44px;     /* keep pager area constant even if empty */
+          min-height:44px;     /* constant height */
           display:flex;
           align-items:center;
           justify-content:center;
           background:#fafafa;
         }
 
-        table { width:100%; border-collapse: collapse; background:#fff; }
-        th, td { padding:12px 15px; text-align:left; border-bottom:1px solid #eee; font-size:14px; }
-        th { background:#e67e22; color:#fff; position: sticky; top: 0; z-index: 1; }
-        tr:nth-child(even) { background:#fafafa; }
+        /* Stable-width table */
+        table.convos { width:100%; border-collapse: collapse; background:#fff; table-layout: fixed; }
+        table.convos th, table.convos td { padding:12px 15px; text-align:left; border-bottom:1px solid #eee; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        table.convos th { background:#e67e22; color:#fff; position: sticky; top: 0; z-index: 1; }
+        table.convos tr:nth-child(even) { background:#fafafa; }
 
         .muted { color:#666; font-size:13px; }
         .pill { display:inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; background: #f0f0f0; }
@@ -167,15 +174,20 @@ if ($user !== '') {
             <option value="100" <?= $pp==100?'selected':''; ?>>100</option>
         </select>
         <button type="submit"><i class="fas fa-search"></i> Search</button>
-        <?php if ($user !== ''): ?>
-            <a class="btn" href="?q=<?= urlencode($q) ?>&sort=<?= urlencode($sort) ?>&pp=<?= (int)$pp ?>&page=<?= (int)$page ?>">Back to list</a>
-        <?php endif; ?>
     </form>
 
     <!-- Fixed-size Conversations list -->
     <div class="listbox">
       <div class="list-scroll">
-        <table>
+        <table class="convos">
+          <!-- Fixed column widths to prevent layout shift -->
+          <colgroup>
+            <col style="width:28%">
+            <col style="width:12%">
+            <col style="width:24%">
+            <col style="width:24%">
+            <col style="width:12%">
+          </colgroup>
           <thead>
             <tr>
               <th>Username</th>

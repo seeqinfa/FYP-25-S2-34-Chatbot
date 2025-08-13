@@ -311,7 +311,7 @@ require_once '../../header.php';
         <div class="card-text">Manage and assign support tickets to agents</div>
         <div class="btn-container">
             <a href="AdminSupportTicketsUI.php" class="btn btn-primary">Manage Tickets</a>
-            <a href="AdminAssignSupportTicketUI.php" class="btn btn-secondary">Assign Tickets</a>
+            <a href="AdminAssignRoleUI.php" class="btn btn-secondary">Assign Tickets</a>
         </div>
     </div>
 </div>
