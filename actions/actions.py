@@ -55,10 +55,18 @@ def _connect() -> MySQLConnection:
 # -------------------------------------------------------------------
 def _get_username(tracker: Tracker) -> Optional[str]:
     sid = (tracker.sender_id or "").strip()
+
+    # Debug print to see raw value
+    print(f"### DEBUG _get_username RAW sender_id='{sid}'")
+
+
     if sid and sid.lower() != "guest":
-        return sid
-    uname_slot = (tracker.get_slot("username") or "").strip()
-    return uname_slot or None
+        normalized = sid.split("|")[-1].strip()
+        print(f"### DEBUG _get_username USING normalized='{normalized}'")
+        return normalized
+
+    # No sender_id or it's 'guest'
+    return None
     
 def _eta_days_from_status(status: str) -> Optional[int]:
     s = (status or "").lower()
@@ -479,12 +487,13 @@ def _extract_keyword(text: str) -> str:
     return " ".join(tail).strip()
 
 def _send_clickable_link(dispatcher: CollectingDispatcher, title: str, link: str) -> None:
-    """Send HTML anchor + URL button (if supported), with plain URL fallback."""
-    html_text = f'{title}:<br><a href="{link}" target="_blank" rel="noopener noreferrer">Open manual search</a><br>{link}'
-    try:
-        dispatcher.utter_message(text=html_text, buttons=[{"title": "Open manual search", "url": link}])
-    except Exception:
-        dispatcher.utter_message(text=f"{title}: {link}")
+
+    html_text = (
+        f'{title}:<br>'
+        f'<a href="{link}" target="_blank" rel="noopener noreferrer">Open manual search</a><br>'
+        f'{link}'
+    )
+    dispatcher.utter_message(text=html_text)
 
 class ActionGetManual(Action):
     def name(self) -> Text:

@@ -1,7 +1,0 @@
-{
-  "rule_only_slots": [],
-  "rule_only_loops": [
-    "manual_form",
-    "feedback_text_form"
-  ]
-}

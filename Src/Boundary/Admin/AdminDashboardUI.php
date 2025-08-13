@@ -316,7 +316,23 @@ require_once '../../header.php';
         </div>
     </div>
 </div>
-  
+
+<!-- Chatbot Management Card -->
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-robot"></i>
+        <h3>Chatbot</h3>
+    </div>
+    <div class="card-body">
+        <div class="card-title">Chatbot Management</div>
+        <div class="card-text">Monitor and review customer interactions with LuxBot</div>
+        <div class="btn-container">
+            <a href="AdminViewChatbotUI.php" class="btn btn-primary">View Chatbot Chat</a>
+        </div>
+    </div>
+</div>
+
+
         </tbody>
     </table>
     </div>
