@@ -487,12 +487,13 @@ def _extract_keyword(text: str) -> str:
     return " ".join(tail).strip()
 
 def _send_clickable_link(dispatcher: CollectingDispatcher, title: str, link: str) -> None:
-    """Send HTML anchor + URL button (if supported), with plain URL fallback."""
-    html_text = f'{title}:<br><a href="{link}" target="_blank" rel="noopener noreferrer">Open manual search</a><br>{link}'
-    try:
-        dispatcher.utter_message(text=html_text, buttons=[{"title": "Open manual search", "url": link}])
-    except Exception:
-        dispatcher.utter_message(text=f"{title}: {link}")
+
+    html_text = (
+        f'{title}:<br>'
+        f'<a href="{link}" target="_blank" rel="noopener noreferrer">Open manual search</a><br>'
+        f'{link}'
+    )
+    dispatcher.utter_message(text=html_text)
 
 class ActionGetManual(Action):
     def name(self) -> Text:
