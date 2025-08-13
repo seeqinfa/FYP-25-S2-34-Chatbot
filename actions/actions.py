@@ -55,22 +55,18 @@ def _connect() -> MySQLConnection:
 # -------------------------------------------------------------------
 def _get_username(tracker: Tracker) -> Optional[str]:
     sid = (tracker.sender_id or "").strip()
-    uname_slot = (tracker.get_slot("username") or "").strip()
 
-    def normalize(val: str) -> str:
-        val = val.strip()
-        if "|" in val:
-            val = val.split("|")[-1]  # take the part after the last pipe
-        return val
+    # Debug print to see raw value
+    print(f"### DEBUG _get_username RAW sender_id='{sid}'")
+
 
     if sid and sid.lower() != "guest":
-        normalized = normalize(sid)
-        print(f"### DEBUG _get_username USING (normalized sender_id) = '{normalized}'")
+        normalized = sid.split("|")[-1].strip()
+        print(f"### DEBUG _get_username USING normalized='{normalized}'")
         return normalized
 
-    normalized = normalize(uname_slot)
-    print(f"### DEBUG _get_username USING (normalized slot) = '{normalized}'")
-    return normalized
+    # No sender_id or it's 'guest'
+    return None
     
 def _eta_days_from_status(status: str) -> Optional[int]:
     s = (status or "").lower()
