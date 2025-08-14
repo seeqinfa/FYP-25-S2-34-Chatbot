@@ -46,26 +46,67 @@ ini_set('display_errors', 1); // Always display errors for debugging
 error_reporting(E_ALL);     // Report all errors for debugging
 // END TEMPORARY
 
-// Database connection for PDO
-if (isset($_ENV['DATABASE_URL'])) {
-    $url = parse_url($_ENV['DATABASE_URL']);
-    $dsn = sprintf(
-        'mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4',
-        $url['host'],
-        $url['port'] ?? 3306,
-        ltrim($url['path'], '/')
-    );
-    $user = $url['user'];
-    $pass = $url['pass'];
-} else {
-    $dsn = 'mysql:host=localhost;dbname=luxfurn;charset=utf8mb4';
-    $user = 'root';
-    $pass = '';
-}
+// Database connection for PDO (Railway-aware)
+try {
+    if (!extension_loaded('pdo_mysql')) {
+        throw new RuntimeException('Missing pdo_mysql PHP extension.');
+    }
 
-$pdo = new PDO($dsn, $user, $pass, [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-]);
+    $dsn = null; $user = null; $pass = null;
+
+    // Prefer full URLs if present
+    if (!empty($_ENV['MYSQL_URL'])) {
+        $url = parse_url($_ENV['MYSQL_URL']);
+        $dsn = sprintf(
+            'mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4',
+            $url['host'],
+            $url['port'] ?? 3306,
+            ltrim($url['path'], '/')
+        );
+        $user = $url['user'] ?? 'root';
+        $pass = $url['pass'] ?? '';
+    } elseif (!empty($_ENV['MYSQL_PUBLIC_URL'])) {
+        $url = parse_url($_ENV['MYSQL_PUBLIC_URL']);
+        $dsn = sprintf(
+            'mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4',
+            $url['host'],
+            $url['port'] ?? 3306,
+            ltrim($url['path'], '/')
+        );
+        $user = $url['user'] ?? 'root';
+        $pass = $url['pass'] ?? '';
+    } elseif (!empty($_ENV['DATABASE_URL'])) {
+        $url = parse_url($_ENV['DATABASE_URL']);
+        $dsn = sprintf(
+            'mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4',
+            $url['host'],
+            $url['port'] ?? 3306,
+            ltrim($url['path'], '/')
+        );
+        $user = $url['user'] ?? 'root';
+        $pass = $url['pass'] ?? '';
+    } elseif (!empty($_ENV['MYSQLHOST'])) {
+        // Railway's split vars
+        $host = $_ENV['MYSQLHOST'];
+        $port = (int)($_ENV['MYSQLPORT'] ?? 3306);
+        $db   = $_ENV['MYSQLDATABASE'] ?? $_ENV['MYSQL_DATABASE'] ?? 'railway';
+        $user = $_ENV['MYSQLUSER'] ?? 'root';
+        $pass = $_ENV['MYSQLPASSWORD'] ?? '';
+        $dsn  = "mysql:host={$host};port={$port};dbname={$db};charset=utf8mb4";
+    } else {
+        // Local fallback
+        $dsn  = 'mysql:host=localhost;dbname=luxfurn;charset=utf8mb4';
+        $user = 'root';
+        $pass = '';
+    }
+
+    $pdo = new PDO($dsn, $user, $pass, [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+} catch (Throwable $e) {
+    http_response_code(500);
+    die('DB bootstrap error: ' . $e->getMessage());
+}
 
 ?>
