@@ -3,6 +3,3 @@ nixPkgs = ["php", "phpExtensions.mysqli", "phpExtensions.pdo", "phpExtensions.pd
 
 [phases.build]
 cmd = "cd web && composer install --no-dev --prefer-dist --optimize-autoloader"
-
-[start]
-cmd = "cd web && php -S 0.0.0.0:$PORT ."
