@@ -7,9 +7,17 @@ define('CONTROLLERS_PATH', PROJECT_ROOT . '\Controllers');
 define('ENTITIES_PATH', PROJECT_ROOT . '\Entities');
 define('BOUNDARY_PATH', PROJECT_ROOT . '\Boundary');
 
+// Railway-compatible base URL configuration
+$isRailway = isset($_ENV['RAILWAY_ENVIRONMENT']) || isset($_ENV['RAILWAY_PROJECT_ID']);
 
 
-define('BASE_URL', '/FYP-25-S2-34-Chatbot/Src');
+if ($isRailway) {
+    define('BASE_URL', '');
+    define('RASA_URL', $_ENV['RASA_URL'] ?? 'http://localhost:5005');
+} else {
+    define('BASE_URL', '/FYP-25-S2-34-Chatbot/Src');
+    define('RASA_URL', 'http://localhost:5005');
+}
 
 // Define other URL paths relative to BASE_URL
 define('BOUNDARY_URL', BASE_URL . '/Boundary');
@@ -29,12 +37,25 @@ function requireOnce($path) {
 }
 
 // Error reporting (set to 0 in production)
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', $isRailway ? 0 : 1);
+error_reporting($isRailway ? E_ERROR : E_ALL);
 
-$dsn = 'mysql:host=localhost;dbname=luxfurn;charset=utf8mb4';
-$user = 'root';            // ← adjust
-$pass = '';                // ← adjust
+// Database connection for PDO
+if (isset($_ENV['DATABASE_URL'])) {
+    $url = parse_url($_ENV['DATABASE_URL']);
+    $dsn = sprintf(
+        'mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4',
+        $url['host'],
+        $url['port'] ?? 3306,
+        ltrim($url['path'], '/')
+    );
+    $user = $url['user'];
+    $pass = $url['pass'];
+} else {
+    $dsn = 'mysql:host=localhost;dbname=luxfurn;charset=utf8mb4';
+    $user = 'root';
+    $pass = '';
+}
 
 $pdo = new PDO($dsn, $user, $pass, [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,

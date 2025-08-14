@@ -433,7 +433,8 @@ document.addEventListener("DOMContentLoaded", () => {
         /* 2a. Ask Rasa for reply */
         let botReplies = [];
         try {
-            const rasaRes = await fetch("http://localhost:5005/webhooks/rest/webhook", {
+            const rasaUrl = window.RASA_URL || "<?= defined('RASA_URL') ? RASA_URL : 'http://localhost:5005' ?>";
+            const rasaRes = await fetch(`${rasaUrl}/webhooks/rest/webhook`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -481,7 +482,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		addBubble("user", e.target.textContent);
 
 		try {
-			const rasaRes = await fetch("http://localhost:5005/webhooks/rest/webhook", {
+			const rasaUrl = window.RASA_URL || "<?= defined('RASA_URL') ? RASA_URL : 'http://localhost:5005' ?>";
+			const rasaRes = await fetch(`${rasaUrl}/webhooks/rest/webhook`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({

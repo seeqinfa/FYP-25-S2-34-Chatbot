@@ -1,0 +1,6 @@
+# Rasa requirements
+rasa==3.6.0
+mysql-connector-python==8.0.33
+
+# Additional dependencies for your custom actions
+urllib3>=1.26.0

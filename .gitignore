@@ -1,28 +1,44 @@
-# Python
-.venv/
-venv/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.py[cod]
-
-# Environment
+# Environment files
 .env
 .env.local
+.env.production
+
+# Railway
+.railway/
+
+# Rasa
+models/
+.rasa/
+
+# PHP
+vendor/
+composer.lock
 
 # Database
-*.sqlite
-*.sqlite3
-db.sqlite3
+*.sql.backup
+*.db
 
-# OS/Editor
-.DS_Store
-.idea/
-.vscode/
-
-# Rasa specific
-models/
-results/
-*.tar.gz
+# Logs
 *.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node modules (if any)
+node_modules/
+
+# Build artifacts
+dist/
+build/

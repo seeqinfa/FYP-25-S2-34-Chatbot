@@ -5,6 +5,7 @@ from rasa_sdk.events import SlotSet, EventType, FollowupAction
 import urllib.parse
 import re
 import string
+import os
 import mysql.connector
 from mysql.connector.connection import MySQLConnection
 from urllib.parse import quote_plus
@@ -45,11 +46,25 @@ mock_orders = {
 
 #DB connection
 def _connect() -> MySQLConnection:
+    # Check for Railway environment variables first
+    if 'DATABASE_URL' in os.environ:
+        import urllib.parse as urlparse
+        url = urlparse.urlparse(os.environ['DATABASE_URL'])
+        return mysql.connector.connect(
+            host=url.hostname,
+            port=url.port or 3306,
+            user=url.username,
+            password=url.password,
+            database=url.path[1:],  # Remove leading slash
+        )
+    
+    # Fallback to environment variables or defaults
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="luxfurn",
+        host=os.environ.get("DB_HOST", "localhost"),
+        user=os.environ.get("DB_USER", "root"),
+        password=os.environ.get("DB_PASS", ""),
+        database=os.environ.get("DB_NAME", "luxfurn"),
+        port=int(os.environ.get("DB_PORT", "3306")),
     )
 # -------------------------------------------------------------------
 # Existing actions (keep these as-is for your teammates)
