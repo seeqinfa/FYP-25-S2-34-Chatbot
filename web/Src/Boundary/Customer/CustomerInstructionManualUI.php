@@ -3,7 +3,7 @@
 
 require_once dirname(__DIR__, 2) . '/config.php';
 require_once '../../header.php'; 
-require_once dirname(__DIR__,2) . '../Controllers/Customer/CustomerInstructionManualCtrl.php';
+require_once dirname(__DIR__,2) . '/Controllers/Customer/CustomerInstructionManualCtrl.php';
 
 $q       = trim($_GET['q'] ?? '');
 $page    = max(1, (int)($_GET['page'] ?? 1));
