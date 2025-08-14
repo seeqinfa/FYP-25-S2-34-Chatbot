@@ -1,11 +1,7 @@
 [phases.setup]
-nixPkgs = ["php", "php81Extensions.pdo_mysql", "php81Extensions.mysqli"]
+# Install PHP 8.2 and the MySQL drivers
+nixPkgs = ["php82", "php82Extensions.pdo_mysql", "php82Extensions.mysqli"]
 
 [start]
-cmd = "php -S 0.0.0.0:8080 -t ."
-
-[phases.install]
-cmd = "echo 'extension=pdo_mysql.so' > /etc/php/conf.d/pdo_mysql.ini && echo 'extension=mysqli.so' > /etc/php/conf.d/mysqli.ini"
-
-[phases.build]
-cmd = "cd web && composer install --no-dev --prefer-dist --optimize-autoloader"
+# Use Railway's $PORT; serve your app from /app (Railway mounts your repo there)
+cmd = "php -S 0.0.0.0:${PORT} -t /app"
