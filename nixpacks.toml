@@ -1,5 +1,8 @@
 [phases.setup]
 nixPkgs = ["php", "phpExtensions.mysqli", "phpExtensions.pdo", "phpExtensions.pdo_mysql"]
 
+[phases.install]
+cmd = "echo 'extension=pdo_mysql.so' > /etc/php/conf.d/pdo_mysql.ini && echo 'extension=mysqli.so' > /etc/php/conf.d/mysqli.ini"
+
 [phases.build]
 cmd = "cd web && composer install --no-dev --prefer-dist --optimize-autoloader"
