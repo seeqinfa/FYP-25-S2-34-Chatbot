@@ -1,6 +1,6 @@
 <?php
 // index.php
-require_once '../header.php';
+require_once APP_ROOT . '/Src/header.php';
 ?>
 
 <main style="padding: 80px; max-width: 1200px; margin: auto; font-family: Arial, sans-serif;">
