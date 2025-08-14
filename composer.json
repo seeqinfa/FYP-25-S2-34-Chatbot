@@ -9,5 +9,11 @@
         "post-install-cmd": [
             "echo 'LuxFurn application installed successfully'"
         ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "8.2"
+        }
     }
 }
