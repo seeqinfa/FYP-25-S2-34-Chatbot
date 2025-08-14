@@ -17,7 +17,7 @@ if (!$isRailway && isset($_ENV['RAILWAY_STATIC_URL'])) {
 
 if ($isRailway) {
     define('BASE_URL', '');
-    define('RASA_URL', $_ENV['RASA_URL'] ?? 'http://localhost:5005');
+    define('RASA_URL', 'https://rasa-server.up.railway.app');
 } else {
     define('BASE_URL', '/FYP-25-S2-34-Chatbot/Src');
     define('RASA_URL', 'http://localhost:5005');
