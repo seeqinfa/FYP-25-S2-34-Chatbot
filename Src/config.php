@@ -41,8 +41,10 @@ function requireOnce($path) {
 }
 
 // Error reporting (set to 0 in production)
-ini_set('display_errors', $isRailway ? 0 : 1);
-error_reporting($isRailway ? E_ERROR : E_ALL);
+// TEMPORARY: For debugging, set to 1 and E_ALL
+ini_set('display_errors', 1); // Always display errors for debugging
+error_reporting(E_ALL);     // Report all errors for debugging
+// END TEMPORARY
 
 // Database connection for PDO
 if (isset($_ENV['DATABASE_URL'])) {
