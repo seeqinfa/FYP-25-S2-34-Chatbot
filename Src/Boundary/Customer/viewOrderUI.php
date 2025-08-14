@@ -1,6 +1,7 @@
 <?php
 // Src/Boundary/Customer/viewOrderUI.php
 
+require_once dirname(__DIR__, 2) . '/config.php';
 include '../../header.php';
 
 if (!function_exists('h')) {

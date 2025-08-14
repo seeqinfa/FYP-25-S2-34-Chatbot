@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__, 2) . '/config.php';
 require_once '../../header.php';
 require_once dirname(__DIR__, 2) . '/Entities/furniture.php';
 require_once dirname(__DIR__, 2) . '/Controllers/Customer/viewFurnitureCtrl.php';

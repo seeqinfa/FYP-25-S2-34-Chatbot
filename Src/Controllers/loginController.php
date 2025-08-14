@@ -38,17 +38,17 @@ class LoginController {
 
         } catch (Exception $e) {
             $_SESSION['message'] = $e->getMessage();
-            header("Location: " . BOUNDARY_URL . "/index.php");
+            header("Location: " . BASE_URL . "/");
             exit();
         }
 
         $_SESSION['message'] = "Invalid login attempt, please try again.";
-        header("Location: " . BOUNDARY_URL . "/index.php");
+        header("Location: " . BASE_URL . "/");
         return false;
     }
 
     private function redirectUser($role) {
-        $redirect = $redirectMap[$role] ?? BOUNDARY_URL . "/index.php";
+        $redirect = BASE_URL . "/";
         header("Location: $redirect");
         exit();
     }

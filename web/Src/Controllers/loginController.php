@@ -21,7 +21,7 @@ class LoginController {
                 // Check if account is banned/suspended
                 if ((int)$user['status'] === 0) {
                     $_SESSION['message'] = "Your account has been suspended.";
-                    header("Location: " . BOUNDARY_URL . "/index.php");
+                    header("Location: " . BASE_URL);
                     exit();
                 }
 
@@ -38,17 +38,17 @@ class LoginController {
 
         } catch (Exception $e) {
             $_SESSION['message'] = $e->getMessage();
-            header("Location: " . BOUNDARY_URL . "/index.php");
+            header("Location: " . BASE_URL . "/");
             exit();
         }
 
         $_SESSION['message'] = "Invalid login attempt, please try again.";
-        header("Location: " . BOUNDARY_URL . "/index.php");
+        header("Location: " . BASE_URL . "/");
         return false;
     }
 
     private function redirectUser($role) {
-        $redirect = $redirectMap[$role] ?? BOUNDARY_URL . "/index.php";
+        header("Location: /");
         header("Location: $redirect");
         exit();
     }

@@ -9,7 +9,7 @@ class LogoutController {
         session_destroy();
         session_start();
         $_SESSION['message'] = "You have logged out successfully.";
-        header("Location:". BOUNDARY_URL."/index.php");
+        header("Location: " . BASE_URL . "/");
         return false;
 
     }

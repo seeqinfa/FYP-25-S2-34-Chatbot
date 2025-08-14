@@ -1,7 +1,5 @@
 <?php
-// index.php
-phpinfo();
-exit();
+require_once dirname(__DIR__) . '/config.php';
 require_once '../header.php';
 ?>
 

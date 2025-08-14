@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__, 2) . '/config.php';
 ob_start();  // Output buffering START, prevent clash with other echos etc
 session_start();
 require_once '../../header.php';

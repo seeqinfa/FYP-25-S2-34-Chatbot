@@ -1,5 +1,6 @@
 <?php
 // Src/Boundary/Admin/AdminAssignRoleUI.php
+require_once dirname(__DIR__, 2) . '/config.php';
 require_once '../../header.php';
 require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminAssignRoleCtrl.php';
 
