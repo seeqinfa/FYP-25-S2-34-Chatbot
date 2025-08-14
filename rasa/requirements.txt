@@ -1,4 +1,0 @@
-# rasa/requirements.txt
-rasa==3.6.21
-rasa-sdk==3.6.21
-mysql-connector-python

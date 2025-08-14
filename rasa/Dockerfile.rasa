@@ -5,7 +5,8 @@ WORKDIR /app
 
 COPY . /app
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Install additional Python dependencies for Rasa server (if any)
+RUN pip install --no-cache-dir --upgrade -r requirements-rasa.txt
 
 RUN rasa train
 
