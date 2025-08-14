@@ -1,0 +1,26 @@
+# Ignore Rasa-specific files for PHP-only deployment
+config.yml
+domain.yml
+endpoints.yml
+credentials.yml
+story_graph.dot
+Dockerfile.rasa
+docker-compose.yml
+requirements-rasa.txt
+actions/
+data/
+tests/
+models/
+
+# Ignore Python files
+*.py
+__pycache__/
+*.pyc
+
+# Keep only PHP web application files
+!Src/
+!DB/
+!index.php
+!composer.json
+!nixpacks.toml
+!railway.json
