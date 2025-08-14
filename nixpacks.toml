@@ -1,11 +1,11 @@
 [phases.setup]
-nixPkgs = ["php82", "php82Extensions.mysqli", "php82Extensions.pdo", "php82Extensions.pdo_mysql", "nginx"]
+nixPkgs = ["php82", "php82Extensions.mysqli", "php82Extensions.pdo", "php82Extensions.pdo_mysql", "nginx", "php82Extensions.mbstring", "php82Extensions.curl"]
 
 [phases.build]
-cmds = ["mkdir -p /var/log/nginx", "mkdir -p /var/lib/nginx"]
+cmds = ["mkdir -p /var/log/nginx", "mkdir -p /var/lib/nginx", "mkdir -p /tmp"]
 
 [phases.start]
-cmd = "nginx -g 'daemon off;'"
+cmd = "php-fpm -D && nginx -g 'daemon off;'"
 
 [variables]
 PORT = "8080"

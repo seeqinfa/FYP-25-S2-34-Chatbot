@@ -4,14 +4,14 @@ FROM rasa/rasa:3.6.0
 COPY . /app
 WORKDIR /app
 
-# Install any additional dependencies if needed
-RUN pip install mysql-connector-python
+# Install dependencies
+RUN pip install -r requirements-rasa.txt
 
 # Train the model
 RUN rasa train
 
-# Expose ports for Rasa server and actions
+# Expose ports
 EXPOSE 5005 5055
 
-# Start script that runs both Rasa server and actions
+# Start script
 CMD ["sh", "-c", "rasa run actions & rasa run --enable-api --cors '*' --port 5005"]
