@@ -5,9 +5,6 @@ WORKDIR /app
 
 COPY . /app
 
-# Install additional Python dependencies for Rasa server (if any)
-RUN pip install --no-cache-dir --upgrade -r requirements-rasa.txt
-
 RUN rasa train
 
 EXPOSE 5005
