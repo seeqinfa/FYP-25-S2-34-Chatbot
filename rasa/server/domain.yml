@@ -186,9 +186,9 @@ responses:
   utter_product_listing:
     - text: "Here are our latest furniture items: [listing_link]"
   utter_ask_which_order_cancel:
-  - text: "Which order would you like to cancel? (I’ve listed your orders above.) You can click a button or type the order ID."
+  - text: "Which order would you like to cancel? (I've listed your orders above.) You can click a button or type the order ID."
   utter_ask_which_order_status:
-  - text: "Which order would you like to check? (I’ve listed your orders above.) You can click a button or type the order ID."
+  - text: "Which order would you like to check? (I've listed your orders above.) You can click a button or type the order ID."
   utter_confirm_cancel:
   - text: "Confirm cancel for order #{order_id}?"
     buttons:

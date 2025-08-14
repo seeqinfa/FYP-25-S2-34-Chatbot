@@ -36,7 +36,7 @@ nlu:
   examples: |
     - Great service!
     - It was okay
-    - I didn’t like it
+    - I didn't like it
     - none
     
 - intent: goodbye
