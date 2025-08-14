@@ -8,6 +8,7 @@ import string
 import mysql.connector
 from mysql.connector.connection import MySQLConnection
 from urllib.parse import quote_plus
+import os
 # -------------------------------------------------------------------
 # Shared data / constants
 # -------------------------------------------------------------------
@@ -45,11 +46,20 @@ mock_orders = {
 
 #DB connection
 def _connect() -> MySQLConnection:
+    # Read database connection details from environment variables
+    # These should be set in your Railway Rasa Action Server service
+    db_host = os.getenv('DB_HOST', 'localhost')
+    db_user = os.getenv('DB_USER', 'root')
+    db_pass = os.getenv('DB_PASS', '')
+    db_name = os.getenv('DB_NAME', 'luxfurn')
+    db_port = int(os.getenv('DB_PORT', '3306'))
+    
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="luxfurn",
+        host=db_host,
+        user=db_user,
+        password=db_pass,
+        database=db_name,
+        port=db_port
     )
 # -------------------------------------------------------------------
 # Existing actions (keep these as-is for your teammates)
