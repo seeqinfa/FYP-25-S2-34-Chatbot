@@ -10,6 +10,9 @@ COPY actions /app/actions
 # Copy the requirements file
 COPY requirements-actions.txt /app/
 
+# Upgrade pip to latest version
+RUN pip install --upgrade pip
+
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements-actions.txt
 
