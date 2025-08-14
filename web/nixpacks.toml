@@ -1,5 +1,8 @@
 [phases.setup]
-nixPkgs = ["ca-certificates", "git", "unzip", "zip"] # Keep only non-PHP related packages if needed
+nixPkgs = ["ca-certificates", "git", "unzip", "zip", "php", "php.extensions.pdo_mysql", "php.extensions.mysqli"]
 
 [start]
 cmd = "frankenphp php-server"
+
+[variables] # This section defines environment variables for the runtime
+PHP_INI_SCAN_DIR = "." # Points to the directory where web/php.ini resides
