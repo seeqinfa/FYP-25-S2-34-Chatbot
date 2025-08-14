@@ -105,15 +105,15 @@ final class SupportTicketRepo
         $st->execute([$adminId]);
         return $st->fetchAll();
     }
-    public function getTicketsForUser(int $userId): array
-    {
-        $st = $this->db->prepare(
-            "SELECT id, user_id, assigned_admin_id, subject, message, status, created_at, updated_at
-            FROM support_tickets
-            WHERE user_id = ?
-            ORDER BY created_at DESC"
-        );
-        $st->execute([$userId]);
-        return $st->fetchAll();
-    }
+	public function getTicketsForUser(int $userId): array
+	{
+		$st = $this->db->prepare(
+			"SELECT id, user_id, assigned_admin_id, subject, message, status, created_at
+			FROM support_tickets
+			WHERE user_id = ?
+			ORDER BY created_at DESC"
+		);
+		$st->execute([$userId]);
+		return $st->fetchAll();
+	}
 }
