@@ -3,8 +3,7 @@
 nixPkgs = ["php82", "php82Extensions.pdo_mysql", "php82Extensions.mysqli"]
 
 [start]
-# Use Railway's $PORT; serve your app from /app (Railway mounts your repo there)
-# Explicitly load php.ini from the /app directory
-cmd = "php -i && exit 0"
+entrypoint = ["php"]
+cmd = ["-i"]
 
 
