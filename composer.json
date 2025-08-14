@@ -7,13 +7,18 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "echo 'LuxFurn application installed successfully'"
+            "echo 'LuxFurn PHP application installed successfully'"
         ]
     },
     "config": {
         "optimize-autoloader": true,
         "platform": {
             "php": "8.2"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "Src/"
         }
     }
 }

@@ -1,9 +1,9 @@
 <?php
-// Railway-compatible entry point
+// Railway-compatible entry point for PHP web application only
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 
-// Handle static assets
-if (preg_match('/\.(css|js|png|jpg|jpeg|gif|ico|svg)$/', $requestUri)) {
+// Handle static assets (CSS, JS, images)
+if (preg_match('/\.(css|js|png|jpg|jpeg|gif|ico|svg|pdf)$/', $requestUri)) {
     $filePath = __DIR__ . $requestUri;
     if (file_exists($filePath)) {
         $mimeTypes = [
@@ -14,7 +14,8 @@ if (preg_match('/\.(css|js|png|jpg|jpeg|gif|ico|svg)$/', $requestUri)) {
             'jpeg' => 'image/jpeg',
             'gif' => 'image/gif',
             'ico' => 'image/x-icon',
-            'svg' => 'image/svg+xml'
+            'svg' => 'image/svg+xml',
+            'pdf' => 'application/pdf'
         ];
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
         if (isset($mimeTypes[$ext])) {

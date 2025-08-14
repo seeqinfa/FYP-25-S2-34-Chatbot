@@ -3,8 +3,10 @@ nixPkgs = ["php82", "php82Extensions.mysqli", "php82Extensions.pdo", "php82Exten
 
 [phases.install]
 cmds = [
-  "curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer",
-  "composer install --no-dev --optimize-autoloader"
+  "curl -sS https://getcomposer.org/installer | php",
+  "mv composer.phar /usr/local/bin/composer",
+  "chmod +x /usr/local/bin/composer",
+  "composer install --no-dev --optimize-autoloader --no-interaction"
 ]
 
 [phases.build]
