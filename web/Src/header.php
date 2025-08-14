@@ -1,7 +1,7 @@
 <?php
 
 if (isset($_SERVER['SCRIPT_FILENAME']) && realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'])) {
-    header('Location: /FYP-25-S2-34-Chatbot/Src/Boundary/index.php');
+    header('Location: ' . BASE_URL);
     exit;
 }
 if (session_status() === PHP_SESSION_NONE) {
@@ -246,36 +246,36 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
 
 <header>
     <div class="logo-container">
-        <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/index.php" class="logo-link">
-            <img src="/FYP-25-S2-34-Chatbot/Src/img/logo.png" alt="LuxFurn" class="logo-img" />
+        <a href="<?= BASE_URL ?>" class="logo-link">
+            <img src="<?= IMAGE_PATH ?>/logo.png" alt="LuxFurn" class="logo-img" />
             <h2 class="logo-text">LuxFurn</h2>
         </a>
     </div>
    <nav class="navigation">
-    <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/aboutpageUI.php">About</a>
+    <a href="<?= BOUNDARY_URL ?>/Customer/aboutpageUI.php">About</a>
     <div class="nav-dropdown">
         <a href="#" class="nav-link">Furniture ▾</a>
         <div class="nav-dropdown-content">
-            <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewFurnitureUI.php">View Furniture</a>
-            <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/CustomerInstructionmanualUI.php">Instruction Manuals</a>
+            <a href="<?= BOUNDARY_URL ?>/Customer/viewFurnitureUI.php">View Furniture</a>
+            <a href="<?= BOUNDARY_URL ?>/Customer/CustomerInstructionManualUI.php">Instruction Manuals</a>
         </div>
     </div>
     <div class="nav-dropdown">
         <a href="#" class="nav-link">My Orders ▾</a>
         <div class="nav-dropdown-content">
-            <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/CartUI.php">View Cart</a>
-            <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewOrderUI.php">View Order</a>
+            <a href="<?= BOUNDARY_URL ?>/Customer/CartUI.php">View Cart</a>
+            <a href="<?= BOUNDARY_URL ?>/Customer/viewOrderUI.php">View Order</a>
         </div>
     </div>
     <div class="nav-dropdown">
         <a href="#" class="nav-link">Tickets ▾</a>
         <div class="nav-dropdown-content">
-            <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/CustomerSupportTicketsUI.php">My Tickets</a>
+            <a href="<?= BOUNDARY_URL ?>/Customer/CustomerSupportTicketsUI.php">My Tickets</a>
         </div>
     </div>
     <?php if (!empty($_SESSION['is_logged_in'])): ?>
         <?php if (!empty($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-            <a href="/FYP-25-S2-34-Chatbot/Src/Boundary/admin/adminDashboardUI.php">Admin Dashboard</a>
+            <a href="<?= BOUNDARY_URL ?>/Admin/AdminDashboardUI.php">Admin Dashboard</a>
         <?php endif; ?>
         <span style="color:white; margin-left:20px;">Welcome, <?= htmlspecialchars($_SESSION['username']) ?></span>
         <a href="<?= CONTROLLERS_URL ?>/logoutController.php">Logout</a>
@@ -413,7 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!form || !input || !log) return;          // page without chatbot
 
     /* ---- 1. Load saved history from PHP ---- */
-    fetch("/FYP-25-S2-34-Chatbot/Src/Controllers/chatHistoryController.php")
+    fetch("<?= CONTROLLERS_URL ?>/chatHistoryController.php")
         .then(r => r.json())
         .then(history => {
             history.forEach(row => addBubble(row.sender, row.message_text));
@@ -465,7 +465,7 @@ document.addEventListener("DOMContentLoaded", () => {
         /* 2c. Save both user & bot lines via PHP controller */
         const botText = botReplies.map(r => r.text).filter(Boolean).join(" || ");
 
-        fetch("/FYP-25-S2-34-Chatbot/Src/Controllers/chatbotController.php", {
+        fetch("<?= CONTROLLERS_URL ?>/chatbotController.php", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: "user=" + encodeURIComponent(userText) +

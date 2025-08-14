@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Check for empty fields
     if (empty($username) || empty($email) || empty($password)) {
         $_SESSION['message'] = "All fields are required.";
-        header("Location: " . BOUNDARY_URL . "/index.php");
+        header("Location: " . BASE_URL);
         exit();
     }
 
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($stmt->rowCount() > 0) {
             $_SESSION['message'] = "Username or email already exists.";
-            header("Location: " . BOUNDARY_URL . "/index.php");
+            header("Location: " . BASE_URL);
             exit();
         }
 
@@ -49,16 +49,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->execute();
 
         $_SESSION['message'] = "Account created successfully. Please log in.";
-        header("Location: " . BOUNDARY_URL . "/index.php");
+        header("Location: " . BASE_URL);
         exit();
     } catch (PDOException $e) {
         error_log("Registration error: " . $e->getMessage());
         $_SESSION['message'] = "Server error. Please try again later.";
-        header("Location: " . BOUNDARY_URL . "/index.php");
+        header("Location: " . BASE_URL);
         exit();
     }
 } else {
     // Not a POST request
-    header("Location: " . BOUNDARY_URL . "/index.php");
+    header("Location: " . BASE_URL);
     exit();
 }

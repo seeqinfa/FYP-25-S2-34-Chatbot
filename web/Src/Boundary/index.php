@@ -1,5 +1,4 @@
 <?php
-// index.php
 require_once APP_ROOT . '/Src/header.php';
 ?>
 
