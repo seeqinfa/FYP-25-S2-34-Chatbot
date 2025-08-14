@@ -24,12 +24,22 @@ if ($isRailway) {
 }
 
 // Define other URL paths relative to BASE_URL
-define('BOUNDARY_URL', BASE_URL . '/Boundary');
-define('CONTROLLERS_URL',  BASE_URL . '/Controllers');
-define('ADMIN_CONTROLLERS_URL',  BASE_URL . '/Controllers/admin');
-define('IMAGE_PATH',  BASE_URL . '/img');
-define('JAVASCRIPT_PATH',  BASE_URL . '/Javascripts');
-define('CSS_PATH',  BASE_URL . '/CSS');
+if ($isRailway) {
+    define('BOUNDARY_URL', BASE_URL . '/Src/Boundary');
+    define('CONTROLLERS_URL',  BASE_URL . '/Src/Controllers');
+    define('ADMIN_CONTROLLERS_URL',  BASE_URL . '/Src/Controllers/admin');
+    define('IMAGE_PATH',  BASE_URL . '/Src/img');
+    define('JAVASCRIPT_PATH',  BASE_URL . '/Src/Javascripts');
+    define('CSS_PATH',  BASE_URL . '/Src/CSS');
+} else {
+    // Local development paths
+    define('BOUNDARY_URL', BASE_URL . '/Boundary');
+    define('CONTROLLERS_URL',  BASE_URL . '/Controllers');
+    define('ADMIN_CONTROLLERS_URL',  BASE_URL . '/Controllers/admin');
+    define('IMAGE_PATH',  BASE_URL . '/img');
+    define('JAVASCRIPT_PATH',  BASE_URL . '/Javascripts');
+    define('CSS_PATH',  BASE_URL . '/CSS');
+}
 
 // Helper function for requiring files
 function requireOnce($path) {

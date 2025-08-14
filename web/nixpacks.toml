@@ -1,8 +1,0 @@
-[phases.setup]
-nixPkgs = ["ca-certificates", "git", "unzip", "zip", "php", "php.extensions.pdo_mysql", "php.extensions.mysqli", "php.extensions.opcache", "php.extensions.sodium"]
-
-[start]
-cmd = "frankenphp php-server"
-
-[variables]
-PHP_INI_SCAN_DIR = "."
