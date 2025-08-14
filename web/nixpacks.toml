@@ -1,9 +1,5 @@
 [phases.setup]
-# Install PHP 8.2 and the MySQL drivers
-nixPkgs = ["php82", "php82Extensions.pdo_mysql", "php82Extensions.mysqli"]
+nixPkgs = ["ca-certificates", "git", "unzip", "zip"] # Keep only non-PHP related packages if needed
 
 [start]
-entrypoint = ["php"]
-cmd = ["-i"]
-
-
+cmd = "frankenphp php-server"
