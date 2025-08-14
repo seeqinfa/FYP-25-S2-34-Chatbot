@@ -1,5 +1,6 @@
 {
     "name": "luxfurn/web-app",
+    "description": "LuxFurn PHP Web Application",
     "require": {
         "php": "^8.0"
     }
