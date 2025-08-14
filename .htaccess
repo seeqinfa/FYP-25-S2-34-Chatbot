@@ -1,0 +1,16 @@
+RewriteEngine On
+
+# Handle Railway deployment paths
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirect root requests to Src/Boundary/
+RewriteRule ^$ /Src/Boundary/index.php [L,R=301]
+
+# Handle requests for the Src directory
+RewriteRule ^Src/(.*)$ /Src/$1 [L]
+
+# Handle PHP files
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ /Src/Boundary/index.php [L]
+</RewriteRule>

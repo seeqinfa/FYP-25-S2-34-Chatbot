@@ -1,0 +1,13 @@
+{
+    "name": "luxfurn/furniture-store",
+    "description": "LuxFurn Furniture Store with Chatbot",
+    "type": "project",
+    "require": {
+        "php": "^8.0"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "echo 'LuxFurn application installed successfully'"
+        ]
+    }
+}

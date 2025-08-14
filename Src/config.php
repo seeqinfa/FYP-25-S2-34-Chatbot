@@ -10,6 +10,10 @@ define('BOUNDARY_PATH', PROJECT_ROOT . '\Boundary');
 // Railway-compatible base URL configuration
 $isRailway = isset($_ENV['RAILWAY_ENVIRONMENT']) || isset($_ENV['RAILWAY_PROJECT_ID']);
 
+// Also check for Railway's standard environment variable
+if (!$isRailway && isset($_ENV['RAILWAY_STATIC_URL'])) {
+    $isRailway = true;
+}
 
 if ($isRailway) {
     define('BASE_URL', '');
