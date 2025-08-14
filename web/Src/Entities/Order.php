@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__DIR__, 2) . '/src/db_config.php';
+require_once dirname(__FILE__, 2) . '/db_config.php';
 
 class Order {
     private $orderId;
