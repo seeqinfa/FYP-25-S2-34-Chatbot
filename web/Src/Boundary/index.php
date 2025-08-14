@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__) . '/config.php';
 require_once APP_ROOT . '/Src/header.php';
 ?>
 

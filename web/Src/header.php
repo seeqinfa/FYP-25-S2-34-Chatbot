@@ -9,7 +9,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 $flash = $_SESSION['message'] ?? null;
 if ($flash !== null) { unset($_SESSION['message']); }
-require_once APP_ROOT . '/Src/config.php';
 
 /* -------------------------------------------------------------------
    Backfill session with user_id (and role) from DB when username exists

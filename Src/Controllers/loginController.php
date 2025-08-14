@@ -38,17 +38,17 @@ class LoginController {
 
         } catch (Exception $e) {
             $_SESSION['message'] = $e->getMessage();
-            header("Location: " . BASE_URL);
+            header("Location: " . BASE_URL . "/");
             exit();
         }
 
         $_SESSION['message'] = "Invalid login attempt, please try again.";
-        header("Location: " . BASE_URL);
+        header("Location: " . BASE_URL . "/");
         return false;
     }
 
     private function redirectUser($role) {
-        $redirect = BASE_URL;
+        $redirect = BASE_URL . "/";
         header("Location: $redirect");
         exit();
     }
