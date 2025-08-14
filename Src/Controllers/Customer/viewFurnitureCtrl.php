@@ -1,5 +1,6 @@
 <?php
-require_once dirname(__DIR__, 2) . '/Entities/Furniture.php';
+require_once dirname(__DIR__, 2) . '/Entities/furniture.php';
+
 
 class FurnitureController
 {
