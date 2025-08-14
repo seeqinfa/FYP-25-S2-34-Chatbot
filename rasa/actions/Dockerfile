@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir -r requirements-actions.txt
 
 EXPOSE 5055
 
-CMD ["rasa", "run", "actions", "--port", "5055"]
+CMD ["python", "-m", "rasa_sdk", "--actions", "actions", "--port", "5055"]
