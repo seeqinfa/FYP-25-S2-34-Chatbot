@@ -3,9 +3,9 @@
 define('PROJECT_ROOT', dirname(__FILE__));
 
 // Define other important paths relative to PROJECT_ROOT
-define('CONTROLLERS_PATH', PROJECT_ROOT . '\Controllers');
-define('ENTITIES_PATH', PROJECT_ROOT . '\Entities');
-define('BOUNDARY_PATH', PROJECT_ROOT . '\Boundary');
+define('CONTROLLERS_PATH', PROJECT_ROOT . '/Controllers');
+define('ENTITIES_PATH', PROJECT_ROOT . '/Entities');
+define('BOUNDARY_PATH', PROJECT_ROOT . '/Boundary');
 
 // Railway-compatible base URL configuration
 $isRailway = isset($_ENV['RAILWAY_ENVIRONMENT']) || isset($_ENV['RAILWAY_PROJECT_ID']);
