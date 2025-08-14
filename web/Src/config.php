@@ -48,9 +48,6 @@ error_reporting(E_ALL);     // Report all errors for debugging
 
 // Database connection for PDO (Railway-aware)
 try {
-    if (!extension_loaded('pdo_mysql')) {
-        throw new RuntimeException('Missing pdo_mysql PHP extension.');
-    }
 
     $dsn = null; $user = null; $pass = null;
 
