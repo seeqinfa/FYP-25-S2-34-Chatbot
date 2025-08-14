@@ -1,6 +1,7 @@
 <?php
 // Src/Boundary/Customer/CustomerInstructionManualUI.php
 
+require_once dirname(__DIR__, 2) . '/config.php';
 require_once '../../header.php'; 
 require_once dirname(__DIR__,2) . '../Controllers/Customer/CustomerInstructionManualCtrl.php';
 

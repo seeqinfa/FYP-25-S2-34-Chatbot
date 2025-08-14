@@ -77,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+require_once dirname(__DIR__, 2) . '/config.php';
 include '../../header.php';
 ?>
 
