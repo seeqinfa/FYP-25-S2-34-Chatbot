@@ -1,0 +1,5 @@
+# Rasa requirements for Railway deployment
+rasa==3.6.0
+rasa-sdk==3.6.0
+mysql-connector-python==8.0.33
+# Add any other Python dependencies your Rasa project or custom actions use

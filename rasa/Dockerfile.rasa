@@ -1,0 +1,19 @@
+# Dockerfile for Rasa Server
+FROM rasa/rasa:3.6.0-full
+
+WORKDIR /app
+
+# Copy your Rasa project files into the container
+COPY . /app
+
+# Install Python dependencies from requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Train the Rasa model (this happens during the build process)
+RUN rasa train
+
+# Expose the port for the Rasa server
+EXPOSE 5005
+
+# The command to run the Rasa server
+CMD ["rasa", "run", "--enable-api", "--cors", "*", "--port", "5005"]

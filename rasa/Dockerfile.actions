@@ -1,0 +1,17 @@
+# Dockerfile for Rasa Action Server
+FROM python:3.9-slim-buster
+
+WORKDIR /app
+
+# Copy your actions directory and the requirements file
+COPY actions /app/actions
+COPY requirements.txt /app/
+
+# Install Python dependencies for actions
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose the port for the action server
+EXPOSE 5055
+
+# The command to run the Rasa action server
+CMD ["rasa", "run", "actions", "--port", "5055"]

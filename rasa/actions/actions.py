@@ -8,6 +8,7 @@ import string
 import mysql.connector
 from mysql.connector.connection import MySQLConnection
 from urllib.parse import quote_plus
+import os
 # -------------------------------------------------------------------
 # Shared data / constants
 # -------------------------------------------------------------------
@@ -46,10 +47,11 @@ mock_orders = {
 #DB connection
 def _connect() -> MySQLConnection:
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="luxfurn",
+        host=os.environ.get("DB_HOST", "localhost"),
+        user=os.environ.get("DB_USER", "root"),
+        password=os.environ.get("DB_PASS", ""),
+        database=os.environ.get("DB_NAME", "railway"),
+        port=int(os.environ.get("DB_PORT", "3306"))
     )
 # -------------------------------------------------------------------
 # Existing actions (keep these as-is for your teammates)
