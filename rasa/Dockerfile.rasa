@@ -1,5 +1,5 @@
 # rasa/Dockerfile.rasa
-FROM rasa/rasa:3.6.21-full # Changed from 3.x.x-full-python3.9 to 3.6.21-full
+FROM rasa/rasa:3.6.21-full
 
 WORKDIR /app
 
