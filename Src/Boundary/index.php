@@ -1,5 +1,7 @@
 <?php
 // index.php
+phpinfo();
+exit();
 require_once '../header.php';
 ?>
 
