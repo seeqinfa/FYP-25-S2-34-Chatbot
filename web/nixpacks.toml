@@ -2,6 +2,7 @@
 # Install PHP 8.2 and the MySQL drivers
 nixPkgs = ["php82", "php82Extensions.pdo_mysql", "php82Extensions.mysqli"]
 
+[start]
 # Use Railway's $PORT; serve your app from /app (Railway mounts your repo there)
 # Explicitly load php.ini from the /app directory
 cmd = "php -S 0.0.0.0:${PORT} -t /app -c /app/php.ini"
