@@ -6,6 +6,7 @@ import urllib.parse
 import re
 import string
 import mysql.connector
+import os
 from mysql.connector.connection import MySQLConnection
 from urllib.parse import quote_plus
 from html import escape
@@ -47,11 +48,18 @@ mock_orders = {
 
 #DB connection
 def _connect() -> MySQLConnection:
+    # Retrieve database credentials from environment variables
+    db_host = os.getenv("DB_HOST", "localhost")
+    db_user = os.getenv("DB_USER", "root")
+    db_pass = os.getenv("DB_PASS", "")
+    db_name = os.getenv("DB_NAME", "railway")  # Default to 'railway' as per your preference
+    db_port = int(os.getenv("DB_PORT", "3306"))
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="luxfurn",
+        host=db_host,
+        user=db_user,
+        password=db_pass,
+        database=db_name,
+        port=db_port,
     )
 
 # -------------------------------------------------------------------
