@@ -55,7 +55,7 @@ final class SupportTicketRepo
     {
         $st = $this->db->prepare(
             "SELECT id, ticket_id, admin_id, message, created_at
-               FROM support_ticket_replies
+               FROM ticket_replies
               WHERE ticket_id = ?
               ORDER BY created_at ASC, id ASC"
         );
@@ -68,7 +68,7 @@ final class SupportTicketRepo
     public function addReply(int $ticketId, ?int $adminId, string $message): void
     {
         $st = $this->db->prepare(
-            "INSERT INTO support_ticket_replies (ticket_id, admin_id, message)
+            "INSERT INTO ticket_replies (ticket_id, admin_id, message)
              VALUES (?, ?, ?)"
         );
         $st->execute([$ticketId, $adminId, $message]);
