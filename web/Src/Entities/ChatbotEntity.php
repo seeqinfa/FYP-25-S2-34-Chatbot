@@ -28,7 +28,7 @@ class ChatbotEntity
             return 'Check the "View Furniture" page for our catalogue.';
         }
         if (str_contains($input, 'order')) {
-            return 'Use the "My Orders ▾" menu to view your cart or order.';
+            return 'Use the “My Orders ▾” menu to view your cart or order.';
         }
         return "ask me about furniture or orders.";
     }
@@ -39,44 +39,40 @@ class ChatbotEntity
         string $sender,  // 'user' | 'bot'
         string $text
     ): void {
-        try {
-            $stmt = $this->db->prepare(
-                "INSERT INTO chat_messages (username, sender, message_text)
-                 VALUES (:u, :s, :t)"
-            );
-            $stmt->execute([':u'=>$username, ':s'=>$sender, ':t'=>$text]);
-        } catch (PDOException $e) {
-            error_log("ChatbotEntity::saveMessage failed - " . $e->getMessage());
-            error_log("Parameters: username='{$username}', sender='{$sender}', text='{$text}'");
-            throw $e; // Re-throw to maintain existing error handling behavior
-        }
+        $stmt = $this->db->prepare(
+            "INSERT INTO chat_messages (username, sender, message_text)
+             VALUES (:u, :s, :t)"
+        );
+        $stmt->execute([':u'=>$username, ':s'=>$sender, ':t'=>$text]);
     }
 
     public function fetchRecentMessages(string $username, int $limit = 100): array
-    {
-        $limit = max(1, (int)$limit);
+	{
+		$limit = max(1, (int)$limit);
 
-        $sql = "
-            SELECT sender, message_text, created_at
-            FROM (
-                SELECT sender, message_text, created_at
-                FROM chat_messages
-                WHERE username = :u
-                ORDER BY created_at DESC
-                LIMIT :lim
-            ) recent
-            ORDER BY created_at ASC
-        ";
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':u', $username, PDO::PARAM_STR);
-        $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
+		$sql = "
+			SELECT sender, message_text, created_at
+			FROM (
+				SELECT sender, message_text, created_at
+				FROM chat_messages
+				WHERE username = :u
+				ORDER BY created_at DESC
+				LIMIT :lim
+			) recent
+			ORDER BY created_at ASC
+		";
 
-        $stmt->execute();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $stmt->closeCursor();
-        return $rows;
-    }
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindValue(':u', $username, PDO::PARAM_STR);
+
+		$stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
+
+		$stmt->execute();
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$stmt->closeCursor();
+		return $rows;
+	}
 
     public function listConversations(
         string $search = '',
@@ -148,31 +144,33 @@ class ChatbotEntity
      *   'created_at'   => string
      * ]
      */
-    public function getConversationByUsername(string $username, int $limit = 100): array {
-        // Pull most recent N, then present oldest -> newest
-        $sql = "
+public function getConversationByUsername(string $username, int $limit = 100): array {
+    // Pull most recent N, then present oldest -> newest
+    $sql = "
+        SELECT sender, message_text, created_at
+        FROM (
             SELECT sender, message_text, created_at
-            FROM (
-                SELECT sender, message_text, created_at
-                FROM chat_messages
-                WHERE username = :u
-                ORDER BY created_at DESC, sender DESC
-                LIMIT :lim
-            ) recent
-            ORDER BY created_at ASC, sender ASC
-        ";
+            FROM chat_messages
+            WHERE username = :u
+            ORDER BY created_at DESC, sender DESC
+            LIMIT :lim
+        ) recent
+        ORDER BY created_at ASC, sender ASC
+    ";
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':u', $username, PDO::PARAM_STR);
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindValue(':u', $username, PDO::PARAM_STR);
 
-        // Depending on your PDO settings, binding LIMIT may require emulated prepares.
-        // If you ever get a SQL error here, cast and inline:
-        // $limit = (int)$limit; $sql = str_replace(':lim', $limit, $sql);
-        $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
+    // Depending on your PDO settings, binding LIMIT may require emulated prepares.
+    // If you ever get a SQL error here, cast and inline:
+    // $limit = (int)$limit; $sql = str_replace(':lim', $limit, $sql);
+    $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
 
-        $stmt->execute();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $stmt->closeCursor();
-        return $rows;
-    }
+    $stmt->execute();
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->closeCursor();
+    return $rows;
+}
+
+
 }
