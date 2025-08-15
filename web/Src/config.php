@@ -31,6 +31,7 @@ if ($isRailway) {
     define('IMAGE_PATH',  BASE_URL . '/Src/img');
     define('JAVASCRIPT_PATH',  BASE_URL . '/Src/Javascripts');
     define('CSS_PATH',  BASE_URL . '/Src/CSS');
+    define('MANUAL_PATH', BASE_URL . '/Src/assets/manuals');
 } else {
     // Local development paths
     define('BOUNDARY_URL', BASE_URL . '/Boundary');
@@ -39,6 +40,7 @@ if ($isRailway) {
     define('IMAGE_PATH',  BASE_URL . '/img');
     define('JAVASCRIPT_PATH',  BASE_URL . '/Javascripts');
     define('CSS_PATH',  BASE_URL . '/CSS');
+    define('MANUAL_PATH', BASE_URL . '/assets/manuals');
 }
 
 // Helper function for requiring files

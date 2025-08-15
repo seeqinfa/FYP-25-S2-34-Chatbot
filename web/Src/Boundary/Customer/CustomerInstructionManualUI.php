@@ -80,7 +80,7 @@ $totalPages = max(1, (int)ceil($total / $perPage));
           <td><?= htmlspecialchars($r['updated_at']) ?></td>
           <td>
                 <a class="btn" 
-                href="/FYP-25-S2-34-Chatbot/Src/assets/manuals/<?= rawurlencode(basename($r['manual_url'])) ?>" 
+                href="<?= MANUAL_PATH ?>/<?= rawurlencode(basename($r['manual_url'])) ?>" 
                 target="_blank" 
                 rel="noopener">
                 Download
