@@ -454,8 +454,12 @@ class ActionStoreFeedback(Action):
 # NEW (grouped): Manual search helpers & actions
 # -------------------------------------------------------------------
 
+# Determine the base URL for the PHP application
+# This environment variable should be set in Railway for the Rasa Action Server
+PHP_WEB_APP_URL = os.getenv("PHP_WEB_APP_URL", "http://localhost/FYP-25-S2-34-Chatbot")
+
 BASE_MANUAL_URL = (
-    "http://localhost/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/CustomerInstructionManualUI.php"
+    f"{PHP_WEB_APP_URL}/Src/Boundary/Customer/CustomerInstructionManualUI.php"
 )
 
 def _manual_link_from_query(raw_query: str) -> str:
