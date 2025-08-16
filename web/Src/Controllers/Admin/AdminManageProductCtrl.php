@@ -67,12 +67,11 @@ class AdminManageProductCtrl {
             return ['success' => false, 'message' => 'Furniture not found'];
         }
 
-        $deleted = $furniture->delete();
-
-        if (!$deleted) {
-            return ['success' => false, 'message' => 'Failed to delete furniture'];
+        try {
+            $deleted = $furniture->delete();
+            return ['success' => true];
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
         }
-
-        return ['success' => true];
     }
 }
