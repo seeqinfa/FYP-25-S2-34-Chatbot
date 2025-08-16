@@ -256,7 +256,6 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
         <a href="#" class="nav-link">Furniture ▾</a>
         <div class="nav-dropdown-content">
             <a href="<?= BOUNDARY_URL ?>/Customer/viewFurnitureUI.php">View Furniture</a>
-            <a href="<?= BOUNDARY_URL ?>/Customer/CustomerInstructionManualUI.php">Instruction Manuals</a>
         </div>
     </div>
     <div class="nav-dropdown">
@@ -273,6 +272,8 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
         </div>
     </div>
     <?php if (!empty($_SESSION['is_logged_in'])): ?>
+        <a href="<?= BOUNDARY_URL ?>/Customer/CustomerInstructionManualUI.php">Instruction Manuals</a>
+        <a href="#" id="create-ticket-link">Create Ticket</a>
         <?php if (!empty($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
             <a href="<?= BOUNDARY_URL ?>/Admin/AdminDashboardUI.php">Admin Dashboard</a>
         <?php endif; ?>
@@ -346,7 +347,12 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
 <!-- Chatbot (only for logged-in users) -->
 <?php if (!empty($_SESSION['is_logged_in'])): ?>
     <div id="chatbot-container">
-        <div id="chatbot-header">LuxBot</div>
+        <div id="chatbot-header">
+            <span>LuxBot</span>
+            <button id="minimize-chatbot" class="minimize-button">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
         <div id="chatbot-body">
             <div id="chat-log"></div>
             <form id="chat-form">
@@ -409,7 +415,78 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("chat-form");
     const input = document.getElementById("chat-input");
     const log   = document.getElementById("chat-log");
+    const minimizeBtn = document.getElementById("minimize-chatbot");
+    const chatbotContainer = document.getElementById("chatbot-container");
+    const createTicketLink = document.getElementById("create-ticket-link");
+    
     if (!form || !input || !log) return;          // page without chatbot
+
+    /* ---- Chatbot minimize functionality ---- */
+    if (minimizeBtn && chatbotContainer) {
+        minimizeBtn.addEventListener("click", () => {
+            chatbotContainer.classList.toggle("minimized");
+            const icon = minimizeBtn.querySelector("i");
+            if (chatbotContainer.classList.contains("minimized")) {
+                icon.className = "fas fa-square";
+            } else {
+                icon.className = "fas fa-minus";
+            }
+        });
+    }
+
+    /* ---- Create Ticket link functionality ---- */
+    if (createTicketLink) {
+        createTicketLink.addEventListener("click", async (e) => {
+            e.preventDefault();
+            
+            // Ensure chatbot is visible
+            if (chatbotContainer && chatbotContainer.classList.contains("minimized")) {
+                chatbotContainer.classList.remove("minimized");
+                const icon = minimizeBtn.querySelector("i");
+                if (icon) icon.className = "fas fa-minus";
+            }
+            
+            // Send the create ticket intent to Rasa
+            try {
+                const rasaUrl = window.RASA_URL || "<?= defined('RASA_URL') ? RASA_URL : 'http://localhost:5005' ?>";
+                const rasaRes = await fetch(`${rasaUrl}/webhooks/rest/webhook`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        sender: "<?=$_SESSION['user_id']?>|<?=$_SESSION['username']?>",
+                        message: "/open_support_ticket"
+                    })
+                });
+                const botReplies = await rasaRes.json();
+                
+                // Display bot replies
+                if (botReplies.length === 0) {
+                    addBubble("bot", "I can help you create a support ticket. What's the issue?");
+                } else {
+                    botReplies.forEach(r => {
+                        const text = r.text || "";
+                        const buttons = r.buttons || [];
+                        addBubble("bot", text, buttons);
+                    });
+                }
+                scrollToBottom();
+                
+                // Save the interaction
+                const botText = botReplies.map(r => r.text).filter(Boolean).join(" || ");
+                fetch("<?= CONTROLLERS_URL ?>/chatbotController.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "user=" + encodeURIComponent("/open_support_ticket") +
+                          "&bot=" + encodeURIComponent(botText)
+                }).catch(err => console.error("save error:", err));
+                
+            } catch (err) {
+                console.error("Create ticket error:", err);
+                addBubble("bot", "Sorry, I'm having trouble right now. You can also visit the My Tickets section to create a ticket manually.");
+                scrollToBottom();
+            }
+        });
+    }
 
     /* ---- 1. Load saved history from PHP ---- */
     fetch("<?= CONTROLLERS_URL ?>/chatHistoryController.php")
