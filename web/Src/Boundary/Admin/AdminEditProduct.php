@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminEditProductCtrl.php';
 
-$controller = new AdminEditProductCtrl();
+$ctrl = new AdminEditProductCtrl();
 $error = '';
 $successMsg = '';
 if (isset($_GET['success']) && $_GET['success'] == '1') {
@@ -11,7 +11,7 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
 // Fetch current product details if `id` is given
 $product = null;
 if (isset($_GET['id']) && !empty($_GET['id'])) {
-    $product = $controller->getProductById($_GET['id']);
+    $product = $ctrl->getProductById($_GET['id']);
     if (!$product) {
         $error = "Product not found.";
     }
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($error)) {
         try {
             $id = intval($_POST['furnitureID'] ?? 0);
-                $success = $controller->editProduct($id, $name, $category, $price, $quantity, $description);
+            $success = $ctrl->editProduct($id, $name, $category, $price, $quantity, $description);
 
             
             if ($success) {
