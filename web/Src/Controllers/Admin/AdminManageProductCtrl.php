@@ -3,8 +3,6 @@
 require_once dirname(__DIR__, 2) . '/Entities/furniture.php';
 
 class AdminManageProductCtrl {
-    private $db;
-
     public function countFurniture($searchTerm = '') {
         return Furniture::count($searchTerm);
     }
@@ -14,25 +12,7 @@ class AdminManageProductCtrl {
     }
 
     public function getFurnitureById    ($id) {
-        $sql = "SELECT * FROM furnitures WHERE furnitureID = ?";
-        $stmt = mysqli_prepare($this->db, $sql);
-        mysqli_stmt_bind_param($stmt, "i", $id);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-
-        if ($row = mysqli_fetch_assoc($result)) {
-            return new Furniture(
-                $row['furnitureID'],
-                $row['name'],
-                $row['category'],
-                $row['description'],
-                $row['price'],
-                $row['stock_quantity'],
-                $row['image_url']
-            );
-        }
-
-        return null;
+        return Furniture::findById($id);
     }
 
     public function addProduct($name, $category, $tags, $description, $price, $quantity, $imagePath) {
