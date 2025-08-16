@@ -9,7 +9,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 $flash = $_SESSION['message'] ?? null;
 if ($flash !== null) { unset($_SESSION['message']); }
-require_once dirname(__DIR__) . '/src/config.php';
 /* -------------------------------------------------------------------
    Backfill session with user_id (and role) from DB when username exists
    Assumes: $conn is a mysqli connection and users table has (id, username, role)
