@@ -683,8 +683,8 @@ class ActionShowFurnitureRecommendations(Action):
         query = self._extract_query(tracker) or "furniture"
         q = quote_plus(query)
 
-        # Base URL to your customer search UI
-        base = "http://localhost/FYP-25-S2-34-Chatbot/Src/Boundary/Customer/viewFurnitureUI.php"
+        # Base URL to your customer search UI (using PHP_WEB_APP_URL)
+        base = f"{PHP_WEB_APP_URL}/Src/Boundary/Customer/viewFurnitureUI.php"
         url = f"{base}?search={q}"
 
         # Friendly message + direct link
