@@ -7,7 +7,6 @@ class Furniture
     public string  $name          = '';
     public string  $category      = '';
     public ?string $tags          = null;
-    public ?string $tags          = null;
     public string  $description   = '';
     public float   $price         = 0.0;
     public int     $stock_quantity= 0;
