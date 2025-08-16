@@ -34,7 +34,7 @@ CANON = {
 GENERIC_WORDS = {
     "manual", "instructions", "instruction", "guide", "assembly",
     "please", "pls", "for", "the", "a", "an",
-    "can", "you", "me", "my", "need", "want", "get", "show", "i","hi","give"
+    "can", "you", "me", "my", "need", "want", "get", "show", "i","hi","give","manuals"
 }
 
 # example orders
