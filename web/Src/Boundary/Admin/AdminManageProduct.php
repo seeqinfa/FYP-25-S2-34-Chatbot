@@ -21,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
 }
 /* ----------  END AJAX DELETE BLOCK  ---------- */
 ?>
-
 <?php
 /* ----------  PAGE SET-UP  ---------- */
 require_once dirname(__DIR__, 2) . '/config.php';
