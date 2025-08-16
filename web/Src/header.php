@@ -256,6 +256,7 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
         <a href="#" class="nav-link">Furniture ▾</a>
         <div class="nav-dropdown-content">
             <a href="<?= BOUNDARY_URL ?>/Customer/viewFurnitureUI.php">View Furniture</a>
+            <a href="<?= BOUNDARY_URL ?>/Customer/CustomerInstructionManualUI.php">Instruction Manuals</a>
         </div>
     </div>
     <div class="nav-dropdown">

@@ -16,7 +16,7 @@ if (!$isRailway && isset($_ENV['RAILWAY_STATIC_URL'])) {
 }
 
 if ($isRailway) {
-    define('BASE_URL', '/');
+    define('BASE_URL', '');
     define('RASA_URL', 'https://rasa-server.up.railway.app');
 } else {
     define('BASE_URL', '/FYP-25-S2-34-Chatbot/Src');
