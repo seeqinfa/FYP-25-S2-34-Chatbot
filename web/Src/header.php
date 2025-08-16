@@ -345,9 +345,9 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
 <!-- Chatbot (only for logged-in users) -->
 <?php if (!empty($_SESSION['is_logged_in'])): ?>
     <div id="chatbot-container">
-        <div id="chatbot-header">
+        <div id="chatbot-header" id="minimize-chatbot">
             <span>LuxBot</span>
-            <button id="minimize-chatbot" class="minimize-button">
+            <button class="minimize-button">
                 <i class="fas fa-minus"></i>
             </button>
         </div>
@@ -420,7 +420,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ---- Chatbot minimize functionality ---- */
     if (minimizeBtn && chatbotContainer) {
-        minimizeBtn.addEventListener("click", () => {
+        minimizeBtn.addEventListener("click", (e) => {
+            // Prevent event bubbling if clicking on the button specifically
+            e.stopPropagation();
             chatbotContainer.classList.toggle("minimized");
             const icon = minimizeBtn.querySelector("i");
             if (chatbotContainer.classList.contains("minimized")) {
