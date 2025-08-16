@@ -127,6 +127,10 @@ responses:
       payload: /product_inquiry
     - title: Feedback
       payload: /feedback_request
+    - title: Instruction Manuals
+      payload: /instruction_manual
+    - title: Create Support Ticket
+      payload: /open_support_ticket
   utter_ask_feedback_rating:
   - text: Please rate our service from 1–5 ⭐⭐⭐⭐⭐
   utter_ask_feedback_text:
@@ -173,7 +177,8 @@ responses:
         1. Browse our furniture catalog 
         2. Check your order status  
         3. Leave feedback or a review  
-        4. Talk to a human agent  
+        4. Get instruction manuals
+        5. Talk to a human agent  
 
       Just type what you'd like to do!
   utter_ask_help:
@@ -183,7 +188,8 @@ responses:
         1. Browse our furniture catalog 
         2. Check your order status  
         3. Leave feedback or a review  
-        4. Talk to a human agent  
+        4. Get instruction manuals
+        5. Talk to a human agent  
 
       Just type what you'd like to do!
   utter_example_rec:
