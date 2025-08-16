@@ -345,7 +345,7 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
 <!-- Chatbot (only for logged-in users) -->
 <?php if (!empty($_SESSION['is_logged_in'])): ?>
     <div id="chatbot-container">
-        <div id="chatbot-header" id="minimize-chatbot">
+        <div id="chatbot-header">
             <span>LuxBot</span>
             <button class="minimize-button">
                 <i class="fas fa-minus"></i>
@@ -413,7 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("chat-form");
     const input = document.getElementById("chat-input");
     const log   = document.getElementById("chat-log");
-    const minimizeBtn = document.getElementById("minimize-chatbot");
+    const minimizeBtn = document.getElementById("chatbot-header");
     const chatbotContainer = document.getElementById("chatbot-container");
     
     if (!form || !input || !log) return;          // page without chatbot
