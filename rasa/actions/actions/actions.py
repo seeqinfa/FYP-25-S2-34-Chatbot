@@ -535,6 +535,16 @@ class ActionGetManual(Action):
         # 1) Try to resolve a known product (incl. aliases) from THIS message
         canonical = _extract_product(raw, tracker.latest_message.get("entities"))
 
+        # Explicitly handle the case where the 'instruction_manual' intent is triggered
+        # (e.g., by a button click with payload /instruction_manual)
+        # and no specific furniture item was identified.
+        if tracker.latest_message.get("intent", {}).get("name") == "instruction_manual" and not canonical:
+            try:
+                dispatcher.utter_message(response="utter_ask_manual_furniture")
+            except Exception:
+                dispatcher.utter_message(text="Which furniture item do you need the instruction manual for?")
+            return [SlotSet("manual_furniture", None)]
+
         if canonical:
             link = _manual_link_from_query(canonical)
             _send_clickable_link(dispatcher, f"Here’s the instruction manual search for <b>{canonical}</b>", link)
