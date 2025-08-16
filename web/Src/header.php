@@ -344,11 +344,11 @@ if (!empty($_SESSION['username']) && empty($_SESSION['user_id'])) {
 
 <!-- Chatbot (only for logged-in users) -->
 <?php if (!empty($_SESSION['is_logged_in'])): ?>
-    <div id="chatbot-container">
+    <div id="chatbot-container" class="minimized">
         <div id="chatbot-header">
             <span>LuxBot</span>
             <button class="minimize-button">
-                <i class="fas fa-minus"></i>
+                <i class="fas fa-square"></i>
             </button>
         </div>
         <div id="chatbot-body">
