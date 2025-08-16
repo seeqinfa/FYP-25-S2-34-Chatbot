@@ -1,7 +1,7 @@
 <?php
-require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminEditProductCtrl.php';
+require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminManageProductCtrl.php';
 
-$ctrl = new AdminEditProductCtrl();
+$ctrl = new AdminManageProductCtrl();
 $error = '';
 $successMsg = '';
 if (isset($_GET['success']) && $_GET['success'] == '1') {
@@ -11,7 +11,7 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
 // Fetch current product details if `id` is given
 $product = null;
 if (isset($_GET['id']) && !empty($_GET['id'])) {
-    $product = $ctrl->getProductById($_GET['id']);
+    $product = $ctrl->getFurnitureById($_GET['id']);
     if (!$product) {
         $error = "Product not found.";
     }
