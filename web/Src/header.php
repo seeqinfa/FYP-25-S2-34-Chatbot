@@ -429,6 +429,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 icon.className = "fas fa-square";
             } else {
                 icon.className = "fas fa-minus";
+                // Delay scroll to bottom to allow layout to settle
+                setTimeout(scrollToBottom, 0);
             }
         });
     }
