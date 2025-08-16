@@ -1,8 +1,8 @@
 <?php
 require_once dirname(__DIR__, 2) . '/db_connect.php';
-require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminAddProductCtrl.php';
+require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminManageProductCtrl.php';
 
-$controller = new AdminAddProductCtrl();
+$controller = new AdminManageProductCtrl();
 $error = '';
 $successMsg = '';
 if (isset($_GET['success']) && $_GET['success'] == '1') {
@@ -13,9 +13,10 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
+    $tags = trim($_POST['tags'] ?? '');
+    $description = trim($_POST['description'] ?? '');
     $price = floatval($_POST['price'] ?? 0);
     $quantity = intval($_POST['quantity'] ?? 0);
-    $description = trim($_POST['description'] ?? '');
     $category = trim($_POST['category'] ?? '');
     
     // Handle image upload
@@ -63,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Add product if no errors
     if (empty($error)) {
         try {
-            $success = $controller->addProduct($name, $category, $price, $quantity, $description, $imagePath);
+            $success = $controller->addProduct($name, $category, $tags, $description, $price, $quantity, $imagePath);
             
             if ($success) {
                 header("Location: AdminAddProduct.php?success=1");
@@ -197,21 +198,6 @@ include '../../header.php';
             </div>
             
             <div class="form-group">
-                <label for="price">Price: *</label>
-                <input type="number" id="price" name="price" min="0.01" step="0.01" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="quantity">Quantity: *</label>
-                <input type="number" id="quantity" name="quantity" min="0" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="description">Description:</label>
-                <textarea id="description" name="description"></textarea>
-            </div>
-            
-            <div class="form-group">
                 <label for="category">Category: *</label>
                 <select id="category" name="category" required>
                     <option value="">-- Select Category --</option>
@@ -222,6 +208,27 @@ include '../../header.php';
                     <option value="Cabinet">Cabinet</option>
                     <option value="Other">Other</option>
                 </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="tags">Tags:</label>
+                <input type="text" id="tags" name="tags" placeholder="e.g., sofa, leather, 3-seater, dark brown">
+                <small>Separate multiple tags with commas</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="price">Price: *</label>
+                <input type="number" id="price" name="price" min="0.01" step="0.01" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="quantity">Quantity: *</label>
+                <input type="number" id="quantity" name="quantity" min="0" required>
             </div>
             
             <button type="submit" class="btn-submit">Add Product</button>

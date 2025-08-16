@@ -26,10 +26,45 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
+    $tags = trim($_POST['tags'] ?? '');
+    $description = trim($_POST['description'] ?? '');
     $price = floatval($_POST['price'] ?? 0);
     $quantity = intval($_POST['quantity'] ?? 0);
-    $description = trim($_POST['description'] ?? '');
     $category = trim($_POST['category'] ?? '');
+    
+    // Handle image upload (optional for edit)
+    $imagePath = null;
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = dirname(__DIR__, 2) . '/img/';
+        
+        // Create directory if it doesn't exist
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        
+        $fileName = uniqid() . '_' . basename($_FILES['image']['name']);
+        $uploadFile = $uploadDir . $fileName;
+        
+        // Validate image
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        $fileType = $_FILES['image']['type'];
+        $maxFileSize = 2 * 1024 * 1024; // 2MB
+        
+        if (in_array($fileType, $allowedTypes)) {
+            if ($_FILES['image']['size'] <= $maxFileSize) {
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
+                    $imagePath = '../../img/' . $fileName;
+                } else {
+                    $error = "Failed to upload image.";
+                }
+            } else {
+                $error = "Image must be less than 2MB.";
+            }
+        } else {
+            $error = "Only JPG, PNG, and GIF files are allowed.";
+        }
+    }
+    
     // Validate inputs
     if (empty($error)) {
         if (empty($name) || $price <= 0 || $quantity < 0 || empty($category)) {
@@ -41,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($error)) {
         try {
             $id = intval($_POST['furnitureID'] ?? 0);
-            $success = $ctrl->editProduct($id, $name, $category, $price, $quantity, $description);
+            $success = $ctrl->editProduct($id, $name, $category, $tags, $description, $price, $quantity, $imagePath);
 
             
             if ($success) {
@@ -164,30 +199,24 @@ include '../../header.php';
                  
         <form method="POST" action="AdminEditProduct.php" enctype="multipart/form-data">
             <input type="hidden" name="furnitureID" value="<?php echo htmlspecialchars($_GET['id'] ?? ''); ?>"> 
+            
+            <div class="form-group">
+                <label for="image">Product Image:</label>
+                <input type="file" id="image" name="image" accept="image/*">
+                <small>Leave empty to keep current image. Accepted formats: JPG, PNG, JPEG (Max 2MB)</small>
+                <?php if ($product && $product->image_url): ?>
+                    <div style="margin-top: 10px;">
+                        <img src="<?php echo htmlspecialchars($product->image_url); ?>" alt="Current image" style="max-width: 100px; height: auto;">
+                        <br><small>Current image</small>
+                    </div>
+                <?php endif; ?>
+            </div>
+            
             <div class="form-group">
                 <label for="name">Product Name: *</label>
                 <input type="text" id="name" name="name" 
                     value="<?php echo htmlspecialchars($product->name ?? ''); ?>" required>
 
-            </div>
-            
-            <div class="form-group">
-                <label for="price">Price: *</label>
-                <input type="number" id="price" name="price" min="0.01" step="0.01" 
-                    value="<?php echo htmlspecialchars($product->price ?? ''); ?>" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="quantity">Quantity: *</label>
-                <input type="number" id="quantity" name="quantity" min="0" 
-                    value="<?php echo htmlspecialchars($product->stock_quantity ?? ''); ?>" required>
-
-            </div>
-            
-            <div class="form-group">
-                <label for="description">Description:</label>
-                <textarea id="description" name="description"><?php 
-                    echo htmlspecialchars($product->description ?? ''); ?></textarea>
             </div>
             
             <div class="form-group">
@@ -201,6 +230,33 @@ include '../../header.php';
                     <option value="Cabinet" <?php if(($product->category ?? '') == 'Cabinet') echo 'selected'; ?>>Cabinet</option>
                     <option value="Other" <?php if(($product->category ?? '') == 'Other') echo 'selected'; ?>>Other</option>
                 </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="tags">Tags:</label>
+                <input type="text" id="tags" name="tags" 
+                    value="<?php echo htmlspecialchars($product->tags ?? ''); ?>" 
+                    placeholder="e.g., sofa, leather, 3-seater, dark brown">
+                <small>Separate multiple tags with commas</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description"><?php 
+                    echo htmlspecialchars($product->description ?? ''); ?></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="price">Price: *</label>
+                <input type="number" id="price" name="price" min="0.01" step="0.01" 
+                    value="<?php echo htmlspecialchars($product->price ?? ''); ?>" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="quantity">Quantity: *</label>
+                <input type="number" id="quantity" name="quantity" min="0" 
+                    value="<?php echo htmlspecialchars($product->stock_quantity ?? ''); ?>" required>
+
             </div>
             
             <button type="submit" class="btn-submit">Update Product</button>

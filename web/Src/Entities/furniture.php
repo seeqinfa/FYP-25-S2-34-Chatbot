@@ -7,6 +7,7 @@ class Furniture
     public string  $name          = '';
     public string  $category      = '';
     public ?string $tags          = null;
+    public ?string $tags          = null;
     public string  $description   = '';
     public float   $price         = 0.0;
     public int     $stock_quantity= 0;
@@ -146,6 +147,7 @@ class Furniture
             $sql = "UPDATE furnitures
                     SET name            = ?,
                         category        = ?,
+                        tags            = ?,
                         price           = ?,
                         stock_quantity  = ?,
                         description     = ?,
@@ -154,9 +156,10 @@ class Furniture
             $stmt = mysqli_prepare($conn, $sql);
             mysqli_stmt_bind_param(
                 $stmt,
-                'ssdissi',
+                'sssdissi',
                 $this->name,
                 $this->category,
+                $this->tags,
                 $this->price,
                 $this->stock_quantity,
                 $this->description,
@@ -165,17 +168,18 @@ class Furniture
             );
         } else {
             $sql = "INSERT INTO furnitures
-                       (name, category, price, stock_quantity, description, image_url)
-                    VALUES (?,?,?,?,?,?)";
+                       (name, category, tags, description, price, stock_quantity, image_url)
+                    VALUES (?,?,?,?,?,?,?)";
             $stmt = mysqli_prepare($conn, $sql);
             mysqli_stmt_bind_param(
                 $stmt,
-                'ssdiss',
+                'sssdiis',
                 $this->name,
                 $this->category,
+                $this->tags,
+                $this->description,
                 $this->price,
                 $this->stock_quantity,
-                $this->description,
                 $this->image_url
             );
         }
