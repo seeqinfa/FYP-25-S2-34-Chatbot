@@ -1,5 +1,6 @@
 <?php
 /* ----------  EARLY EXIT:  AJAX DELETE  ---------- */
+require_once dirname(__DIR__, 2) . '/db_connect.php';
 require_once dirname(__DIR__, 2) . '/Controllers/Admin/AdminManageProductCtrl.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'
