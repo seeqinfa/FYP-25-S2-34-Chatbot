@@ -25,13 +25,13 @@ if ($isRailway) {
 
 // Define other URL paths relative to BASE_URL
 if ($isRailway) {
-    define('BOUNDARY_URL', BASE_URL . '/Src/Boundary');
-    define('CONTROLLERS_URL',  BASE_URL . '/Src/Controllers');
-    define('ADMIN_CONTROLLERS_URL',  BASE_URL . '/Src/Controllers/admin');
-    define('IMAGE_PATH',  BASE_URL . '/Src/img');
-    define('JAVASCRIPT_PATH',  BASE_URL . '/Src/Javascripts');
-    define('CSS_PATH',  BASE_URL . '/Src/CSS');
-    define('MANUAL_PATH', BASE_URL . '/Src/assets/manuals');
+    define('BOUNDARY_URL', '/Src/Boundary');
+    define('CONTROLLERS_URL',  '/Src/Controllers');
+    define('ADMIN_CONTROLLERS_URL',  '/Src/Controllers/admin');
+    define('IMAGE_PATH',  '/Src/img');
+    define('JAVASCRIPT_PATH',  '/Src/Javascripts');
+    define('CSS_PATH',  '/Src/CSS');
+    define('MANUAL_PATH', '/Src/assets/manuals');
 } else {
     // Local development paths
     define('BOUNDARY_URL', BASE_URL . '/Boundary');
