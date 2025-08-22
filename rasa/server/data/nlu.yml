@@ -110,6 +110,18 @@ nlu:
     - how do I leave a review?
     - I want to rate the chatbot
     - I want to provide feedback
+    - feedback
+    - Feedback
+    - give feedback
+    - I want feedback
+    - feedback please
+    - feedback for you
+    - feedbacj
+    - feedbak
+    - review
+    - leave review
+    - rate service
+    - rating
 - intent: product_inquiry
   examples: |
     - show me sofas
