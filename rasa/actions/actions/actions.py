@@ -427,25 +427,28 @@ class ActionStoreFeedback(Action):
         else:
             user_id, username = sender_id, ""
 
-        conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="",
-            database="luxfurn"
-        )
-        cursor = conn.cursor()
+        conn = cur = None
+        try:
+            conn = _connect()
+            cur = conn.cursor()
 
-        cursor.execute(
-            """
-            INSERT INTO chatbot_reviews (user_id, rating, comment)
-            VALUES (%s, %s, %s)
-            """,
-            (user_id, rating, text)
-        )
+            cur.execute(
+                """
+                INSERT INTO chatbot_reviews (user_id, rating, comment)
+                VALUES (%s, %s, %s)
+                """,
+                (user_id, rating, text)
+            )
 
-        conn.commit()
-        cursor.close()
-        conn.close()
+            conn.commit()
+        except Exception as e:
+            print("DB error storing feedback:", e)
+        finally:
+            try:
+                if cur: cur.close()
+                if conn and conn.is_connected(): conn.close()
+            except Exception:
+                pass
 
         return []
 
