@@ -146,7 +146,14 @@ if (!$ticket) {
           <h3>Responses</h3>
           <?php foreach ($replies as $r): ?>
             <div class="reply">
-              <div class="meta">Admin #<?= htmlspecialchars((string)$r['admin_id']) ?> • <?= htmlspecialchars($r['created_at']) ?></div>
+              <div class="meta">
+                <?php if ($r['admin_id']): ?>
+                  <?= htmlspecialchars($r['admin_username'] ?? 'Admin #' . $r['admin_id']) ?>
+                <?php else: ?>
+                  Customer
+                <?php endif; ?>
+                • <?= htmlspecialchars($r['created_at']) ?>
+              </div>
               <div><?= nl2br(htmlspecialchars($r['message'])) ?></div>
             </div>
           <?php endforeach; ?>

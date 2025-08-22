@@ -54,10 +54,12 @@ final class SupportTicketRepo
     public function getReplies(int $ticketId): array
     {
         $st = $this->db->prepare(
-            "SELECT id, ticket_id, admin_id, message, created_at
-               FROM ticket_replies
-              WHERE ticket_id = ?
-              ORDER BY created_at ASC, id ASC"
+            "SELECT tr.id, tr.ticket_id, tr.admin_id, tr.message, tr.created_at,
+                    u.username as admin_username
+               FROM ticket_replies tr
+               LEFT JOIN users u ON tr.admin_id = u.id
+              WHERE tr.ticket_id = ?
+              ORDER BY tr.created_at ASC, tr.id ASC"
         );
         $st->execute([$ticketId]);
         return $st->fetchAll();
