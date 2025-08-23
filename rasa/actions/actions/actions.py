@@ -19,6 +19,14 @@ ALIASES = {
     "recliner": "Recliner Seat",
     "bookshelf": "Bookshelf Classic",
     "queen bed": "Queen Bed Frame",
+    "oak dining": "Oak Dining Set",
+    "dining set": "Oak Dining Set",
+    "sofa luxe": "Sofa Luxe",
+    "ergo": "Ergo Chair",
+    "coffee": "Coffee Table",
+    "tv console": "TV Console",
+    "study": "Study Desk",
+    "bar stool": "Bar Stool Set",
 }
 # Canonical product names
 CANON = {
@@ -28,6 +36,10 @@ CANON = {
     "bookshelf classic": "Bookshelf Classic",
     "queen bed frame": "Queen Bed Frame",
     "recliner seat": "Recliner Seat",
+    "oak dining set": "Oak Dining Set",
+    "sofa luxe": "Sofa Luxe",
+    "study desk": "Study Desk",
+    "bar stool set": "Bar Stool Set",
 }
 
 #generic words

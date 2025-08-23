@@ -91,6 +91,22 @@ nlu:
     - show me [velvet sofa set](product_name)
     - do you have any recommendations for [office desk](product_name)
     - show me [kitchen stool](product_name)
+    - I'm looking for a [red sofa](product_name)
+    - show me [small coffee table](product_name)
+    - find [wooden dining table](product_name)
+    - I want a [comfortable armchair](product_name)
+    - search for a [large bookshelf](product_name)
+    - do you have any [modern tv console](product_name)
+    - I want a [grey chair](product_name)
+    - show me [dark brown sofa](product_name)
+    - find [compact study desk](product_name)
+    - I need a [minimalist coffee table](product_name)
+    - search [ergonomic office chair](product_name)
+    - do you have [solid oak dining set](product_name)
+    - show me [plush recliner seat](product_name)
+    - I want [5-tier wooden bookshelf](product_name)
+    - find [low-rise tv console](product_name)
+    - search for [set of bar stools](product_name)
 - intent: open_support_ticket
   examples: |
     - I want to talk to a human
@@ -205,6 +221,12 @@ nlu:
     - [Bookshelf Classic](furniture_name)
     - [Coffee Table](furniture_name)
     - [Queen Bed Frame](furniture_name)
+    - [Oak Dining Set](furniture_name)
+    - [oak dining set](furniture_name)
+    - [dining set](furniture_name)
+    - [Sofa Luxe](furniture_name)
+    - [Study Desk](furniture_name)
+    - [Bar Stool Set](furniture_name)
 - intent: instruction_manual
   examples: |
     - I need the manual for [Ergo Chair](furniture_name)
@@ -235,3 +257,7 @@ nlu:
     - Bookshelf Classic
     - Coffee Table
     - Queen Bed Frame
+    - Oak Dining Set
+    - Sofa Luxe
+    - Study Desk
+    - Bar Stool Set
